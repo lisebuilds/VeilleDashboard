@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partidos políticos españoles — Matrices ideológicas</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: #E0DDD5;
+    --text: #1A1916;
+    --muted: #7A7870;
+    --accent: #C8392B;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: var(--text);
+    color: #F7F5F0;
+    padding: 0.55rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  header p {
+    font-size: 0.68rem;
+    opacity: 0.45;
+    text-align: right;
+    line-height: 1.4;
+    max-width: 300px;
+  }
+
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.2rem;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-shrink: 0;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav button {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.45rem 0.65rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  nav button:hover { color: var(--text); }
+  nav button.active { color: var(--text); border-bottom-color: var(--accent); }
+
+  main {
+    flex: 1;
+    overflow: hidden;
+    padding: 0.6rem 1rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .panel { display: none; flex: 1; flex-direction: column; min-height: 0; }
+  .panel.active { display: flex; }
+
+  .matrix-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.65rem 1rem 0.55rem;
+    box-shadow: var(--shadow);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .matrix-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    margin-bottom: 0.25rem;
+    flex-shrink: 0;
+  }
+  .matrix-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .matrix-subtitle {
+    font-size: 0.66rem;
+    color: var(--muted);
+  }
+
+  svg.matrix {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    display: block;
+  }
+
+  .tooltip {
+    position: fixed;
+    background: var(--text);
+    color: #F7F5F0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    pointer-events: none;
+    display: none;
+    z-index: 100;
+    max-width: 230px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  .tooltip strong { font-size: 0.75rem; display: block; margin-bottom: 2px; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin-top: 0.35rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.63rem;
+    color: var(--muted);
+  }
+  .legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  .note {
+    font-size: 0.62rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-style: italic;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .lang-switcher {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .lang-btn {
+    background: transparent;
+    border: 1px solid rgba(247,245,240,0.25);
+    color: rgba(247,245,240,0.6);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.15s;
+  }
+  .lang-btn:hover { border-color: rgba(247,245,240,0.6); color: rgba(247,245,240,0.9); }
+  .lang-btn.active { background: rgba(247,245,240,0.15); border-color: rgba(247,245,240,0.6); color: #F7F5F0; }
+
+  @media (max-width: 700px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    header { flex-direction: column; align-items: flex-start; }
+    header p { text-align: left; }
+    main { padding: 1.2rem; }
+    nav { padding: 0 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="tip" class="tooltip"></div>
+
+<header>
+  <h1 id="h-title">Partis politiques<br>espagnols</h1>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+    </div>
+    <p id="h-sub">Positionnement sur les axes gauche/droite et unioniste/indépendantiste.<br>Survoler un parti pour les détails.</p>
+  </div>
+</header>
+
+<nav id="nav"></nav>
+
+<main id="main"></main>
+
+<script>
+// ─── TRANSLATIONS ─────────────────────────────────────────────────────────────
+
+const T = {
+  fr: {
+    title: "Partis politiques<br>espagnols",
+    subtitle: "Positionnement sur les axes gauche/droite et unioniste/indépendantiste.<br>Survoler un parti pour les détails.",
+    axLeft: "◀ Gauche", axRight: "Droite ▶",
+    axUp: "▲ Unioniste / Centraliste", axDown: "▼ Indépendantiste / Régionaliste",
+    note: "Positions indicatives basées sur les programmes et votes au parlement. L'axe territorial reflète la posture vis-à-vis de l'unité de l'État espagnol.",
+  },
+  es: {
+    title: "Partidos políticos<br>españoles",
+    subtitle: "Posicionamiento en los ejes izquierda/derecha y unionista/independentista.<br>Pasa el cursor sobre un partido para ver los detalles.",
+    axLeft: "◀ Izquierda", axRight: "Derecha ▶",
+    axUp: "▲ Unionista / Centralista", axDown: "▼ Independentista / Regionalista",
+    note: "Posiciones indicativas basadas en programas electorales y votaciones parlamentarias. El eje territorial refleja la postura respecto a la unidad del Estado español.",
+  }
+};
+
+let lang = 'fr';
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+
+const CCAA = [
+  {
+    id: "nacional",
+    name: { fr: "Partis nationaux", es: "Partidos nacionales" },
+    subtitle: { fr: "Congrès des Députés — élections 2023", es: "Congreso de los Diputados — elecciones 2023" },
+    parties: [
+      { name:"Podemos",  cx:108, cy:175, r:9,  color:"#6B2B9A",
+        desc:{ fr:"Extrême gauche · fédéraliste-plurinationaliste · 5 sièges (2023)", es:"Extrema izquierda · federalista-plurinacionalista · 5 escaños (2023)" }},
+      { name:"Sumar",    cx:152, cy:285, r:10, color:"#C0004E",
+        desc:{ fr:"Gauche plurielle · reconnaît le droit à décider · 31 sièges (2023)", es:"Izquierda plural · reconoce el derecho a decidir · 31 escaños (2023)" }},
+      { name:"PSOE",     cx:230, cy:190, r:11, color:"#E4003A",
+        desc:{ fr:"Centre-gauche · unioniste fédéraliste · 122 sièges (2023)", es:"Centro-izquierda · unionista federalista · 122 escaños (2023)" }},
+      { name:"Cs",       cx:385, cy:130, r:7,  color:"#FA5000",
+        desc:{ fr:"Centre libéral · fort unioniste · 0 siège (2023, en déclin)", es:"Centro liberal · fuertemente unionista · 0 escaños (2023, en declive)" }},
+      { name:"PP",       cx:435, cy:160, r:11, color:"#0056A2",
+        desc:{ fr:"Centre-droit conservateur · unioniste fort · 137 sièges (2023)", es:"Centro-derecha conservadora · fuertemente unionista · 137 escaños (2023)" }},
+      { name:"UPN",      cx:468, cy:138, r:6,  color:"#004A9A",
+        desc:{ fr:"Droite navarraise · unioniste · 1 siège (2023)", es:"Derecha navarra · unionista · 1 escaño (2023)" }},
+      { name:"Vox",      cx:532, cy:108, r:10, color:"#63BE21",
+        desc:{ fr:"Extrême droite · ultra-centraliste, veut supprimer les CCAA · 33 sièges (2023)", es:"Extrema derecha · ultracentralista, quiere suprimir las CCAA · 33 escaños (2023)" }},
+      { name:"CC",       cx:418, cy:335, r:7,  color:"#C8960C",
+        desc:{ fr:"Centre-droit · régionalisme canarie (autonomie, pas indépendance) · 4 sièges (2023)", es:"Centro-derecha · regionalismo canario (autonomía, no independencia) · 4 escaños (2023)" }},
+    ],
+    legend:{
+      fr:[ {color:"#E4003A",label:"Izquierda / Social-democracia"},{color:"#6B2B9A",label:"Izquierda radical"},{color:"#FA5000",label:"Centro liberal"},{color:"#0056A2",label:"Derecha conservadora"},{color:"#63BE21",label:"Extrema derecha"},{color:"#C8960C",label:"Regionalismo"} ],
+      es:[ {color:"#E4003A",label:"Izquierda / Socialdemocracia"},{color:"#6B2B9A",label:"Izquierda radical"},{color:"#FA5000",label:"Centro liberal"},{color:"#0056A2",label:"Derecha conservadora"},{color:"#63BE21",label:"Extrema derecha"},{color:"#C8960C",label:"Regionalismo"} ],
+    }
+  },
+  {
+    id: "cataluña",
+    name: { fr: "Catalogne", es: "Cataluña" },
+    subtitle: { fr: "Parlament de Catalunya — partis principaux", es: "Parlament de Catalunya — principales partidos" },
+    parties: [
+      { name:"PSC",     cx:240, cy:190, r:11, color:"#E4003A",
+        desc:{ fr:"Parti des Socialistes de Catalogne · centre-gauche · unioniste fédéraliste (branche catalane du PSOE)", es:"Partido de los Socialistas de Cataluña · centro-izquierda · unionista federalista (rama catalana del PSOE)" }},
+      { name:"ERC",     cx:148, cy:370, r:10, color:"#F4A900",
+        desc:{ fr:"Esquerra Republicana · gauche républicaine · indépendantiste · laïque", es:"Esquerra Republicana de Catalunya · izquierda republicana · independentista · laica" }},
+      { name:"Junts",   cx:390, cy:390, r:9,  color:"#00527F",
+        desc:{ fr:"Junts per Catalunya · droite libérale · indépendantiste · héritier de CiU", es:"Junts per Catalunya · derecha liberal · independentista · heredero de CiU" }},
+      { name:"CUP",     cx:95,  cy:420, r:7,  color:"#FFCC00",
+        desc:{ fr:"Candidatura d'Unitat Popular · extrême gauche · indépendantiste radical · anticapitaliste", es:"Candidatura d'Unitat Popular · extrema izquierda · independentista radical · anticapitalista" }},
+      { name:"PP cat.", cx:435, cy:162, r:8,  color:"#0056A2",
+        desc:{ fr:"PP Catalogne · droite · unioniste fort · hostile au statut d'autonomie élargi", es:"PP Cataluña · derecha · fuertemente unionista · contrario a ampliar el estatuto de autonomía" }},
+      { name:"Vox cat.",cx:530, cy:108, r:7,  color:"#63BE21",
+        desc:{ fr:"Vox Catalogne · extrême droite · ultra-centraliste", es:"Vox Cataluña · extrema derecha · ultracentralista" }},
+      { name:"Comuns",  cx:142, cy:262, r:8,  color:"#A8139E",
+        desc:{ fr:"Catalunya en Comú · gauche verte · fédéraliste / droit à décider (pas clairement indépendantiste)", es:"Catalunya en Comú · izquierda verde · federalista / derecho a decidir (no claramente independentista)" }},
+      { name:"Cs cat.", cx:390, cy:132, r:6,  color:"#FA5000",
+        desc:{ fr:"Ciudadanos Catalogne · centre libéral · unioniste fort (en déclin fort)", es:"Ciudadanos Cataluña · centro liberal · fuertemente unionista (en fuerte declive)" }},
+      { name:"Aliança", cx:455, cy:138, r:6,  color:"#0044AA",
+        desc:{ fr:"Aliança Catalana · droite dure · indépendantiste et identitaire · nouveau parti (2024)", es:"Aliança Catalana · derecha dura · independentista e identitaria · nuevo partido (2024)" }},
+    ],
+    legend:{
+      fr:[ {color:"#E4003A",label:"Social-démocratie (unioniste)"},{color:"#F4A900",label:"Gauche indépendantiste"},{color:"#FFCC00",label:"Extrême gauche indépendantiste"},{color:"#A8139E",label:"Gauche verte / fédéraliste"},{color:"#00527F",label:"Droite indépendantiste"},{color:"#0056A2",label:"Droite unioniste"} ],
+      es:[ {color:"#E4003A",label:"Socialdemocracia (unionista)"},{color:"#F4A900",label:"Izquierda independentista"},{color:"#FFCC00",label:"Extrema izquierda independentista"},{color:"#A8139E",label:"Izquierda verde / federalista"},{color:"#00527F",label:"Derecha independentista"},{color:"#0056A2",label:"Derecha unionista"} ],
+    }
+  },
+  {
+    id: "euskadi",
+    name: { fr: "Pays Basque", es: "País Vasco" },
+    subtitle: { fr: "Eusko Legebiltzarra — partis principaux", es: "Eusko Legebiltzarra — principales partidos" },
+    parties: [
+      { name:"EH Bildu", cx:108, cy:400, r:10, color:"#C8D400",
+        desc:{ fr:"Gauche indépendantiste · héritière d'Herri Batasuna · abertzale de gauche", es:"Izquierda independentista · heredera de Herri Batasuna · izquierda abertzale" }},
+      { name:"EAJ-PNV", cx:370, cy:340, r:11, color:"#009A44",
+        desc:{ fr:"Parti nationaliste basque · centre-droit · nationaliste modéré · autonomiste (non clairement indépendantiste)", es:"Partido Nacionalista Vasco · centro-derecha · nacionalismo moderado · autonomista (no claramente independentista)" }},
+      { name:"PSE-EE",  cx:235, cy:190, r:9,  color:"#E4003A",
+        desc:{ fr:"Socialistes basques (PSOE) · centre-gauche · unioniste fédéraliste", es:"Socialistas vascos (PSOE) · centro-izquierda · unionista federalista" }},
+      { name:"PP Eus.", cx:432, cy:162, r:7,  color:"#0056A2",
+        desc:{ fr:"PP Pays Basque · droite · unioniste fort", es:"PP País Vasco · derecha · fuertemente unionista" }},
+      { name:"Vox Eus.",cx:528, cy:110, r:6,  color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste", es:"Vox · extrema derecha · ultracentralista" }},
+      { name:"Elkarrekin",cx:148,cy:272,r:7,  color:"#A8139E",
+        desc:{ fr:"Podemos Pays Basque · gauche · fédéraliste, soutient droit à décider", es:"Podemos País Vasco · izquierda · federalista, apoya el derecho a decidir" }},
+      { name:"Cs Eus.", cx:385, cy:130, r:5,  color:"#FA5000",
+        desc:{ fr:"Ciudadanos · centre · unioniste (quasi-disparu)", es:"Ciudadanos · centro · unionista (prácticamente desaparecido)" }},
+    ],
+    legend:{
+      fr:[ {color:"#009A44",label:"Nationalisme basque modéré (PNV)"},{color:"#C8D400",label:"Gauche indépendantiste abertzale"},{color:"#E4003A",label:"Social-démocratie unioniste"},{color:"#0056A2",label:"Droite unioniste"} ],
+      es:[ {color:"#009A44",label:"Nacionalismo vasco moderado (PNV)"},{color:"#C8D400",label:"Izquierda independentista abertzale"},{color:"#E4003A",label:"Socialdemocracia unionista"},{color:"#0056A2",label:"Derecha unionista"} ],
+    }
+  },
+  {
+    id: "galicia",
+    name: { fr: "Galice", es: "Galicia" },
+    subtitle: { fr: "Parlamento de Galicia — partis principaux", es: "Parlamento de Galicia — principales partidos" },
+    parties: [
+      { name:"PPdeG",   cx:425, cy:145, r:11, color:"#0056A2",
+        desc:{ fr:"PP Galice · droite · hégémonique en Galice · unioniste, mais valorise identité galicienne", es:"PP Galicia · derecha · hegemónico en Galicia · unionista, aunque reivindica la identidad gallega" }},
+      { name:"BNG",     cx:132, cy:370, r:9,  color:"#3B8A8A",
+        desc:{ fr:"Bloque Nacionalista Galego · gauche nationaliste · indépendantiste / fédéraliste (varie)", es:"Bloque Nacionalista Galego · izquierda nacionalista · independentista / federalista (según el momento)" }},
+      { name:"PSdeG",   cx:235, cy:185, r:8,  color:"#E4003A",
+        desc:{ fr:"Socialistes galiciens (PSOE) · centre-gauche · unioniste fédéraliste", es:"Socialistas gallegos (PSOE) · centro-izquierda · unionista federalista" }},
+      { name:"Sumar Gal",cx:155,cy:268, r:6,  color:"#C0004E",
+        desc:{ fr:"Sumar Galice · gauche · fédéraliste, droit à décider", es:"Sumar Galicia · izquierda · federalista, derecho a decidir" }},
+      { name:"Vox Gal.", cx:528, cy:110, r:6, color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste", es:"Vox · extrema derecha · ultracentralista" }},
+      { name:"Dem. Gal",cx:200, cy:340, r:6,  color:"#7A5C00",
+        desc:{ fr:"Democracia Ourensana · régionalisme local · centre-droite", es:"Democracia Ourensana · regionalismo local · centro-derecha" }},
+    ],
+    legend:{
+      fr:[ {color:"#0056A2",label:"Droite (PP dominant)"},{color:"#3B8A8A",label:"Nationalisme galicien de gauche"},{color:"#E4003A",label:"Social-démocratie unioniste"} ],
+      es:[ {color:"#0056A2",label:"Derecha (PP dominante)"},{color:"#3B8A8A",label:"Nacionalismo gallego de izquierda"},{color:"#E4003A",label:"Socialdemocracia unionista"} ],
+    }
+  },
+  {
+    id: "comunitat_valenciana",
+    name: { fr: "C. Valencienne", es: "C. Valenciana" },
+    subtitle: { fr: "Corts Valencianes — partis principaux", es: "Corts Valencianes — principales partidos" },
+    parties: [
+      { name:"PSPV",    cx:238, cy:188, r:9,  color:"#E4003A",
+        desc:{ fr:"Socialistes valenciens (PSOE) · centre-gauche · unioniste fédéraliste", es:"Socialistas valencianos (PSOE) · centro-izquierda · unionista federalista" }},
+      { name:"PPCV",    cx:432, cy:158, r:11, color:"#0056A2",
+        desc:{ fr:"PP C. Valencienne · droite · unioniste fort · au pouvoir depuis 2023", es:"PP Comunitat Valenciana · derecha · fuertemente unionista · en el poder desde 2023" }},
+      { name:"Vox CV",  cx:530, cy:108, r:8,  color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste", es:"Vox · extrema derecha · ultracentralista" }},
+      { name:"Compromís",cx:155,cy:320, r:9,  color:"#E8820C",
+        desc:{ fr:"Coalition valencianiste · gauche verte · nationalisme valencien modéré · fédéraliste", es:"Coalición valencianista · izquierda verde · nacionalismo valenciano moderado · federalista" }},
+      { name:"Sumar CV",cx:148, cy:265, r:6,  color:"#C0004E",
+        desc:{ fr:"Sumar C. Valencienne · gauche · fédéraliste", es:"Sumar Comunitat Valenciana · izquierda · federalista" }},
+    ],
+    legend:{
+      fr:[ {color:"#E8820C",label:"Nationalisme valencien (Compromís)"},{color:"#E4003A",label:"Social-démocratie"},{color:"#0056A2",label:"Droite unioniste"} ],
+      es:[ {color:"#E8820C",label:"Nacionalismo valenciano (Compromís)"},{color:"#E4003A",label:"Socialdemocracia"},{color:"#0056A2",label:"Derecha unionista"} ],
+    }
+  },
+  {
+    id: "andalucia",
+    name: { fr: "Andalousie", es: "Andalucía" },
+    subtitle: { fr: "Parlamento de Andalucía — partis principaux", es: "Parlamento de Andalucía — principales partidos" },
+    parties: [
+      { name:"PSOE-A",  cx:240, cy:192, r:10, color:"#E4003A",
+        desc:{ fr:"Socialistes andalous · centre-gauche · unioniste. Longtemps hégémonique en Andalousie.", es:"Socialistas andaluces · centro-izquierda · unionista. Largo tiempo hegemónicos en Andalucía." }},
+      { name:"PP-A",    cx:435, cy:155, r:11, color:"#0056A2",
+        desc:{ fr:"PP Andalousie · droite · unioniste · au pouvoir depuis 2018 (Moreno Bonilla)", es:"PP Andalucía · derecha · unionista · en el poder desde 2018 (Moreno Bonilla)" }},
+      { name:"Vox-A",   cx:532, cy:108, r:9,  color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste · fort en Andalousie", es:"Vox · extrema derecha · ultracentralista · fuerte implantación en Andalucía" }},
+      { name:"Por Andalucía", cx:148, cy:268, r:7, color:"#C0004E",
+        desc:{ fr:"Sumar/IU Andalousie · gauche · fédéraliste", es:"Sumar/IU Andalucía · izquierda · federalista" }},
+      { name:"PA",      cx:330, cy:358, r:5,  color:"#009A6E",
+        desc:{ fr:"Partido Andalucista · régionalisme andalou · centre · marginal aujourd'hui", es:"Partido Andalucista · regionalismo andaluz · centro · marginal actualmente" }},
+    ],
+    legend:{
+      fr:[ {color:"#E4003A",label:"Social-démocratie"},{color:"#0056A2",label:"Droite (PP dominant)"},{color:"#63BE21",label:"Extrême droite"},{color:"#009A6E",label:"Régionalisme andalou (marginal)"} ],
+      es:[ {color:"#E4003A",label:"Socialdemocracia"},{color:"#0056A2",label:"Derecha (PP dominante)"},{color:"#63BE21",label:"Extrema derecha"},{color:"#009A6E",label:"Regionalismo andaluz (marginal)"} ],
+    }
+  },
+  {
+    id: "madrid",
+    name: { fr: "Madrid", es: "Madrid" },
+    subtitle: { fr: "Asamblea de Madrid — partis principaux", es: "Asamblea de Madrid — principales partidos" },
+    parties: [
+      { name:"PSOE-M",  cx:240, cy:188, r:9,  color:"#E4003A",
+        desc:{ fr:"Socialistes madrilènes · centre-gauche · unioniste", es:"Socialistas madrileños · centro-izquierda · unionista" }},
+      { name:"PP-M",    cx:435, cy:150, r:12, color:"#0056A2",
+        desc:{ fr:"PP Madrid · droite · unioniste fort · hégémonique (Díaz Ayuso)", es:"PP Madrid · derecha · fuertemente unionista · hegemónico (Díaz Ayuso)" }},
+      { name:"Vox-M",   cx:532, cy:108, r:9,  color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste", es:"Vox · extrema derecha · ultracentralista" }},
+      { name:"Más Madrid", cx:175, cy:210, r:9, color:"#00A86B",
+        desc:{ fr:"Más Madrid · gauche verte · unioniste progressiste · fort à Madrid capitale", es:"Más Madrid · izquierda verde · unionista progresista · fuerte en la capital" }},
+      { name:"Sumar-M", cx:145, cy:265, r:6,  color:"#C0004E",
+        desc:{ fr:"Sumar Madrid · gauche · fédéraliste", es:"Sumar Madrid · izquierda · federalista" }},
+    ],
+    legend:{
+      fr:[ {color:"#00A86B",label:"Gauche verte (Más Madrid)"},{color:"#E4003A",label:"Social-démocratie"},{color:"#0056A2",label:"Droite (PP très dominant)"},{color:"#63BE21",label:"Extrême droite"} ],
+      es:[ {color:"#00A86B",label:"Izquierda verde (Más Madrid)"},{color:"#E4003A",label:"Socialdemocracia"},{color:"#0056A2",label:"Derecha (PP muy dominante)"},{color:"#63BE21",label:"Extrema derecha"} ],
+    }
+  },
+  {
+    id: "navarra",
+    name: { fr: "Navarre", es: "Navarra" },
+    subtitle: { fr: "Parlamento de Navarra — partis principaux", es: "Parlamento de Navarra — principales partidos" },
+    parties: [
+      { name:"PSN",     cx:235, cy:185, r:8,  color:"#E4003A",
+        desc:{ fr:"Socialistes navarrais (PSOE) · centre-gauche · unioniste fédéraliste", es:"Socialistas navarros (PSOE) · centro-izquierda · unionista federalista" }},
+      { name:"UPN",     cx:462, cy:140, r:9,  color:"#0044AA",
+        desc:{ fr:"Unión del Pueblo Navarro · droite · fort unioniste · anti-réunification avec le Pays Basque", es:"Unión del Pueblo Navarro · derecha · fuertemente unionista · contraria a la integración con el País Vasco" }},
+      { name:"EH Bildu Nav.", cx:108, cy:395, r:8, color:"#C8D400",
+        desc:{ fr:"Gauche abertzale · indépendantiste · favorable à la réunification navarro-basque", es:"Izquierda abertzale · independentista · favorable a la integración navarro-vasca" }},
+      { name:"Geroa Bai", cx:222, cy:338, r:7, color:"#E8820C",
+        desc:{ fr:"Centre · nationalisme navarrais modéré · fédéraliste / autonomiste", es:"Centro · nacionalismo navarro moderado · federalista / autonomista" }},
+      { name:"PPN",     cx:435, cy:158, r:7,  color:"#0056A2",
+        desc:{ fr:"PP Navarre · droite · unioniste fort", es:"PP Navarra · derecha · fuertemente unionista" }},
+      { name:"Vox Nav.",cx:530, cy:110, r:6,  color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste", es:"Vox · extrema derecha · ultracentralista" }},
+    ],
+    legend:{
+      fr:[ {color:"#0044AA",label:"Droite navarraise unioniste (UPN)"},{color:"#C8D400",label:"Gauche indépendantiste abertzale"},{color:"#E8820C",label:"Nationalisme navarrais modéré"},{color:"#E4003A",label:"Social-démocratie"} ],
+      es:[ {color:"#0044AA",label:"Derecha navarra unionista (UPN)"},{color:"#C8D400",label:"Izquierda independentista abertzale"},{color:"#E8820C",label:"Nacionalismo navarro moderado"},{color:"#E4003A",label:"Socialdemocracia"} ],
+    }
+  },
+  {
+    id: "aragon",
+    name: { fr: "Aragon", es: "Aragón" },
+    subtitle: { fr: "Cortes de Aragón — partis principaux", es: "Cortes de Aragón — principales partidos" },
+    parties: [
+      { name:"PSOE-Ar.", cx:238, cy:190, r:9,  color:"#E4003A",
+        desc:{ fr:"Socialistes aragonais · centre-gauche · unioniste", es:"Socialistas aragoneses · centro-izquierda · unionista" }},
+      { name:"PP-Ar.",   cx:432, cy:155, r:10, color:"#0056A2",
+        desc:{ fr:"PP Aragon · droite · unioniste · au pouvoir depuis 2023", es:"PP Aragón · derecha · unionista · en el poder desde 2023" }},
+      { name:"Vox-Ar.",  cx:530, cy:108, r:7,  color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste", es:"Vox · extrema derecha · ultracentralista" }},
+      { name:"CHA",      cx:175, cy:348, r:7,  color:"#AA1111",
+        desc:{ fr:"Chunta Aragonesista · gauche · régionalisme aragonais · fédéraliste", es:"Chunta Aragonesista · izquierda · regionalismo aragonés · federalista" }},
+      { name:"PAR",      cx:382, cy:335, r:6,  color:"#DDAA00",
+        desc:{ fr:"Partido Aragonés · centre-droit · régionalisme aragonais modéré", es:"Partido Aragonés · centro-derecha · regionalismo aragonés moderado" }},
+      { name:"Sumar-Ar.",cx:148, cy:265, r:6,  color:"#C0004E",
+        desc:{ fr:"Sumar Aragon · gauche · fédéraliste", es:"Sumar Aragón · izquierda · federalista" }},
+    ],
+    legend:{
+      fr:[ {color:"#AA1111",label:"Régionalisme aragonais de gauche"},{color:"#DDAA00",label:"Régionalisme aragonais modéré"},{color:"#E4003A",label:"Social-démocratie"},{color:"#0056A2",label:"Droite unioniste"} ],
+      es:[ {color:"#AA1111",label:"Regionalismo aragonés de izquierda"},{color:"#DDAA00",label:"Regionalismo aragonés moderado"},{color:"#E4003A",label:"Socialdemocracia"},{color:"#0056A2",label:"Derecha unionista"} ],
+    }
+  },
+  {
+    id: "canarias",
+    name: { fr: "Canaries", es: "Canarias" },
+    subtitle: { fr: "Parlamento de Canarias — partis principaux", es: "Parlamento de Canarias — principales partidos" },
+    parties: [
+      { name:"CC",       cx:415, cy:330, r:9,  color:"#C8960C",
+        desc:{ fr:"Coalición Canaria · centre-droit · régionalisme canarie · autonomiste, non indépendantiste", es:"Coalición Canaria · centro-derecha · regionalismo canario · autonomista, no independentista" }},
+      { name:"PSOE-C",   cx:238, cy:185, r:9,  color:"#E4003A",
+        desc:{ fr:"Socialistes canariens · centre-gauche · unioniste fédéraliste", es:"Socialistas canarios · centro-izquierda · unionista federalista" }},
+      { name:"PP-C",     cx:432, cy:155, r:9,  color:"#0056A2",
+        desc:{ fr:"PP Canaries · droite · unioniste", es:"PP Canarias · derecha · unionista" }},
+      { name:"NC-bc",    cx:162, cy:340, r:7,  color:"#009A6E",
+        desc:{ fr:"Nueva Canarias / Bloque Canarista · gauche · régionalisme de gauche canarie", es:"Nueva Canarias / Bloque Canarista · izquierda · regionalismo de izquierda canario" }},
+      { name:"Vox-C",    cx:530, cy:110, r:6,  color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste", es:"Vox · extrema derecha · ultracentralista" }},
+      { name:"Sumar-C",  cx:148, cy:268, r:6,  color:"#C0004E",
+        desc:{ fr:"Sumar Canaries · gauche · fédéraliste", es:"Sumar Canarias · izquierda · federalista" }},
+    ],
+    legend:{
+      fr:[ {color:"#C8960C",label:"Régionalisme canarie (CC)"},{color:"#009A6E",label:"Régionalisme de gauche canarie"},{color:"#E4003A",label:"Social-démocratie"},{color:"#0056A2",label:"Droite unioniste"} ],
+      es:[ {color:"#C8960C",label:"Regionalismo canario (CC)"},{color:"#009A6E",label:"Regionalismo de izquierda canario"},{color:"#E4003A",label:"Socialdemocracia"},{color:"#0056A2",label:"Derecha unionista"} ],
+    }
+  },
+  {
+    id: "castilla_leon",
+    name: { fr: "Castille-León", es: "Castilla y León" },
+    subtitle: { fr: "Cortes de Castilla y León — partis principaux", es: "Cortes de Castilla y León — principales partidos" },
+    parties: [
+      { name:"PP-CL",   cx:435, cy:152, r:12, color:"#0056A2",
+        desc:{ fr:"PP Castille-León · droite · hégémonique · unioniste fort", es:"PP Castilla y León · derecha · hegemónico · fuertemente unionista" }},
+      { name:"PSOE-CL", cx:238, cy:188, r:8,  color:"#E4003A",
+        desc:{ fr:"Socialistes · centre-gauche · unioniste", es:"Socialistas · centro-izquierda · unionista" }},
+      { name:"Vox-CL",  cx:532, cy:108, r:8,  color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste · partenaire de coalit. PP en CL", es:"Vox · extrema derecha · ultracentralista · socio de gobierno del PP en CyL" }},
+      { name:"Soria ¡Ya!", cx:295, cy:348, r:6, color:"#8B4A00",
+        desc:{ fr:"Mouvement régionaliste de Soria · anti-abandon rural · apolitique / transversal", es:"Movimiento regionalista soriano · contra el despoblamiento rural · transversal / apartidista" }},
+      { name:"Por CL",  cx:148, cy:265, r:6,  color:"#C0004E",
+        desc:{ fr:"Sumar/IU Castille-León · gauche · fédéraliste", es:"Sumar/IU Castilla y León · izquierda · federalista" }},
+    ],
+    legend:{
+      fr:[ {color:"#0056A2",label:"Droite (PP très dominant)"},{color:"#63BE21",label:"Extrême droite (Vox en coalition)"},{color:"#8B4A00",label:"Régionalisme rural (Soria ¡Ya!)"} ],
+      es:[ {color:"#0056A2",label:"Derecha (PP muy dominante)"},{color:"#63BE21",label:"Extrema derecha (Vox en coalición)"},{color:"#8B4A00",label:"Regionalismo rural (Soria ¡Ya!)"} ],
+    }
+  },
+  {
+    id: "baleares",
+    name: { fr: "Baléares", es: "Baleares" },
+    subtitle: { fr: "Parlament de les Illes Balears — partis principaux", es: "Parlament de les Illes Balears — principales partidos" },
+    parties: [
+      { name:"PP-IB",   cx:432, cy:155, r:10, color:"#0056A2",
+        desc:{ fr:"PP Baléares · droite · unioniste · au pouvoir depuis 2023", es:"PP Baleares · derecha · unionista · en el poder desde 2023" }},
+      { name:"PSOE-IB", cx:238, cy:188, r:8,  color:"#E4003A",
+        desc:{ fr:"Socialistes des Baléares · centre-gauche · unioniste fédéraliste", es:"Socialistas de Baleares · centro-izquierda · unionista federalista" }},
+      { name:"Vox-IB",  cx:530, cy:108, r:6,  color:"#63BE21",
+        desc:{ fr:"Vox · extrême droite · ultra-centraliste", es:"Vox · extrema derecha · ultracentralista" }},
+      { name:"MÉS per Mallorca", cx:148, cy:352, r:8, color:"#009A44",
+        desc:{ fr:"Gauche verte · nationalisme des îles · fédéraliste / pro-autodétermination", es:"Izquierda verde · nacionalismo de las islas · federalista / pro-autodeterminación" }},
+      { name:"El PI",   cx:380, cy:335, r:6,  color:"#DDAA00",
+        desc:{ fr:"El Pi · centre · régionalisme baléare modéré · autonomiste", es:"El Pi · centro · regionalismo balear moderado · autonomista" }},
+    ],
+    legend:{
+      fr:[ {color:"#009A44",label:"Nationalisme des îles (MÉS)"},{color:"#DDAA00",label:"Régionalisme modéré (El Pi)"},{color:"#E4003A",label:"Social-démocratie"},{color:"#0056A2",label:"Droite unioniste"} ],
+      es:[ {color:"#009A44",label:"Nacionalismo insular (MÉS)"},{color:"#DDAA00",label:"Regionalismo moderado (El Pi)"},{color:"#E4003A",label:"Socialdemocracia"},{color:"#0056A2",label:"Derecha unionista"} ],
+    }
+  },
+];
+
+// ─── BUILD NAV & PANELS ───────────────────────────────────────────────────────
+
+const navEl = document.getElementById('nav');
+const mainEl = document.getElementById('main');
+
+CCAA.forEach((region, i) => {
+  const btn = document.createElement('button');
+  btn.className = i === 0 ? 'active' : '';
+  btn.setAttribute('data-i', i);
+  btn.onclick = () => switchTo(i);
+  navEl.appendChild(btn);
+
+  const panel = document.createElement('div');
+  panel.className = 'panel' + (i === 0 ? ' active' : '');
+  panel.id = 'panel-' + i;
+  panel.setAttribute('data-i', i);
+  mainEl.appendChild(panel);
+});
+
+function buildPanel(i) {
+  const region = CCAA[i];
+  const panel = document.getElementById('panel-' + i);
+  const leg = region.legend[lang].map(l => `
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${l.color}"></div>
+      <span>${l.label}</span>
+    </div>`).join('');
+  panel.innerHTML = `
+    <div class="matrix-wrap">
+      <div class="matrix-header">
+        <div class="matrix-title">${region.name[lang]}</div>
+        <div class="matrix-subtitle">${region.subtitle[lang]}</div>
+      </div>
+      ${buildSVG(region.parties)}
+      <div class="legend">${leg}</div>
+      <p class="note">${T[lang].note}</p>
+    </div>`;
+}
+
+function rebuildAll() {
+  // Update header
+  document.getElementById('h-title').innerHTML = T[lang].title;
+  document.getElementById('h-sub').innerHTML = T[lang].subtitle;
+  // Update nav buttons
+  document.querySelectorAll('#nav button').forEach((b, i) => {
+    b.textContent = CCAA[i].name[lang];
+  });
+  // Rebuild all panels
+  CCAA.forEach((_, i) => buildPanel(i));
+  // Reapply active state
+  const active = document.querySelector('.panel.active');
+  if (active) {
+    const i = parseInt(active.getAttribute('data-i'));
+    switchTo(i);
+  }
+}
+
+function switchTo(i) {
+  document.querySelectorAll('#nav button').forEach((b,j) => b.className = j===i?'active':'');
+  document.querySelectorAll('.panel').forEach((p,j) => p.className = 'panel'+(j===i?' active':''));
+}
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
+  const activePanel = document.querySelector('.panel.active');
+  const activeIndex = activePanel ? parseInt(activePanel.getAttribute('data-i')) : 0;
+  rebuildAll();
+  switchTo(activeIndex);
+}
+
+// Initial render
+rebuildAll();
+switchTo(0);
+
+// ─── SVG BUILDER ─────────────────────────────────────────────────────────────
+
+function buildSVG(parties) {
+  const H = 480;
+  const t = T[lang];
+  let dots = parties.map(p => {
+    const lx = p.cx < 326 ? p.cx + p.r + 5 : p.cx - p.r - 5;
+    const anchor = p.cx < 326 ? 'start' : 'end';
+    const ly = p.cy < 60 ? p.cy + p.r + 14 : p.cy - p.r - 6;
+    const descEsc = p.desc[lang].replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    const nameEsc = p.name.replace(/'/g,"\\'");
+    return `
+    <g style="cursor:pointer" onmouseenter="showTip(event,'${nameEsc}','${descEsc}')" onmouseleave="hideTip()">
+      <circle cx="${p.cx}" cy="${p.cy}" r="${p.r}" fill="${p.color}" opacity="0.92"/>
+      <text x="${lx}" y="${ly}" text-anchor="${anchor}" font-size="11" font-weight="500" fill="${p.color}" font-family="'DM Sans',sans-serif">${p.name}</text>
+    </g>`;
+  }).join('');
+
+  return `<svg class="matrix" viewBox="0 0 680 ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="aw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect x="70" y="40" width="256" height="215" fill="#3B8BD4" opacity="0.04" rx="4"/>
+  <rect x="326" y="40" width="274" height="215" fill="#C8392B" opacity="0.04" rx="4"/>
+  <rect x="70" y="255" width="256" height="190" fill="#3B8BD4" opacity="0.08" rx="4"/>
+  <rect x="326" y="255" width="274" height="190" fill="#C8392B" opacity="0.02" rx="4"/>
+  <line x1="198" y1="40" x2="198" y2="445" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>
+  <line x1="464" y1="40" x2="464" y2="445" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>
+  <line x1="70" y1="145" x2="600" y2="145" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>
+  <line x1="70" y1="360" x2="600" y2="360" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>
+  <line x1="70" y1="255" x2="600" y2="255" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>
+  <line x1="326" y1="40" x2="326" y2="455" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>
+  <text x="78" y="249" font-size="11" fill="#888" font-family="'DM Sans',sans-serif">${t.axLeft}</text>
+  <text x="592" y="249" text-anchor="end" font-size="11" fill="#888" font-family="'DM Sans',sans-serif">${t.axRight}</text>
+  <text x="326" y="32" text-anchor="middle" font-size="11" fill="#888" font-family="'DM Sans',sans-serif">${t.axUp}</text>
+  <text x="326" y="468" text-anchor="middle" font-size="11" fill="#888" font-family="'DM Sans',sans-serif">${t.axDown}</text>
+  ${dots}
+</svg>`;
+}
+
+// ─── TOOLTIP ─────────────────────────────────────────────────────────────────
+
+function showTip(e, name, desc) {
+  const t = document.getElementById('tip');
+  t.innerHTML = '<strong>' + name + '</strong>' + desc;
+  t.style.display = 'block';
+  t.style.left = (e.clientX + 14) + 'px';
+  t.style.top = (e.clientY - 10) + 'px';
+}
+function hideTip() {
+  document.getElementById('tip').style.display = 'none';
+}
+document.addEventListener('mousemove', e => {
+  const t = document.getElementById('tip');
+  if (t.style.display === 'block') {
+    t.style.left = (e.clientX + 14) + 'px';
+    t.style.top = (e.clientY - 10) + 'px';
+  }
+});
+</script>
+</body>
+</html>
