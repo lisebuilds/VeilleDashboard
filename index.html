@@ -62,61 +62,33 @@
   .swipe-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.2s, transform 0.2s; }
   .swipe-dot.active { background: var(--accent); transform: scale(1.4); }
   #swipe-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); padding: 0.4rem 0.6rem; }
-  /* Next elections panel */
-  .elections-panel {
-    width: 190px;
+  /* Elections inline badge */
+  .elections-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
     flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding-left: 0.9rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    border-left: 1px solid var(--border);
-    justify-content: flex-start;
   }
-  .elections-panel-title {
+  .elections-inline-label {
     font-size: 0.6rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.4rem;
   }
-  .elections-date {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.88rem;
-    font-weight: 600;
+  .elections-inline-date {
+    font-size: 0.68rem;
+    font-weight: 500;
     color: var(--accent);
-    margin-bottom: 0.15rem;
-    line-height: 1.2;
   }
-  .elections-note {
-    font-size: 0.62rem;
+  .elections-inline-note {
+    font-size: 0.6rem;
     color: var(--muted);
-    line-height: 1.4;
   }
-  .elections-divider {
-    width: 24px;
-    height: 1px;
-    background: var(--border);
-    margin: 0.5rem 0;
-  }
-  @media (max-width: 900px) { .elections-panel { width: 160px; } }
-  @media (max-width: 700px) {
-    .elections-panel { width: 100%; padding-left: 0; padding-top: 0.6rem; border-top: 1px solid var(--border); margin-top: 0.4rem; }
-  }
-
-  /* Desktop: matrix + elections side by side */
-  .matrix-with-elections {
-    flex: 1;
-    display: flex;
-    min-height: 0;
-    gap: 0;
-  }
-  .matrix-with-elections svg.matrix { flex: 1; min-width: 0; }
-  @media (max-width: 700px) {
-    .matrix-with-elections { flex-direction: column; }
+  .elections-inline-sep {
+    font-size: 0.6rem;
+    color: var(--border);
   }
 
     #drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 50; opacity: 0; transition: opacity 0.25s; }
@@ -256,10 +228,8 @@ function buildPanel(i) {
     '<div class="matrix-wrap">' +
     '<div class="matrix-header"><div class="matrix-title">' + region.name[lang] + '</div>' +
     '<div class="matrix-subtitle">' + region.subtitle[lang] + '</div></div>' +
-    '<div class="matrix-with-elections">' +
-    buildSVG(region.parties) +
     buildElectionsPanel(region) +
-    '</div>' +
+    buildSVG(region.parties) +
     '<div class="legend">' + leg + '</div>' +
     '<p class="note">' + T[lang].note + '</p></div>';
 }
@@ -391,11 +361,11 @@ function buildSwipePanel(i) {
     return '<div class="legend-item"><div class="legend-dot" style="background:' + l.color + '"></div><span>' + l.label + '</span></div>';
   }).join('');
   panel.innerHTML =
-    '<div class="matrix-wrap" style="flex:1;display:flex;flex-direction:column;overflow:auto;">' +
-    '<div class="matrix-subtitle" style="flex-shrink:0;margin-bottom:0.25rem;">' + region.subtitle[lang] + '</div>' +
+    '<div class="matrix-wrap" style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;">' +
+    '<div class="matrix-subtitle" style="flex-shrink:0;margin-bottom:0.1rem;">' + region.subtitle[lang] + '</div>' +
+    buildElectionsPanel(region) +
     buildMobileSVG(region.parties) +
     '<div class="legend" style="flex-shrink:0;">' + leg + '</div>' +
-    buildElectionsPanel(region) +
     '</div>';
 }
 
@@ -497,13 +467,15 @@ function buildElectionsPanel(region) {
   if (!region.nextElection) return '';
   var el = region.nextElection[lang];
   var isPast = el.date.indexOf('passées') !== -1 || el.date.indexOf('celebradas') !== -1;
-  var titleFr = isPast ? 'Dernières élections' : 'Prochaines élections';
-  var titleEs = isPast ? 'Últimas elecciones' : 'Próximas elecciones';
-  var title = lang === 'fr' ? titleFr : titleEs;
-  return '<div class="elections-panel">' +
-    '<div class="elections-panel-title">' + title + '</div>' +
-    '<div class="elections-date">' + el.date + '</div>' +
-    '<div class="elections-note">' + el.note + '</div>' +
+  var labelFr = isPast ? 'Dernières élections' : 'Prochaines élections';
+  var labelEs = isPast ? 'Últimas elecciones' : 'Próximas elecciones';
+  var label = lang === 'fr' ? labelFr : labelEs;
+  return '<div class="elections-inline">' +
+    '<span class="elections-inline-label">' + label + '</span>' +
+    '<span class="elections-inline-sep">·</span>' +
+    '<span class="elections-inline-date">' + el.date + '</span>' +
+    '<span class="elections-inline-sep">–</span>' +
+    '<span class="elections-inline-note">' + el.note + '</span>' +
     '</div>';
 }
 
