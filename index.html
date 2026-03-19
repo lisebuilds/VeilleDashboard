@@ -64,13 +64,16 @@
   #swipe-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); padding: 0.4rem 0.6rem; }
   /* Next elections panel */
   .elections-panel {
-    width: 200px;
+    width: 190px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     gap: 0;
-    padding-left: 0.8rem;
-    justify-content: center;
+    padding-left: 0.9rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-left: 1px solid var(--border);
+    justify-content: flex-start;
   }
   .elections-panel-title {
     font-size: 0.6rem;
@@ -111,7 +114,7 @@
     min-height: 0;
     gap: 0;
   }
-  .matrix-with-elections svg.matrix { flex: 1; }
+  .matrix-with-elections svg.matrix { flex: 1; min-width: 0; }
   @media (max-width: 700px) {
     .matrix-with-elections { flex-direction: column; }
   }
@@ -388,7 +391,7 @@ function buildSwipePanel(i) {
     return '<div class="legend-item"><div class="legend-dot" style="background:' + l.color + '"></div><span>' + l.label + '</span></div>';
   }).join('');
   panel.innerHTML =
-    '<div class="matrix-wrap" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">' +
+    '<div class="matrix-wrap" style="flex:1;display:flex;flex-direction:column;overflow:auto;">' +
     '<div class="matrix-subtitle" style="flex-shrink:0;margin-bottom:0.25rem;">' + region.subtitle[lang] + '</div>' +
     buildMobileSVG(region.parties) +
     '<div class="legend" style="flex-shrink:0;">' + leg + '</div>' +
