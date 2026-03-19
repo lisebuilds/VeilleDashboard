@@ -16,184 +16,34 @@
     --shadow: 0 1px 3px rgba(0,0,0,0.08);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html, body { height: 100%; overflow: hidden; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-  }
-
-  header {
-    background: var(--text);
-    color: #F7F5F0;
-    padding: 0.55rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-shrink: 0;
-  }
-  header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-  }
-  header p {
-    font-size: 0.68rem;
-    opacity: 0.45;
-    text-align: right;
-    line-height: 1.4;
-    max-width: 300px;
-  }
-
-  nav {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 1.2rem;
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: none;
-    flex-shrink: 0;
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; }
+  header { background: var(--text); color: #F7F5F0; padding: 0.55rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-shrink: 0; }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; white-space: nowrap; }
+  header p { font-size: 0.68rem; opacity: 0.45; text-align: right; line-height: 1.4; max-width: 300px; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.2rem; display: flex; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
   nav::-webkit-scrollbar { display: none; }
-  nav button {
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 0.45rem 0.65rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--muted);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.15s;
-    letter-spacing: 0.02em;
-  }
+  nav button { background: none; border: none; border-bottom: 2px solid transparent; padding: 0.45rem 0.65rem; font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 500; color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.15s; letter-spacing: 0.02em; }
   nav button:hover { color: var(--text); }
   nav button.active { color: var(--text); border-bottom-color: var(--accent); }
-
-  main {
-    flex: 1;
-    overflow: hidden;
-    padding: 0.6rem 1rem 0.5rem;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
+  main { flex: 1; overflow: hidden; padding: 0.6rem 1rem 0.5rem; display: flex; flex-direction: column; min-height: 0; }
   .panel { display: none; flex: 1; flex-direction: column; min-height: 0; }
   .panel.active { display: flex; }
-
-  .matrix-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.65rem 1rem 0.55rem;
-    box-shadow: var(--shadow);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-  .matrix-header {
-    display: flex;
-    align-items: baseline;
-    gap: 0.7rem;
-    margin-bottom: 0.25rem;
-    flex-shrink: 0;
-  }
-  .matrix-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-  .matrix-subtitle {
-    font-size: 0.66rem;
-    color: var(--muted);
-  }
-
-  svg.matrix {
-    width: 100%;
-    flex: 1;
-    min-height: 0;
-    display: block;
-  }
-
-  .tooltip {
-    position: fixed;
-    background: var(--text);
-    color: #F7F5F0;
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 0.75rem;
-    line-height: 1.6;
-    pointer-events: none;
-    display: none;
-    z-index: 100;
-    max-width: 260px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-  }
-  .tooltip strong { font-size: 0.85rem; display: block; margin-bottom: 3px; }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 12px;
-    margin-top: 0.35rem;
-    padding-top: 0.35rem;
-    border-top: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.68rem;
-    color: var(--muted);
-  }
+  .matrix-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.65rem 1rem 0.55rem; box-shadow: var(--shadow); flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .matrix-header { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 0.25rem; flex-shrink: 0; }
+  .matrix-title { font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 600; }
+  .matrix-subtitle { font-size: 0.66rem; color: var(--muted); }
+  svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
+  .tooltip { position: fixed; background: var(--text); color: #F7F5F0; border-radius: 8px; padding: 10px 14px; font-size: 0.75rem; line-height: 1.6; pointer-events: none; display: none; z-index: 100; max-width: 260px; box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 0.35rem; padding-top: 0.35rem; border-top: 1px solid var(--border); flex-shrink: 0; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--muted); }
   .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-
-  .note {
-    font-size: 0.65rem;
-    color: var(--muted);
-    margin-top: 0.35rem;
-    font-style: italic;
-    line-height: 1.5;
-    flex-shrink: 0;
-  }
-
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .lang-switcher {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
-  .lang-btn {
-    background: transparent;
-    border: 1px solid rgba(247,245,240,0.25);
-    color: rgba(247,245,240,0.6);
-    border-radius: 4px;
-    padding: 4px 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 500;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-    transition: all 0.15s;
-  }
+  .note { font-size: 0.65rem; color: var(--muted); margin-top: 0.35rem; font-style: italic; line-height: 1.5; flex-shrink: 0; }
+  .lang-switcher { display: flex; gap: 6px; align-items: center; }
+  .lang-btn { background: transparent; border: 1px solid rgba(247,245,240,0.25); color: rgba(247,245,240,0.6); border-radius: 4px; padding: 4px 10px; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 500; cursor: pointer; letter-spacing: 0.05em; transition: all 0.15s; }
   .lang-btn:hover { border-color: rgba(247,245,240,0.6); color: rgba(247,245,240,0.9); }
   .lang-btn.active { background: rgba(247,245,240,0.15); border-color: rgba(247,245,240,0.6); color: #F7F5F0; }
-
   @media (max-width: 700px) {
-    /* Reset desktop layout completely on mobile */
     html, body { height: 100dvh; overflow: hidden; }
     header { flex-direction: row; align-items: center; padding: 0.5rem 1rem; flex-shrink: 0; }
     header p { display: none; }
@@ -203,56 +53,36 @@
     .note { display: none; }
     .legend { gap: 3px 8px; }
   }
-
-  /* default hidden, shown on mobile */
   #swipe-container { display: none; flex-direction: column; touch-action: pan-y; flex: 1; min-height: 0; overflow: hidden; }
   @media (max-width: 700px) { #swipe-container { display: flex !important; } }
-
   .swipe-region-bar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0.55rem 0.75rem; flex-shrink: 0; }
   .swipe-region-bar button { background: none; border: none; font-size: 1.6rem; color: var(--muted); cursor: pointer; padding: 0 0.6rem; line-height: 1; }
   #swipe-region-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; text-align: center; flex: 1; }
-
   #swipe-dots { display: flex; justify-content: center; gap: 4px; padding: 0.2rem 0; flex-shrink: 0; background: var(--bg); }
   .swipe-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.2s, transform 0.2s; }
   .swipe-dot.active { background: var(--accent); transform: scale(1.4); }
-
-  #swipe-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); padding: 0.4rem 0.6rem 0.4rem; }
-
+  #swipe-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); padding: 0.4rem 0.6rem; }
   #drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 50; opacity: 0; transition: opacity 0.25s; }
   #drawer-overlay.open { opacity: 1; }
   #drawer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-radius: 20px 20px 0 0; padding: 0 1.4rem 2.5rem; z-index: 51; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1); max-height: 65vh; overflow-y: auto; }
   #drawer.open { transform: translateY(0); }
-  #drawer-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 10px auto 14px; }
-  #drawer-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 0.25rem; }
-  #drawer-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
-  #drawer-leader { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.5rem; font-style: italic; }
-  #drawer-desc { font-size: 0.85rem; color: var(--text); line-height: 1.7; }
-  #drawer-tags { margin-top: 0.9rem; display: flex; gap: 0.4rem; flex-wrap: wrap; }
   .dtag { font-size: 0.72rem; padding: 4px 11px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
 </style>
 </head>
 <body>
 
 <div id="tip" class="tooltip"></div>
-
-<!-- MOBILE DRAWER -->
 <div id="drawer-overlay" onclick="closeDrawer()"></div>
-<div id="drawer">
-  <div id="drawer-handle"></div>
-  <div id="drawer-title"><div id="drawer-dot"></div><span id="drawer-name"></span></div>
-  <div id="drawer-leader" style="font-size:0.78rem;color:var(--muted);margin-bottom:0.4rem;margin-top:-0.1rem;"></div>
-  <div id="drawer-desc"></div>
-  <div id="drawer-tags"></div>
-</div>
+<div id="drawer"></div>
 
 <header>
   <h1 id="h-title">Partis politiques<br>espagnols</h1>
-  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;">
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
     <div class="lang-switcher">
       <button class="lang-btn active" onclick="setLang('fr')">FR</button>
       <button class="lang-btn" onclick="setLang('es')">ES</button>
     </div>
-    <p id="h-sub">Positionnement sur les axes gauche/droite et unioniste/indépendantiste.<br>Survoler un parti pour les détails.</p>
+    <p id="h-sub">Positionnement sur les axes gauche/droite et unioniste/indépendantiste. Survoler un parti pour les détails.</p>
   </div>
 </header>
 
@@ -272,8 +102,6 @@
 
 <script src="data.js"></script>
 <script>
-// ─── TRANSLATIONS ─────────────────────────────────────────────────────────────
-
 const isMobile = () => window.innerWidth <= 700;
 
 const T = {
@@ -295,23 +123,18 @@ const T = {
 
 let lang = 'fr';
 
-// ─── DATA ────────────────────────────────────────────────────────────────────
-
-// CCAA data loaded from data.js
-
-// ─── BUILD NAV & PANELS ───────────────────────────────────────────────────────
+// ── NAV & PANELS ──────────────────────────────────────────────────────────────
 
 const navEl = document.getElementById('nav');
 const mainEl = document.getElementById('main');
 
-CCAA.forEach((region, i) => {
-  const btn = document.createElement('button');
+CCAA.forEach(function(region, i) {
+  var btn = document.createElement('button');
   btn.className = i === 0 ? 'active' : '';
   btn.setAttribute('data-i', i);
-  btn.onclick = () => switchTo(i);
+  btn.onclick = function() { switchTo(i); };
   navEl.appendChild(btn);
-
-  const panel = document.createElement('div');
+  var panel = document.createElement('div');
   panel.className = 'panel' + (i === 0 ? ' active' : '');
   panel.id = 'panel-' + i;
   panel.setAttribute('data-i', i);
@@ -319,189 +142,172 @@ CCAA.forEach((region, i) => {
 });
 
 function buildPanel(i) {
-  const region = CCAA[i];
-  const panel = document.getElementById('panel-' + i);
-  const leg = region.legend[lang].map(l => `
-    <div class="legend-item">
-      <div class="legend-dot" style="background:${l.color}"></div>
-      <span>${l.label}</span>
-    </div>`).join('');
-  panel.innerHTML = `
-    <div class="matrix-wrap">
-      <div class="matrix-header">
-        <div class="matrix-title">${region.name[lang]}</div>
-        <div class="matrix-subtitle">${region.subtitle[lang]}</div>
-      </div>
-      ${buildSVG(region.parties)}
-      <div class="legend">${leg}</div>
-      <p class="note">${T[lang].note}</p>
-    </div>`;
+  var region = CCAA[i];
+  var panel = document.getElementById('panel-' + i);
+  var leg = region.legend[lang].map(function(l) {
+    return '<div class="legend-item"><div class="legend-dot" style="background:' + l.color + '"></div><span>' + l.label + '</span></div>';
+  }).join('');
+  panel.innerHTML =
+    '<div class="matrix-wrap">' +
+    '<div class="matrix-header"><div class="matrix-title">' + region.name[lang] + '</div>' +
+    '<div class="matrix-subtitle">' + region.subtitle[lang] + '</div></div>' +
+    buildSVG(region.parties) +
+    '<div class="legend">' + leg + '</div>' +
+    '<p class="note">' + T[lang].note + '</p></div>';
 }
 
 function rebuildAll() {
   document.getElementById('h-title').innerHTML = T[lang].title;
   document.getElementById('h-sub').innerHTML = T[lang].subtitle;
-  document.querySelectorAll('#nav button').forEach((b, i) => {
+  document.querySelectorAll('#nav button').forEach(function(b, i) {
     b.textContent = CCAA[i].name[lang];
   });
-  CCAA.forEach((_, i) => buildPanel(i));
-  const active = document.querySelector('.panel.active');
-  if (active) {
-    const i = parseInt(active.getAttribute('data-i'));
-    switchTo(i);
-  }
+  CCAA.forEach(function(_, i) { buildPanel(i); });
+  var active = document.querySelector('.panel.active');
+  if (active) switchTo(parseInt(active.getAttribute('data-i')));
 }
 
 function switchTo(i) {
-  document.querySelectorAll('#nav button').forEach((b,j) => b.className = j===i?'active':'');
-  document.querySelectorAll('.panel').forEach((p,j) => p.className = 'panel'+(j===i?' active':''));
+  document.querySelectorAll('#nav button').forEach(function(b,j) { b.className = j===i?'active':''; });
+  document.querySelectorAll('.panel').forEach(function(p,j) { p.className = 'panel'+(j===i?' active':''); });
 }
 
 function setLang(l) {
   lang = l;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
-  const activePanel = document.querySelector('.panel.active');
-  const activeIndex = activePanel ? parseInt(activePanel.getAttribute('data-i')) : 0;
+  document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.textContent === l.toUpperCase()); });
+  var activePanel = document.querySelector('.panel.active');
+  var activeIndex = activePanel ? parseInt(activePanel.getAttribute('data-i')) : 0;
   rebuildAll();
   switchTo(activeIndex);
-  if (typeof buildSwipePanel === 'function') buildSwipePanel(currentRegion);
+  buildSwipePanel(currentRegion);
 }
 
-// Initial render
 rebuildAll();
 switchTo(0);
 
-// ─── SVG BUILDER ─────────────────────────────────────────────────────────────
+// ── SVG BUILDER ───────────────────────────────────────────────────────────────
 
 function buildSVG(parties) {
-  const H = 480;
-  const t = T[lang];
-  let dots = parties.map(p => {
-    const lx = p.cx < 326 ? p.cx + p.r + 5 : p.cx - p.r - 5;
-    const anchor = p.cx < 326 ? 'start' : 'end';
-    const ly = p.cy < 60 ? p.cy + p.r + 14 : p.cy - p.r - 6;
-    const descEsc = p.desc[lang].replace(/'/g,"\\'").replace(/"/g,'&quot;');
-    const nameEsc = p.name.replace(/'/g,"\\'");
-    const photoEsc = (p.photo||'');
-    const leaderEsc = (p.leader||'').replace(/'/g,"\\'");
-    return `
-    <g style="cursor:pointer" onmouseenter="showTip(event,'${nameEsc}','${leaderEsc}',${p.seats||0},'${photoEsc}','${p.color}','${descEsc}')" onmouseleave="hideTip()">
-      <circle cx="${p.cx}" cy="${p.cy}" r="${p.r}" fill="${p.color}" opacity="0.92"/>
-      <text x="${lx}" y="${ly}" text-anchor="${anchor}" font-size="11" font-weight="500" fill="${p.color}" font-family="'DM Sans',sans-serif">${p.name}</text>
-    </g>`;
+  var t = T[lang];
+  var dots = parties.map(function(p) {
+    var lx = p.cx < 326 ? p.cx + p.r + 5 : p.cx - p.r - 5;
+    var anchor = p.cx < 326 ? 'start' : 'end';
+    var ly = p.cy < 60 ? p.cy + p.r + 14 : p.cy - p.r - 6;
+    var dEsc = p.desc[lang].replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    var nEsc = p.name.replace(/'/g,"\\'");
+    var lEsc = (p.leader||'').replace(/'/g,"\\'");
+    var ph = (p.photo||'').replace(/'/g,"\\'");
+    var s = p.seats||0;
+    var col = p.color;
+    return '<g style="cursor:pointer" onmouseenter="showTip(event,\'' + nEsc + '\',\'' + lEsc + '\',' + s + ',\'' + ph + '\',\'' + col + '\',\'' + dEsc + '\')" onmouseleave="hideTip()">' +
+      '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + p.r + '" fill="' + p.color + '" opacity="0.92"/>' +
+      '<text x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '" font-size="11" font-weight="500" fill="' + p.color + '" font-family="DM Sans,sans-serif">' + p.name + '</text>' +
+      '</g>';
   }).join('');
 
-  return `<svg class="matrix" viewBox="0 0 680 ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <marker id="aw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </marker>
-  </defs>
-  <rect x="70" y="40" width="256" height="215" fill="#3B8BD4" opacity="0.04" rx="4"/>
-  <rect x="326" y="40" width="274" height="215" fill="#C8392B" opacity="0.04" rx="4"/>
-  <rect x="70" y="255" width="256" height="190" fill="#3B8BD4" opacity="0.08" rx="4"/>
-  <rect x="326" y="255" width="274" height="190" fill="#C8392B" opacity="0.02" rx="4"/>
-  <line x1="198" y1="40" x2="198" y2="445" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>
-  <line x1="464" y1="40" x2="464" y2="445" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>
-  <line x1="70" y1="145" x2="600" y2="145" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>
-  <line x1="70" y1="360" x2="600" y2="360" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>
-  <line x1="70" y1="255" x2="600" y2="255" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>
-  <line x1="326" y1="40" x2="326" y2="455" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>
-  <text x="78" y="249" font-size="11" fill="#888" font-family="'DM Sans',sans-serif">${t.axLeft}</text>
-  <text x="592" y="249" text-anchor="end" font-size="11" fill="#888" font-family="'DM Sans',sans-serif">${t.axRight}</text>
-  <text x="326" y="32" text-anchor="middle" font-size="11" fill="#888" font-family="'DM Sans',sans-serif">${t.axUp}</text>
-  <text x="326" y="468" text-anchor="middle" font-size="11" fill="#888" font-family="'DM Sans',sans-serif">${t.axDown}</text>
-  ${dots}
-</svg>`;
+  return '<svg class="matrix" viewBox="0 0 680 480" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">' +
+    '<defs><marker id="aw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
+    '<rect x="70" y="40" width="256" height="215" fill="#3B8BD4" opacity="0.04" rx="4"/>' +
+    '<rect x="326" y="40" width="274" height="215" fill="#C8392B" opacity="0.04" rx="4"/>' +
+    '<rect x="70" y="255" width="256" height="190" fill="#3B8BD4" opacity="0.08" rx="4"/>' +
+    '<rect x="326" y="255" width="274" height="190" fill="#C8392B" opacity="0.02" rx="4"/>' +
+    '<line x1="198" y1="40" x2="198" y2="445" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>' +
+    '<line x1="464" y1="40" x2="464" y2="445" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>' +
+    '<line x1="70" y1="145" x2="600" y2="145" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>' +
+    '<line x1="70" y1="360" x2="600" y2="360" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>' +
+    '<line x1="70" y1="255" x2="600" y2="255" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>' +
+    '<line x1="326" y1="40" x2="326" y2="455" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>' +
+    '<text x="78" y="249" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axLeft + '</text>' +
+    '<text x="592" y="249" text-anchor="end" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axRight + '</text>' +
+    '<text x="326" y="32" text-anchor="middle" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axUp + '</text>' +
+    '<text x="326" y="468" text-anchor="middle" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axDown + '</text>' +
+    dots + '</svg>';
 }
 
-// ─── TOOLTIP ─────────────────────────────────────────────────────────────────
+// ── TOOLTIP ───────────────────────────────────────────────────────────────────
+
+function avatarHtml(photo, color, name, size) {
+  var initials = name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+  var fs = size === 52 ? '15px' : '12px';
+  var fallback = '<div style="display:flex;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + color + '22;align-items:center;justify-content:center;font-size:' + fs + ';font-weight:500;color:' + color + ';flex-shrink:0;">' + initials + '</div>';
+  if (!photo) return fallback;
+  return '<img src="' + photo + '" style="width:' + size + 'px;height:' + size + 'px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.replaceWith(document.getElementById(\'fb-' + size + '-' + initials + '\'))">' +
+    '<div id="fb-' + size + '-' + initials + '" style="display:flex;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + color + '22;align-items:center;justify-content:center;font-size:' + fs + ';font-weight:500;color:' + color + ';flex-shrink:0;display:none;">' + initials + '</div>';
+}
 
 function showTip(e, name, leader, seats, photo, color, desc) {
-  const t = document.getElementById('tip');
-  const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  const photoHtml = photo
-    ? '<img src="' + photo + '" onerror="this.style.display='none';this.nextSibling.style.display='flex'" style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
-    + '<div style="display:none;width:40px;height:40px;border-radius:50%;background:' + color + '22;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:' + color + ';flex-shrink:0;">' + initials + '</div>'
-    : '<div style="display:flex;width:40px;height:40px;border-radius:50%;background:' + color + '22;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:' + color + ';flex-shrink:0;">' + initials + '</div>';
-  const seatsHtml = seats > 0 ? '<span style="font-size:0.68rem;opacity:0.6;margin-left:6px;">' + seats + ' siège' + (seats>1?'s':'') + '</span>' : '';
+  var t = document.getElementById('tip');
+  var seatsHtml = seats > 0 ? '<span style="font-size:0.68rem;opacity:0.6;margin-left:6px;">' + seats + ' siège' + (seats>1?'s':'') + '</span>' : '';
   t.innerHTML =
-    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">' + photoHtml +
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">' +
+    avatarHtml(photo, color, name, 40) +
     '<div><strong style="font-size:0.85rem;">' + name + '</strong>' + seatsHtml +
-    (leader ? '<div style="font-size:0.7rem;opacity:0.65;margin-top:1px;">' + leader + '</div>' : '') + '</div></div>' +
+    (leader ? '<div style="font-size:0.7rem;opacity:0.65;margin-top:1px;">' + leader + '</div>' : '') +
+    '</div></div>' +
     '<div style="font-size:0.73rem;line-height:1.55;opacity:0.85;">' + desc + '</div>';
   t.style.display = 'block';
   t.style.left = (e.clientX + 14) + 'px';
   t.style.top = (e.clientY - 10) + 'px';
 }
-function hideTip() {
-  document.getElementById('tip').style.display = 'none';
-}
-document.addEventListener('mousemove', e => {
-  const t = document.getElementById('tip');
+
+function hideTip() { document.getElementById('tip').style.display = 'none'; }
+
+document.addEventListener('mousemove', function(e) {
+  var t = document.getElementById('tip');
   if (t.style.display === 'block') {
     t.style.left = (e.clientX + 14) + 'px';
     t.style.top = (e.clientY - 10) + 'px';
   }
 });
 
-// ─── MOBILE: SWIPE & DRAWER ─────────────────────────────────────────────────
+// ── MOBILE SWIPE & DRAWER ─────────────────────────────────────────────────────
 
-let currentRegion = 0;
-
-// Detect mobile by screen width — no dependency on window.innerWidth timing
-function checkMobile() {
-  return window.matchMedia('(max-width: 700px)').matches;
-}
+var currentRegion = 0;
 
 function buildSwipeDots() {
-  const dotsEl = document.getElementById('swipe-dots');
-  if (!dotsEl) return;
-  dotsEl.innerHTML = CCAA.map((_, i) =>
-    '<div class="swipe-dot' + (i === currentRegion ? ' active' : '') + '"></div>'
-  ).join('');
+  var el = document.getElementById('swipe-dots');
+  if (!el) return;
+  el.innerHTML = CCAA.map(function(_, i) {
+    return '<div class="swipe-dot' + (i === currentRegion ? ' active' : '') + '"></div>';
+  }).join('');
 }
 
 function buildSwipePanel(i) {
-  const region = CCAA[i];
-  const nameEl = document.getElementById('swipe-region-name');
-  const panel = document.getElementById('swipe-panel');
+  var region = CCAA[i];
+  var nameEl = document.getElementById('swipe-region-name');
+  var panel = document.getElementById('swipe-panel');
   if (!nameEl || !panel) return;
-
   nameEl.textContent = region.name[lang];
   buildSwipeDots();
-
-  const leg = region.legend[lang].map(function(l) {
+  var leg = region.legend[lang].map(function(l) {
     return '<div class="legend-item"><div class="legend-dot" style="background:' + l.color + '"></div><span>' + l.label + '</span></div>';
   }).join('');
-
   panel.innerHTML =
     '<div class="matrix-wrap" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">' +
     '<div class="matrix-subtitle" style="flex-shrink:0;margin-bottom:0.25rem;">' + region.subtitle[lang] + '</div>' +
     buildMobileSVG(region.parties) +
-    '<div class="legend" style="flex-shrink:0;">' + leg + '</div>' +
-    '</div>';
+    '<div class="legend" style="flex-shrink:0;">' + leg + '</div></div>';
 }
 
 function buildMobileSVG(parties) {
-  const t = T[lang];
-  const dots = parties.map(function(p) {
-    const lx = p.cx < 326 ? p.cx + p.r + 4 : p.cx - p.r - 4;
-    const anchor = p.cx < 326 ? 'start' : 'end';
-    const ly = p.cy < 60 ? p.cy + p.r + 14 : p.cy - p.r - 5;
-    // Store data on element, use index-based click handler
-    return '<g style="cursor:pointer" onclick="mobilePartyTap(this)" ' +
-      'data-name="' + p.name.replace(/"/g,'&quot;') + '" ' +
-      'data-leader="' + (p.leader||'').replace(/"/g,'&quot;') + '" ' +
-      'data-desc="' + p.desc[lang].replace(/"/g,'&quot;') + '" ' +
-      'data-color="' + p.color + '" ' +
-      'data-cx="' + p.cx + '" data-cy="' + p.cy + '" data-seats="' + (p.seats||0) + '" data-photo="' + (p.photo||'').replace(/"/g,'&quot;') + '">' +
-      '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + (p.r + 5) + '" fill="transparent"/>' +
+  var t = T[lang];
+  var dots = parties.map(function(p) {
+    var lx = p.cx < 326 ? p.cx + p.r + 4 : p.cx - p.r - 4;
+    var anchor = p.cx < 326 ? 'start' : 'end';
+    var ly = p.cy < 60 ? p.cy + p.r + 14 : p.cy - p.r - 5;
+    return '<g style="cursor:pointer" onclick="mobilePartyTap(this)"' +
+      ' data-name="' + p.name.replace(/"/g,'&quot;') + '"' +
+      ' data-leader="' + (p.leader||'').replace(/"/g,'&quot;') + '"' +
+      ' data-desc="' + p.desc[lang].replace(/"/g,'&quot;') + '"' +
+      ' data-color="' + p.color + '"' +
+      ' data-cx="' + p.cx + '" data-cy="' + p.cy + '"' +
+      ' data-seats="' + (p.seats||0) + '"' +
+      ' data-photo="' + (p.photo||'').replace(/"/g,'&quot;') + '">' +
+      '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + (p.r+5) + '" fill="transparent"/>' +
       '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + p.r + '" fill="' + p.color + '" opacity="0.92"/>' +
       '<text x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '" font-size="11" font-weight="500" fill="' + p.color + '" font-family="DM Sans,sans-serif">' + p.name + '</text>' +
       '</g>';
   }).join('');
-
   return '<svg style="width:100%;flex:1;min-height:0;display:block;" viewBox="0 0 680 480" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">' +
     '<defs><marker id="awm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
     '<rect x="70" y="40" width="256" height="215" fill="#3B8BD4" opacity="0.04" rx="4"/>' +
@@ -530,55 +336,42 @@ function mobilePartyTap(el) {
   );
 }
 
-
 function swipeNav(dir) {
   currentRegion = (currentRegion + dir + CCAA.length) % CCAA.length;
   buildSwipePanel(currentRegion);
 }
 
-// Touch swipe detection
-var touchStartX = 0;
 var sc = document.getElementById('swipe-container');
+var touchStartX = 0;
 if (sc) {
-  sc.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+  sc.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, {passive:true});
   sc.addEventListener('touchend', function(e) {
     var dx = e.changedTouches[0].clientX - touchStartX;
     if (Math.abs(dx) > 40) swipeNav(dx < 0 ? 1 : -1);
-  }, { passive: true });
+  }, {passive:true});
 }
 
-// Drawer
 function openDrawer(name, leader, seats, photo, desc, color, cx, cy) {
   var ov = document.getElementById('drawer-overlay');
   var dr = document.getElementById('drawer');
   if (!ov || !dr) return;
-
-  var initials = name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
-  var photoHtml = photo
-    ? '<img src="'+photo+'" onerror="this.style.display='none';this.nextSibling.style.display='flex'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
-      + '<div style="display:none;width:52px;height:52px;border-radius:50%;background:'+color+'22;align-items:center;justify-content:center;font-size:15px;font-weight:500;color:'+color+';flex-shrink:0;">'+initials+'</div>'
-    : '<div style="display:flex;width:52px;height:52px;border-radius:50%;background:'+color+'22;align-items:center;justify-content:center;font-size:15px;font-weight:500;color:'+color+';flex-shrink:0;">'+initials+'</div>';
-
   var seatsStr = seats > 0 ? seats + ' siège' + (seats > 1 ? 's' : '') : '';
   var axH = cx < 326 ? (lang==='fr'?'Gauche':'Izquierda') : (lang==='fr'?'Droite':'Derecha');
   var axV = cy < 255 ? (lang==='fr'?'Unioniste':'Unionista') : (lang==='fr'?'Indépendantiste':'Independentista');
-
   dr.innerHTML =
-    '<div id="drawer-handle" style="width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 14px;"></div>' +
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:0.5rem;">' + photoHtml +
-    '<div><div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;">' + name + '</div>' +
+    '<div style="width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 14px;"></div>' +
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:0.5rem;">' +
+    avatarHtml(photo, color, name, 52) +
+    '<div>' +
+    '<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;font-weight:600;">' + name + '</div>' +
     (leader ? '<div style="font-size:0.82rem;color:var(--muted);font-style:italic;">' + leader + '</div>' : '') +
     (seatsStr ? '<div style="font-size:0.75rem;color:var(--muted);margin-top:2px;">' + seatsStr + '</div>' : '') +
     '</div></div>' +
     '<div style="font-size:0.85rem;line-height:1.7;color:var(--text);">' + desc + '</div>' +
     '<div style="margin-top:0.9rem;display:flex;gap:0.4rem;">' +
     '<span class="dtag">' + axH + '</span><span class="dtag">' + axV + '</span></div>';
-
   ov.style.display = 'block';
-  requestAnimationFrame(function() {
-    ov.classList.add('open');
-    dr.classList.add('open');
-  });
+  requestAnimationFrame(function() { ov.classList.add('open'); dr.classList.add('open'); });
 }
 
 function closeDrawer() {
@@ -590,9 +383,7 @@ function closeDrawer() {
   setTimeout(function() { ov.style.display = 'none'; }, 300);
 }
 
-// Init: always build swipe panel, CSS controls visibility
 buildSwipePanel(0);
-
 </script>
 </body>
 </html>
