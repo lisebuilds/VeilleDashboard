@@ -475,3 +475,4 @@ var CCAA = [
     }
   },
 ];
+window.CCAA = CCAA;

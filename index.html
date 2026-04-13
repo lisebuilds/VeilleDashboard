@@ -1,516 +1,1714 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Partidos políticos españoles — Matrices ideológicas</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>PolitiCalma — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --bg: #F7F5F0;
-    --surface: #FFFFFF;
-    --border: #E0DDD5;
-    --text: #1A1916;
-    --muted: #7A7870;
-    --accent: #C8392B;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; overflow: hidden; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; }
-  header { background: var(--text); color: #F7F5F0; padding: 0.3rem 1.2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-shrink: 0; min-height: 0; }
-  header h1 { font-family: 'Playfair Display', serif; font-size: 0.88rem; font-weight: 600; line-height: 1; letter-spacing: -0.01em; white-space: nowrap; }
-  header p { font-size: 0.62rem; opacity: 0.4; text-align: right; line-height: 1.3; max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.2rem; display: flex; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
-  nav::-webkit-scrollbar { display: none; }
-  nav button { background: none; border: none; border-bottom: 2px solid transparent; padding: 0.45rem 0.65rem; font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 500; color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.15s; letter-spacing: 0.02em; }
-  nav button:hover { color: var(--text); }
-  nav button.active { color: var(--text); border-bottom-color: var(--accent); }
-  main { flex: 1; overflow: hidden; padding: 0.6rem 1rem 0.5rem; display: flex; flex-direction: column; min-height: 0; }
-  .panel { display: none; flex: 1; flex-direction: column; min-height: 0; }
-  .panel.active { display: flex; }
-  .matrix-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.65rem 1rem 0.55rem; box-shadow: var(--shadow); flex: 1; display: flex; flex-direction: column; min-height: 0; }
-  .matrix-header { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 0.25rem; flex-shrink: 0; }
-  .matrix-title { font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 600; }
-  .matrix-subtitle { font-size: 0.66rem; color: var(--muted); }
-  svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
-  .tooltip { position: fixed; background: var(--text); color: #F7F5F0; border-radius: 8px; padding: 10px 14px; font-size: 0.75rem; line-height: 1.6; pointer-events: none; display: none; z-index: 100; max-width: 260px; box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
-  .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 0.35rem; padding-top: 0.35rem; border-top: 1px solid var(--border); flex-shrink: 0; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--muted); }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .note { font-size: 0.65rem; color: var(--muted); margin-top: 0.35rem; font-style: italic; line-height: 1.5; flex-shrink: 0; }
-  .lang-switcher { display: flex; gap: 6px; align-items: center; }
-  .lang-btn { background: transparent; border: 1px solid rgba(247,245,240,0.25); color: rgba(247,245,240,0.6); border-radius: 4px; padding: 2px 8px; font-family: 'DM Sans', sans-serif; font-size: 0.68rem; font-weight: 500; cursor: pointer; letter-spacing: 0.05em; transition: all 0.15s; }
-  .lang-btn:hover { border-color: rgba(247,245,240,0.6); color: rgba(247,245,240,0.9); }
-  .lang-btn.active { background: rgba(247,245,240,0.15); border-color: rgba(247,245,240,0.6); color: #F7F5F0; }
-  @media (max-width: 700px) {
-    html, body { height: 100dvh; overflow: hidden; }
-    header { flex-direction: row; align-items: center; padding: 0.5rem 1rem; flex-shrink: 0; }
-    header p { display: none; }
-    nav { display: none; }
-    main { display: none; }
-    .matrix-wrap { border-radius: 0; border: none; border-bottom: 1px solid var(--border); padding: 0.3rem 0.3rem 0.2rem; overflow: hidden; }
-    .note { display: none; }
-    .legend { gap: 3px 8px; }
-  }
-  #swipe-container { display: none; flex-direction: column; touch-action: pan-y; flex: 1; min-height: 0; overflow: hidden; }
-  @media (max-width: 700px) { #swipe-container { display: flex !important; } }
-  .swipe-region-bar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0.55rem 0.75rem; flex-shrink: 0; }
-  .swipe-region-bar button { background: none; border: none; font-size: 1.6rem; color: var(--muted); cursor: pointer; padding: 0 0.6rem; line-height: 1; }
-  #swipe-region-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; text-align: center; flex: 1; }
-  #swipe-dots { display: flex; justify-content: center; gap: 4px; padding: 0.2rem 0; flex-shrink: 0; background: var(--bg); }
-  .swipe-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.2s, transform 0.2s; }
-  .swipe-dot.active { background: var(--accent); transform: scale(1.4); }
-  #swipe-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); padding: 0.3rem 0; }
-  /* Elections inline badge */
-  .elections-inline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 0.2rem;
-    flex-shrink: 0;
-  }
-  .elections-inline-label {
-    font-size: 0.6rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .elections-inline-date {
-    font-size: 0.68rem;
-    font-weight: 500;
-    color: var(--accent);
-  }
-  .elections-inline-note {
-    font-size: 0.6rem;
-    color: var(--muted);
-  }
-  .elections-inline-sep {
-    font-size: 0.6rem;
-    color: var(--border);
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    #drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 50; opacity: 0; transition: opacity 0.25s; }
-  #drawer-overlay.open { opacity: 1; }
-  #drawer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-radius: 20px 20px 0 0; padding: 0 1.4rem 2.5rem; z-index: 51; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1); max-height: 65vh; overflow-y: auto; }
-  #drawer.open { transform: translateY(0); }
-  .dtag { font-size: 0.72rem; padding: 4px 11px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
+:root {
+  --yellow: #F5C200;
+  --yellow-dark: #D4A900;
+  --yellow-light: #FDD835;
+  --purple: #2D1B6B;
+  --purple-mid: #4A2F9A;
+  --purple-light: #6B47C4;
+  --black: #0E0C14;
+  --white: #FAFAF7;
+  --gray: #8A8796;
+  --surface: #F7F4E8;
+  --border: #E5E0CC;
 
-  /* Region dropdown */
-  #region-dropdown {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 60;
-  }
-  #region-dropdown-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.3);
-  }
-  #region-dropdown-menu {
-    position: absolute;
-    left: 0; right: 0;
-    background: var(--surface);
-    border-radius: 0 0 16px 16px;
-    overflow-y: auto;
-    max-height: 70vh;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  }
-  .dropdown-item {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.9rem;
-    border-bottom: 0.5px solid var(--border);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: var(--text);
-  }
-  .dropdown-item:last-child { border-bottom: none; }
-  .dropdown-item:active { background: var(--bg); }
-  .dropdown-item.active { font-weight: 500; color: var(--accent); }
-  .dropdown-item .item-count { font-size: 0.7rem; color: var(--muted); }
-  @media (min-width: 701px) {
-    /* Desktop: dropdown from nav area */
-    #region-dropdown-menu { border-radius: 0 0 12px 12px; }
-  }
+  /* partidos colors */
+  --pp: #00a0e4;
+  --psoe: #d93a3a;
+  --vox: #63be21;
+  --sumar: #ca3191;
+  --junts: #4c3f8c;
+  --erc: #f4a12e;
+  --bildu: #00b09b;
+  --pnv: #2d6b38;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--purple);
+  padding: 0 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--yellow);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+}
+
+.logo-icon { flex-shrink: 0; }
+
+.logo-divider {
+  width: 2px;
+  height: 28px;
+  background: var(--yellow);
+  opacity: 0.6;
+}
+
+.logo-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.35rem;
+  color: var(--white);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.logo-text span { color: var(--yellow); }
+
+.header-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--yellow);
+  opacity: 0.7;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: none;
+}
+
+@media (min-width: 480px) { .header-tag { display: block; } }
+
+/* ── TABS ── */
+.tabs-nav {
+  background: var(--yellow);
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 3px solid var(--purple);
+  position: sticky;
+  top: 56px;
+  z-index: 99;
+}
+
+.tabs-nav::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--purple);
+  padding: 0.75rem 1.4rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tab-btn:hover { background: rgba(45,27,107,0.1); }
+.tab-btn.active { background: var(--purple); color: var(--yellow); }
+
+/* ── PANELS ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ──────────────────────────────────────────
+   TAB 1 — VEILLE
+────────────────────────────────────────── */
+.veille-header {
+  background: var(--purple);
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.veille-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--yellow);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.veille-subtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(250,250,247,0.5);
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+
+.btn-actualizar {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--yellow);
+  color: var(--purple);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.15s, transform 0.1s;
+  flex-shrink: 0;
+}
+
+.btn-actualizar:hover { background: var(--yellow-light); transform: translateY(-1px); }
+.btn-actualizar:active { transform: translateY(0); }
+.btn-actualizar.loading { opacity: 0.6; pointer-events: none; }
+
+.veille-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+@media (min-width: 700px) {
+  .veille-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.veille-block {
+  border: 1px solid var(--border);
+  border-collapse: collapse;
+  animation: fadeUp 0.3s ease both;
+}
+.veille-block:nth-child(1) { animation-delay: 0.05s; }
+.veille-block:nth-child(2) { animation-delay: 0.1s; }
+.veille-block:nth-child(3) { animation-delay: 0.15s; }
+.veille-block:nth-child(4) { animation-delay: 0.2s; }
+.veille-block:nth-child(5) { animation-delay: 0.25s; }
+
+.veille-block-header {
+  background: var(--purple);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.veille-block-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+
+.veille-block-date {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  color: rgba(250,250,247,0.4);
+}
+
+.veille-block-body {
+  padding: 1rem;
+  min-height: 120px;
+  background: var(--white);
+}
+
+.veille-item {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+
+.veille-item:last-child { border-bottom: none; }
+
+.veille-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  flex-shrink: 0;
+  padding: 0.1rem 0.35rem;
+  border-radius: 1px;
+}
+
+.tag-star { background: var(--yellow); color: var(--purple); }
+.tag-arrow { background: var(--purple); color: var(--yellow); }
+
+.veille-item-text {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--black);
+}
+
+.loading-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--gray);
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.portadas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.portada-card {
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+}
+
+.portada-medio {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 0.3rem;
+}
+
+.portada-titular {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--black);
+}
+
+/* ── AI LOADING ── */
+.dot-pulse {
+  display: flex;
+  gap: 3px;
+}
+
+.dot-pulse span {
+  width: 4px;
+  height: 4px;
+  background: var(--yellow);
+  border-radius: 50%;
+  animation: pulse 1.2s infinite;
+}
+
+.dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+.dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes pulse {
+  0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+/* ──────────────────────────────────────────
+   TAB 2 — MATRICE
+────────────────────────────────────────── */
+.matrice-panel {
+  height: calc(100vh - 112px);
+  display: flex;
+  flex-direction: column;
+  background: #F7F5F0;
+}
+
+.matrice-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.mat-data-banner {
+  margin: 0 1.2rem 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  background: #fdecea;
+  color: #7a1e1e;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  border: 1px solid #f0c2bc;
+  flex-shrink: 0;
+}
+
+/* Nav régions à l'intérieur de l'onglet */
+.mat-nav-bar {
+  background: #FFFFFF;
+  border-bottom: 1px solid #E0DDD5;
+  padding: 0 1.2rem;
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+.mat-nav {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+
+.mat-nav::-webkit-scrollbar { display: none; }
+
+.mat-nav button {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.45rem 0.65rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #7A7870;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.mat-nav button:hover { color: #1A1916; }
+.mat-nav button.active { color: #1A1916; border-bottom-color: #C8392B; }
+
+.mat-dropdown-btn {
+  background: none;
+  border: none;
+  border-left: 1px solid #E0DDD5;
+  padding: 0 0.8rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #7A7870;
+  flex-shrink: 0;
+}
+
+.mat-main {
+  flex: 1;
+  overflow: hidden;
+  padding: 0.6rem 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.mat-panel { display: none; flex: 1; flex-direction: column; min-height: 0; }
+.mat-panel.active { display: flex; }
+
+.matrix-wrap {
+  background: #FFFFFF;
+  border: 1px solid #E0DDD5;
+  border-radius: 8px;
+  padding: 0.65rem 1rem 0.55rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.matrix-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin-bottom: 0.25rem;
+  flex-shrink: 0;
+}
+
+.matrix-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1A1916;
+}
+
+.matrix-subtitle {
+  font-size: 0.66rem;
+  color: #7A7870;
+}
+
+svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
+
+.mat-tooltip {
+  position: fixed;
+  background: #1A1916;
+  color: #F7F5F0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  pointer-events: none;
+  display: none;
+  z-index: 200;
+  max-width: 260px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.mat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid #E0DDD5;
+  flex-shrink: 0;
+}
+
+.mat-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  color: #7A7870;
+}
+
+.mat-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mat-note {
+  font-size: 0.65rem;
+  color: #7A7870;
+  margin-top: 0.35rem;
+  font-style: italic;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.mat-lang-switcher {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 0 1.2rem;
+  flex-shrink: 0;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E0DDD5;
+  padding: 0.4rem 1.2rem;
+}
+
+.mat-lang-btn {
+  background: transparent;
+  border: 1px solid rgba(45,27,107,0.25);
+  color: var(--purple);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.15s;
+  opacity: 0.6;
+}
+
+.mat-lang-btn:hover { opacity: 0.9; }
+.mat-lang-btn.active { background: var(--purple); color: var(--yellow); opacity: 1; border-color: var(--purple); }
+
+/* Elections inline */
+.elections-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+.elections-inline-label { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #7A7870; }
+.elections-inline-date { font-size: 0.68rem; font-weight: 500; color: #C8392B; }
+.elections-inline-note { font-size: 0.6rem; color: #7A7870; }
+.elections-inline-sep { font-size: 0.6rem; color: #E0DDD5; }
+
+/* Drawer mobile */
+#mat-drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 150; opacity: 0; transition: opacity 0.25s; }
+#mat-drawer-overlay.open { opacity: 1; }
+#mat-drawer { position: fixed; bottom: 0; left: 0; right: 0; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 0 1.4rem 2.5rem; z-index: 151; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1); max-height: 65vh; overflow-y: auto; }
+#mat-drawer.open { transform: translateY(0); }
+.mat-dtag { font-size: 0.72rem; padding: 4px 11px; border-radius: 20px; background: #F7F5F0; border: 1px solid #E0DDD5; color: #7A7870; }
+
+/* Region dropdown */
+#mat-region-dropdown { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 160; }
+#mat-region-dropdown-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+#mat-region-dropdown-menu { position: absolute; left: 0; right: 0; background: #FFFFFF; border-radius: 0 0 16px 16px; overflow-y: auto; max-height: 70vh; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+.mat-dropdown-item { padding: 0.75rem 1.25rem; font-size: 0.9rem; border-bottom: 0.5px solid #E0DDD5; cursor: pointer; display: flex; align-items: center; justify-content: space-between; color: #1A1916; }
+.mat-dropdown-item:last-child { border-bottom: none; }
+.mat-dropdown-item:active { background: #F7F5F0; }
+.mat-dropdown-item.active { font-weight: 500; color: #C8392B; }
+.mat-dropdown-item .item-count { font-size: 0.7rem; color: #7A7870; }
+
+/* Mobile swipe (matrice) */
+#mat-swipe-container { display: none; flex-direction: column; touch-action: pan-y; flex: 1; min-height: 0; overflow: hidden; }
+@media (max-width: 700px) {
+  #mat-swipe-container { display: flex !important; }
+  .mat-nav-bar { display: none; }
+  .mat-main { display: none; }
+}
+.mat-swipe-region-bar { background: #FFFFFF; border-bottom: 1px solid #E0DDD5; display: flex; align-items: center; justify-content: space-between; padding: 0.55rem 0.75rem; flex-shrink: 0; }
+.mat-swipe-region-bar button { background: none; border: none; font-size: 1.6rem; color: #7A7870; cursor: pointer; padding: 0 0.6rem; line-height: 1; }
+#mat-swipe-region-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; text-align: center; flex: 1; color: #1A1916; }
+#mat-swipe-dots { display: flex; justify-content: center; gap: 4px; padding: 0.2rem 0; flex-shrink: 0; background: #F7F5F0; }
+.mat-swipe-dot { width: 6px; height: 6px; border-radius: 50%; background: #E0DDD5; transition: background 0.2s, transform 0.2s; }
+.mat-swipe-dot.active { background: #C8392B; transform: scale(1.4); }
+#mat-swipe-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; background: #F7F5F0; padding: 0.3rem 0; }
+
+/* ──────────────────────────────────────────
+   TAB 3 — HEMICICLO
+────────────────────────────────────────── */
+.hemiciclo-panel {
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: var(--purple);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--yellow);
+  display: inline-block;
+}
+
+.hemiciclo-svg-wrap {
+  margin: 1.2rem 0;
+  background: var(--purple);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+#hemiciclo-svg { width: 100%; height: auto; display: block; }
+
+.vote-summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.vote-bars { display: flex; height: 10px; gap: 2px; margin-bottom: 1rem; border-radius: 2px; overflow: hidden; }
+.bar-favor { background: #2e9e52; transition: flex 0.4s ease; }
+.bar-contra { background: #c73b3b; transition: flex 0.4s ease; }
+.bar-abstencion { background: #8a8796; transition: flex 0.4s ease; }
+.bar-empty { background: var(--border); flex: 350; }
+
+.vote-counts { display: flex; justify-content: center; gap: 2rem; }
+.vote-count-item { text-align: center; }
+
+.vote-count-item .num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 1;
+  display: block;
+}
+
+.num-F { color: #2e9e52; }
+.num-C { color: #c73b3b; }
+.num-A { color: #8a8796; }
+
+.vote-count-item .lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.thresholds { display: flex; gap: 0.8rem; margin-top: 0.8rem; flex-wrap: wrap; justify-content: center; }
+
+.threshold {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--gray);
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--border);
+  letter-spacing: 0.05em;
+  transition: all 0.3s;
+}
+
+.threshold.reached-favor { border-color: #2e9e52; color: #2e9e52; background: rgba(46,158,82,0.08); }
+.threshold.reached-contra { border-color: #c73b3b; color: #c73b3b; background: rgba(199,59,59,0.08); }
+
+.verdict {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.6rem;
+  margin-top: 0.8rem;
+  display: none;
+}
+
+.verdict.aprobado { display: block; background: rgba(46,158,82,0.12); color: #2e9e52; border: 1px solid rgba(46,158,82,0.3); }
+.verdict.rechazado { display: block; background: rgba(199,59,59,0.1); color: #c73b3b; border: 1px solid rgba(199,59,59,0.3); }
+
+.parties-legend { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+
+.party-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--border);
+  cursor: default;
+  transition: border-color 0.15s, background 0.15s;
+  background: var(--white);
+}
+
+.party-chip:hover { border-color: var(--purple); background: var(--surface); }
+.party-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+.party-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--purple);
+}
+
+.party-seats-n { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--gray); }
+
+.sim-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin: 1.2rem 0 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sim-title::after { content: ''; flex: 1; height: 2px; background: var(--yellow); }
+
+.sim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.4rem; }
+
+.sim-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: border-color 0.15s;
+}
+
+.sim-row:hover { border-color: var(--purple); }
+.sim-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+.sim-party-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--purple);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sim-seats-n { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: var(--gray); margin-right: 0.3rem; }
+.vote-btns { display: flex; gap: 0.25rem; }
+
+.vbtn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  padding: 0.2rem 0.38rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+  transition: all 0.12s;
+  letter-spacing: 0.02em;
+}
+
+.vbtn:hover { border-color: var(--purple); color: var(--purple); }
+.vbtn.active-F { background: rgba(46,158,82,0.15); border-color: #2e9e52; color: #2e9e52; }
+.vbtn.active-C { background: rgba(199,59,59,0.12); border-color: #c73b3b; color: #c73b3b; }
+.vbtn.active-A { background: rgba(138,135,150,0.15); border-color: #8a8796; color: #8a8796; }
+
+.presets { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.8rem; }
+
+.preset-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--purple);
+  background: transparent;
+  color: var(--purple);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.preset-btn:hover { background: var(--purple); color: var(--yellow); }
+
+/* ── TOOLTIP (hemiciclo) ── */
+#tooltip {
+  position: fixed;
+  background: var(--purple);
+  color: var(--yellow);
+  padding: 0.35rem 0.7rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s;
+  z-index: 999;
+  white-space: nowrap;
+  border-left: 3px solid var(--yellow);
+}
+
+#tooltip.visible { opacity: 1; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
 <body>
 
-<div id="tip" class="tooltip"></div>
-<div id="drawer-overlay" onclick="closeDrawer()"></div>
+<div id="tooltip"></div>
+<div class="mat-tooltip" id="mat-tip"></div>
 
-<div id="region-dropdown">
-  <div id="region-dropdown-overlay" onclick="closeDropdown()"></div>
-  <div id="region-dropdown-menu"></div>
+<!-- Matrice drawers -->
+<div id="mat-drawer-overlay" onclick="matCloseDrawer()"></div>
+<div id="mat-drawer"></div>
+<div id="mat-region-dropdown">
+  <div id="mat-region-dropdown-overlay" onclick="matCloseDropdown()"></div>
+  <div id="mat-region-dropdown-menu"></div>
 </div>
-<div id="drawer"></div>
 
-<header>
-  <h1 id="h-title">Partis politiques espagnols</h1>
-  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-    <div class="lang-switcher">
-      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
-      <button class="lang-btn" onclick="setLang('es')">ES</button>
-    </div>
-    <p id="h-sub">Positionnement sur les axes gauche/droite et unioniste/indépendantiste. Survoler un parti pour les détails.</p>
-  </div>
+<!-- HEADER -->
+<header class="site-header">
+  <a class="logo" href="#">
+    <svg class="logo-icon" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 1H21C22.65 1 24 2.35 24 4V16C24 17.65 22.65 19 21 19H11L6.5 24V19H4C2.35 19 1 17.65 1 16V4C1 2.35 2.35 1 4 1Z" fill="#F5C200"/>
+    </svg>
+    <div class="logo-divider"></div>
+    <div class="logo-text">POLiTi<span>CALMA</span></div>
+  </a>
+  <div class="header-tag">Herramienta interna · v0.3</div>
 </header>
 
-<div style="display:flex;align-items:stretch;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);">
-  <nav id="nav" style="flex:1;"></nav>
-  <button onclick="openDropdown()" style="background:none;border:none;border-left:1px solid var(--border);padding:0 0.8rem;cursor:pointer;font-size:1rem;color:var(--muted);flex-shrink:0;" title="Toutes les régions">&#9776;</button>
-</div>
+<!-- TABS -->
+<nav class="tabs-nav">
+  <button class="tab-btn active" onclick="switchTab('veille', this)">📋 Veille</button>
+  <button class="tab-btn" onclick="switchTab('matrice', this)">🗺 Matrice</button>
+  <button class="tab-btn" onclick="switchTab('hemiciclo', this)">🏛 Hemiciclo</button>
+</nav>
 
-<div id="swipe-container">
-  <div class="swipe-region-bar">
-    <button onclick="swipeNav(-1)">&#8249;</button>
-    <div id="swipe-region-name" onclick="openDropdown()" style="cursor:pointer;" title="Changer de région"></div>
-    <button onclick="swipeNav(1)">&#8250;</button>
+<!-- ═══════════════════════════════════════
+     TAB 1 — VEILLE
+════════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-veille">
+
+  <div class="veille-header">
+    <div>
+      <div class="veille-title">Veille semanal</div>
+      <div class="veille-subtitle" id="veille-date">— sin actualizar —</div>
+    </div>
+    <button class="btn-actualizar" id="btn-actualizar" onclick="actualizarVeille()">
+      <span>⟳</span>
+      Actualizar veille
+    </button>
   </div>
-  <div id="swipe-dots"></div>
-  <div id="swipe-panel"></div>
+
+  <div class="veille-grid">
+
+    <div class="veille-block">
+      <div class="veille-block-header">
+        <span class="veille-block-label">📜 BOE — Legislación</span>
+        <span class="veille-block-date" id="boe-date">—</span>
+      </div>
+      <div class="veille-block-body" id="boe-content">
+        <div class="loading-text">Pulsa «Actualizar veille» para cargar</div>
+      </div>
+    </div>
+
+    <div class="veille-block">
+      <div class="veille-block-header">
+        <span class="veille-block-label">🏛 Congreso</span>
+        <span class="veille-block-date" id="congreso-date">—</span>
+      </div>
+      <div class="veille-block-body" id="congreso-content">
+        <div class="loading-text">Pulsa «Actualizar veille» para cargar</div>
+      </div>
+    </div>
+
+    <div class="veille-block">
+      <div class="veille-block-header">
+        <span class="veille-block-label">📅 Agenda Gobierno</span>
+        <span class="veille-block-date" id="agenda-date">—</span>
+      </div>
+      <div class="veille-block-body" id="agenda-content">
+        <div class="loading-text">Pulsa «Actualizar veille» para cargar</div>
+      </div>
+    </div>
+
+    <div class="veille-block">
+      <div class="veille-block-header">
+        <span class="veille-block-label">📰 Portadas</span>
+        <span class="veille-block-date" id="prensa-date">—</span>
+      </div>
+      <div class="veille-block-body" id="prensa-content">
+        <div class="loading-text">Pulsa «Actualizar veille» para cargar</div>
+      </div>
+    </div>
+
+    <div class="veille-block" style="grid-column: 1 / -1;">
+      <div class="veille-block-header">
+        <span class="veille-block-label">📺 RTVE — Lo que llega al gran público</span>
+        <span class="veille-block-date" id="rtve-date">—</span>
+      </div>
+      <div class="veille-block-body" id="rtve-content">
+        <div class="loading-text">Pulsa «Actualizar veille» para cargar</div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
-<main id="main"></main>
+<!-- ═══════════════════════════════════════
+     TAB 2 — MATRICE
+════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-matrice">
+  <div class="matrice-panel">
+    <div class="matrice-inner">
+      <div id="mat-data-banner" class="mat-data-banner" style="display:none" role="alert"></div>
 
-<script src="data.js"></script>
+      <!-- Lang switcher -->
+      <div class="mat-lang-switcher">
+        <button class="mat-lang-btn active" onclick="matSetLang('fr')">FR</button>
+        <button class="mat-lang-btn" onclick="matSetLang('es')">ES</button>
+      </div>
+
+      <!-- Region nav (desktop) -->
+      <div class="mat-nav-bar">
+        <nav class="mat-nav" id="mat-nav"></nav>
+        <button class="mat-dropdown-btn" onclick="matOpenDropdown()" title="Toutes les régions">&#9776;</button>
+      </div>
+
+      <!-- Mobile swipe -->
+      <div id="mat-swipe-container">
+        <div class="mat-swipe-region-bar">
+          <button onclick="matSwipeNav(-1)">&#8249;</button>
+          <div id="mat-swipe-region-name" onclick="matOpenDropdown()" style="cursor:pointer;"></div>
+          <button onclick="matSwipeNav(1)">&#8250;</button>
+        </div>
+        <div id="mat-swipe-dots"></div>
+        <div id="mat-swipe-panel"></div>
+      </div>
+
+      <!-- Desktop panels -->
+      <main class="mat-main" id="mat-main"></main>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TAB 3 — HEMICICLO
+════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-hemiciclo">
+  <div class="hemiciclo-panel">
+    <div class="section-title">Hemiciclo · Simulador</div>
+
+    <div class="hemiciclo-svg-wrap">
+      <svg id="hemiciclo-svg" viewBox="0 0 680 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bgHem" cx="50%" cy="100%" r="75%">
+            <stop offset="0%" stop-color="#3d2a80"/>
+            <stop offset="100%" stop-color="#1a1040"/>
+          </radialGradient>
+        </defs>
+        <rect width="680" height="400" fill="url(#bgHem)"/>
+        <line x1="40" y1="358" x2="640" y2="358" stroke="rgba(245,194,0,0.2)" stroke-width="1"/>
+        <rect x="300" y="351" width="80" height="14" rx="1" fill="rgba(45,27,107,0.8)" stroke="rgba(245,194,0,0.3)"/>
+        <text x="340" y="361.5" text-anchor="middle" fill="rgba(245,194,0,0.5)" font-family="IBM Plex Mono,monospace" font-size="6.5" letter-spacing="0.06em">PRESIDENCIA</text>
+        <g id="seats-g"></g>
+        <text x="340" y="388" text-anchor="middle" fill="rgba(245,194,0,0.35)" font-family="IBM Plex Mono,monospace" font-size="7" letter-spacing="0.1em">176 · MAYORÍA SIMPLE · 350 ESCAÑOS</text>
+      </svg>
+    </div>
+
+    <div class="vote-summary">
+      <div class="vote-bars">
+        <div class="bar-favor" id="bar-F" style="flex:0"></div>
+        <div class="bar-contra" id="bar-C" style="flex:0"></div>
+        <div class="bar-abstencion" id="bar-A" style="flex:0"></div>
+        <div class="bar-empty" id="bar-empty"></div>
+      </div>
+      <div class="vote-counts">
+        <div class="vote-count-item"><span class="num num-F" id="cnt-F">0</span><span class="lbl">A favor</span></div>
+        <div class="vote-count-item"><span class="num num-C" id="cnt-C">0</span><span class="lbl">En contra</span></div>
+        <div class="vote-count-item"><span class="num num-A" id="cnt-A">0</span><span class="lbl">Abstención</span></div>
+      </div>
+      <div class="thresholds">
+        <span class="threshold" id="thr-simple">176 — mayoría simple</span>
+        <span class="threshold" id="thr-abs">176 — mayoría absoluta</span>
+      </div>
+      <div class="verdict" id="verdict"></div>
+    </div>
+
+    <div class="parties-legend" id="parties-legend"></div>
+
+    <div class="sim-title">Simular votación</div>
+    <div class="sim-grid" id="sim-grid"></div>
+    <div class="presets">
+      <button class="preset-btn" onclick="applyPreset('reset')">Limpiar</button>
+      <button class="preset-btn" onclick="applyPreset('investidura')">Investidura Sánchez</button>
+      <button class="preset-btn" onclick="applyPreset('mocion-vox')">Moción VOX</button>
+      <button class="preset-btn" onclick="applyPreset('pp-vox')">Bloqueo PP+VOX</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js" onerror="window.__POLITICALMA_DATA_JS_FAILED=true"></script>
 <script>
-const isMobile = () => window.innerWidth <= 700;
+// ════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+}
 
-const T = {
-  fr: {
-    title: "Partis politiques espagnols",
-    subtitle: "Positionnement sur les axes gauche/droite et unioniste/indépendantiste.<br>Survoler un parti pour les détails.",
-    axLeft: "◀ Gauche", axRight: "Droite ▶",
-    axUp: "▲ Unioniste / Centraliste", axDown: "▼ Indépendantiste / Régionaliste",
-    note: "Positions indicatives basées sur les programmes et votes au parlement. L'axe territorial reflète la posture vis-à-vis de l'unité de l'État espagnol.",
-  },
-  es: {
-    title: "Partidos políticos españoles",
-    subtitle: "Posicionamiento en los ejes izquierda/derecha y unionista/independentista.<br>Pasa el cursor sobre un partido para ver los detalles.",
-    axLeft: "◀ Izquierda", axRight: "Derecha ▶",
-    axUp: "▲ Unionista / Centralista", axDown: "▼ Independentista / Regionalista",
-    note: "Posiciones indicativas basadas en programas electorales y votaciones parlamentarias. El eje territorial refleja la postura respecto a la unidad del Estado español.",
+// ════════════════════════════════════════
+// TAB 1 — VEILLE
+// ════════════════════════════════════════
+async function actualizarVeille() {
+  const btn = document.getElementById('btn-actualizar');
+  btn.classList.add('loading');
+  btn.innerHTML = '<div class="dot-pulse"><span></span><span></span><span></span></div> Actualizando…';
+
+  const hoy = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById('veille-date').textContent = 'Última actualización: ' + hoy;
+
+  const bloques = [
+    { id: 'boe', dateId: 'boe-date', prompt: `Fecha: ${hoy}. Busca las 3-4 novedades legislativas más relevantes publicadas esta semana en el BOE (Boletín Oficial del Estado de España). Para cada una indica: tipo de norma, tema, y si es urgente o destacable. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve"}]. Sin preamble ni backticks.` },
+    { id: 'congreso', dateId: 'congreso-date', prompt: `Fecha: ${hoy}. Busca los 3-4 asuntos parlamentarios más relevantes de esta semana en el Congreso de los Diputados español: debates, votaciones, interpelaciones, alianzas de voto. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve"}]. Sin preamble ni backticks.` },
+    { id: 'agenda', dateId: 'agenda-date', prompt: `Fecha: ${hoy}. Busca 3-4 eventos relevantes de la agenda del Gobierno de España esta semana: comparecencias, reuniones, declaraciones de ministros. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve"}]. Sin preamble ni backticks.` },
+    { id: 'prensa', dateId: 'prensa-date', prompt: `Fecha: ${hoy}. Indica el titular principal de hoy de estos 4 medios españoles: El País, El Mundo, elDiario.es, ABC. Responde SOLO con JSON array: [{"medio":"El País","titular":"…"},{"medio":"El Mundo","titular":"…"},{"medio":"elDiario.es","titular":"…"},{"medio":"ABC","titular":"…"}]. Sin preamble ni backticks.` },
+    { id: 'rtve', dateId: 'rtve-date', prompt: `Fecha: ${hoy}. ¿Cuáles fueron las 3-4 noticias políticas que lideraron el Telediario de RTVE esta semana? Son las noticias que llegan al gran público generalista. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve"}]. Sin preamble ni backticks.` },
+  ];
+
+  for (let i = 0; i < bloques.length; i++) {
+    if (i > 0) await new Promise(r => setTimeout(r, 400));
+    await fetchBloque(bloques[i]);
   }
-};
 
-let lang = 'fr';
-
-// ── NAV & PANELS ──────────────────────────────────────────────────────────────
-
-const navEl = document.getElementById('nav');
-const mainEl = document.getElementById('main');
-
-CCAA.forEach(function(region, i) {
-  var btn = document.createElement('button');
-  btn.className = i === 0 ? 'active' : '';
-  btn.setAttribute('data-i', i);
-  btn.onclick = function() { switchTo(i); };
-  navEl.appendChild(btn);
-  var panel = document.createElement('div');
-  panel.className = 'panel' + (i === 0 ? ' active' : '');
-  panel.id = 'panel-' + i;
-  panel.setAttribute('data-i', i);
-  mainEl.appendChild(panel);
-});
-
-function buildPanel(i) {
-  var region = CCAA[i];
-  var panel = document.getElementById('panel-' + i);
-  var leg = region.legend[lang].map(function(l) {
-    return '<div class="legend-item"><div class="legend-dot" style="background:' + l.color + '"></div><span>' + l.label + '</span></div>';
-  }).join('');
-  panel.innerHTML =
-    '<div class="matrix-wrap">' +
-    '<div class="matrix-header"><div class="matrix-title">' + region.name[lang] + '</div>' +
-    '<div class="matrix-subtitle">' + region.subtitle[lang] + '</div></div>' +
-    buildElectionsPanel(region) +
-    buildSVG(region.parties) +
-    '<div class="legend">' + leg + '</div>' +
-    '<p class="note">' + T[lang].note + '</p></div>';
+  btn.classList.remove('loading');
+  btn.innerHTML = '<span>⟳</span> Actualizar veille';
 }
 
-function rebuildAll() {
-  document.getElementById('h-title').innerHTML = T[lang].title;
-  document.getElementById('h-sub').innerHTML = T[lang].subtitle;
-  document.querySelectorAll('#nav button').forEach(function(b, i) {
-    b.textContent = CCAA[i].name[lang];
-  });
-  CCAA.forEach(function(_, i) { buildPanel(i); });
-  var active = document.querySelector('.panel.active');
-  if (active) switchTo(parseInt(active.getAttribute('data-i')));
+function extractJSON(text) {
+  try { return JSON.parse(text.trim()); } catch {}
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fenced) { try { return JSON.parse(fenced[1].trim()); } catch {} }
+  const arrMatch = text.match(/\[[\s\S]*\]/);
+  if (arrMatch) { try { return JSON.parse(arrMatch[0]); } catch {} }
+  const objMatch = text.match(/\{[\s\S]*\}/);
+  if (objMatch) { try { return JSON.parse(objMatch[0]); } catch {} }
+  throw new Error('No JSON encontrado');
 }
 
-function switchTo(i) {
-  document.querySelectorAll('#nav button').forEach(function(b,j) { b.className = j===i?'active':''; });
-  document.querySelectorAll('.panel').forEach(function(p,j) { p.className = 'panel'+(j===i?' active':''); });
+const VEILLE_FETCH_TIMEOUT_MS = 120000;
+const VEILLE_MAX_ATTEMPTS = 6;
+
+function veilleBackoffMs(attempt, retryAfterSec) {
+  if (retryAfterSec != null && retryAfterSec > 0) {
+    return Math.min(retryAfterSec * 1000 + Math.random() * 250, 120000);
+  }
+  const base = 700 * Math.pow(2, attempt);
+  const jitter = Math.random() * 500;
+  return Math.min(base + jitter, 45000);
 }
 
-function setLang(l) {
-  lang = l;
-  document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.textContent === l.toUpperCase()); });
-  var activePanel = document.querySelector('.panel.active');
-  var activeIndex = activePanel ? parseInt(activePanel.getAttribute('data-i')) : 0;
-  rebuildAll();
-  switchTo(activeIndex);
-  buildSwipePanel(currentRegion);
+function veilleIsRetryableHttp(status) {
+  return status === 429 || status === 408 || (status >= 500 && status <= 599);
 }
 
-rebuildAll();
-switchTo(0);
-
-// ── SVG BUILDER ───────────────────────────────────────────────────────────────
-
-function buildSVG(parties) {
-  var t = T[lang];
-  var dots = parties.map(function(p) {
-    var lx = p.cx < 326 ? p.cx + p.r + 5 : p.cx - p.r - 5;
-    var anchor = p.cx < 326 ? 'start' : 'end';
-    var ly = p.cy < 60 ? p.cy + p.r + 14 : p.cy - p.r - 6;
-    var dEsc = p.desc[lang].replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-    var nEsc = p.name.replace(/'/g,"\\'");
-    var lEsc = (p.leader||'').replace(/'/g,"\\'");
-    var ph = (p.photo||'').replace(/'/g,"\\'");
-    var s = p.seats||0;
-    var col = p.color;
-    return '<g style="cursor:pointer" onmouseenter="showTip(event,\'' + nEsc + '\',\'' + lEsc + '\',' + s + ',\'' + ph + '\',\'' + col + '\',\'' + dEsc + '\')" onmouseleave="hideTip()">' +
-      '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + p.r + '" fill="' + p.color + '" opacity="0.92"/>' +
-      '<text x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '" font-size="11" font-weight="500" fill="' + p.color + '" font-family="DM Sans,sans-serif">' + p.name + '</text>' +
-      '</g>';
-  }).join('');
-
-  return '<svg class="matrix" viewBox="45 12 590 460" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">' +
-    '<defs><marker id="aw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
-    '<rect x="70" y="40" width="256" height="215" fill="#3B8BD4" opacity="0.04" rx="4"/>' +
-    '<rect x="326" y="40" width="274" height="215" fill="#C8392B" opacity="0.04" rx="4"/>' +
-    '<rect x="70" y="255" width="256" height="190" fill="#3B8BD4" opacity="0.08" rx="4"/>' +
-    '<rect x="326" y="255" width="274" height="190" fill="#C8392B" opacity="0.02" rx="4"/>' +
-    '<line x1="198" y1="40" x2="198" y2="445" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>' +
-    '<line x1="464" y1="40" x2="464" y2="445" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>' +
-    '<line x1="70" y1="145" x2="600" y2="145" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>' +
-    '<line x1="70" y1="360" x2="600" y2="360" stroke="#ddd" stroke-width="0.5" stroke-dasharray="3 6"/>' +
-    '<line x1="70" y1="255" x2="600" y2="255" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>' +
-    '<line x1="326" y1="40" x2="326" y2="455" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>' +
-    '<text x="78" y="249" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axLeft + '</text>' +
-    '<text x="592" y="249" text-anchor="end" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axRight + '</text>' +
-    '<text x="326" y="32" text-anchor="middle" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axUp + '</text>' +
-    '<text x="326" y="468" text-anchor="middle" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axDown + '</text>' +
-    dots + '</svg>';
+function veilleIsFatalHttp(status) {
+  return status === 400 || status === 401 || status === 403 || status === 404;
 }
 
-// ── TOOLTIP ───────────────────────────────────────────────────────────────────
-
-function avatarHtml(photo, color, name, size) {
-  var initials = name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
-  var fs = size === 52 ? '15px' : '12px';
-  var fallback = '<div style="display:flex;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + color + '22;align-items:center;justify-content:center;font-size:' + fs + ';font-weight:500;color:' + color + ';flex-shrink:0;">' + initials + '</div>';
-  if (!photo) return fallback;
-  return '<img src="' + photo + '" style="width:' + size + 'px;height:' + size + 'px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.replaceWith(document.getElementById(\'fb-' + size + '-' + initials + '\'))">' +
-    '<div id="fb-' + size + '-' + initials + '" style="display:flex;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + color + '22;align-items:center;justify-content:center;font-size:' + fs + ';font-weight:500;color:' + color + ';flex-shrink:0;display:none;">' + initials + '</div>';
+function veilleParseRetryAfter(res) {
+  const h = res.headers.get('Retry-After');
+  if (!h) return null;
+  const sec = parseInt(h, 10);
+  if (!isNaN(sec)) return sec;
+  const d = Date.parse(h);
+  if (!isNaN(d)) return Math.max(0, Math.ceil((d - Date.now()) / 1000));
+  return null;
 }
 
-function showTip(e, name, leader, seats, photo, color, desc) {
-  var t = document.getElementById('tip');
-  var seatsHtml = seats > 0 ? '<span style="font-size:0.68rem;opacity:0.6;margin-left:6px;">' + seats + ' siège' + (seats>1?'s':'') + '</span>' : '';
-  t.innerHTML =
-    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">' +
-    avatarHtml(photo, color, name, 40) +
-    '<div><strong style="font-size:0.85rem;">' + name + '</strong>' + seatsHtml +
-    (leader ? '<div style="font-size:0.7rem;opacity:0.65;margin-top:1px;">' + leader + '</div>' : '') +
-    '</div></div>' +
-    '<div style="font-size:0.73rem;line-height:1.55;opacity:0.85;">' + desc + '</div>';
-  t.style.display = 'block';
-  t.style.left = (e.clientX + 14) + 'px';
-  t.style.top = (e.clientY - 10) + 'px';
+function veilleFormatError(err, httpStatus) {
+  if (err && err.name === 'AbortError') return 'Tiempo de espera agotado';
+  if (err && (err.message === 'Failed to fetch' || err.name === 'TypeError')) return 'Error de red (sin conexión o bloqueo CORS)';
+  if (httpStatus >= 500 && httpStatus <= 599) return 'Error del servidor (' + httpStatus + ')';
+  if (httpStatus === 429) return 'Demasiadas peticiones (429), reintenta más tarde';
+  if (httpStatus === 408) return 'Tiempo de espera del servidor (408)';
+  if (httpStatus) return 'HTTP ' + httpStatus;
+  return (err && err.message) ? err.message : 'Error desconocido';
 }
 
-function hideTip() { document.getElementById('tip').style.display = 'none'; }
+async function fetchBloque({ id, prompt, dateId }) {
+  const contentEl = document.getElementById(id + '-content');
+  const dateEl = document.getElementById(dateId);
+  contentEl.innerHTML = '<div class="loading-text"><div class="dot-pulse" style="justify-content:center;margin:0 auto"><span></span><span></span><span></span></div></div>';
 
-document.addEventListener('mousemove', function(e) {
-  var t = document.getElementById('tip');
-  if (t.style.display === 'block') {
+  let lastErr = null;
+  let lastHttp = 0;
+
+  for (let attempt = 0; attempt < VEILLE_MAX_ATTEMPTS; attempt++) {
+    try {
+      const ac = new AbortController();
+      const tmr = setTimeout(function() { ac.abort(); }, VEILLE_FETCH_TIMEOUT_MS);
+      let res;
+      try {
+        res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1000,
+            system: 'Eres un asistente de monitorización política. Responde ÚNICAMENTE con un array JSON válido, sin ningún texto antes ni después, sin preamble, sin explicaciones, sin markdown, sin backticks. Solo el array JSON.',
+            tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+            messages: [{ role: 'user', content: prompt }]
+          }),
+          signal: ac.signal
+        });
+      } finally {
+        clearTimeout(tmr);
+      }
+      lastHttp = res.status;
+
+      if (!res.ok) {
+        const ra = veilleParseRetryAfter(res);
+        if (veilleIsFatalHttp(res.status)) {
+          throw new Error(veilleFormatError(null, res.status));
+        }
+        if (veilleIsRetryableHttp(res.status) && attempt < VEILLE_MAX_ATTEMPTS - 1) {
+          await new Promise(function(r) { setTimeout(r, veilleBackoffMs(attempt, ra)); });
+          continue;
+        }
+        throw new Error(veilleFormatError(null, res.status));
+      }
+
+      const data = await res.json();
+      const text = data.content.filter(function(b) { return b.type === 'text'; }).map(function(b) { return b.text; }).join('');
+      const items = extractJSON(text);
+      dateEl.textContent = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+      if (id === 'prensa') renderPortadas(contentEl, items);
+      else renderItems(contentEl, items);
+      return;
+    } catch (err) {
+      lastErr = err;
+      if (err && err.name === 'AbortError') lastHttp = 0;
+      const netOrTimeout = err && (err.name === 'AbortError' || err.message === 'Failed to fetch' || err.name === 'TypeError');
+      const jsonErr = err && err.message && err.message.indexOf('JSON') !== -1;
+      const parseErr = err && (err.name === 'SyntaxError' || (err.message && err.message.indexOf('Unexpected token') !== -1));
+      const retryableHttp = lastHttp && veilleIsRetryableHttp(lastHttp);
+      const canRetry = attempt < VEILLE_MAX_ATTEMPTS - 1 && (netOrTimeout || jsonErr || parseErr || retryableHttp);
+      if (canRetry) {
+        await new Promise(function(r) { setTimeout(r, veilleBackoffMs(attempt, null)); });
+        continue;
+      }
+      const msg = veilleFormatError(lastErr, lastHttp);
+      window.__veilleRetryPayloads = window.__veilleRetryPayloads || {};
+      window.__veilleRetryPayloads[id] = { id: id, prompt: prompt, dateId: dateId };
+      contentEl.innerHTML = '<div class="loading-text" style="color:#c73b3b">Error al cargar (' + msg + '). <span style="cursor:pointer;text-decoration:underline" onclick="fetchBloque(window.__veilleRetryPayloads[\'' + id.replace(/'/g, '') + '\'])">Reintentar</span></div>';
+      console.error(id, err);
+      return;
+    }
+  }
+}
+
+function renderItems(el, items) {
+  el.innerHTML = items.map(item => `
+    <div class="veille-item">
+      <span class="veille-tag ${item.tag && item.tag.includes('★') ? 'tag-star' : 'tag-arrow'}">${item.tag || '→'}</span>
+      <span class="veille-item-text">${item.texto}</span>
+    </div>
+  `).join('');
+}
+
+function renderPortadas(el, items) {
+  el.innerHTML = `<div class="portadas-grid">${items.map(p => `
+    <div class="portada-card">
+      <div class="portada-medio">${p.medio}</div>
+      <div class="portada-titular">${p.titular}</div>
+    </div>
+  `).join('')}</div>`;
+}
+
+// ════════════════════════════════════════
+// TAB 2 — MATRICE (portée des variables isolée)
+// ════════════════════════════════════════
+(function() {
+  const MAT = {
+    lang: 'fr',
+    currentRegion: 0,
+  };
+
+  const T = {
+    fr: {
+      title: "Partis politiques espagnols",
+      subtitle: "Positionnement sur les axes gauche/droite et unioniste/indépendantiste.<br>Survoler un parti pour les détails.",
+      axLeft: "◀ Gauche", axRight: "Droite ▶",
+      axUp: "▲ Unioniste / Centraliste", axDown: "▼ Indépendantiste / Régionaliste",
+      note: "Positions indicatives basées sur les programmes et votes au parlement.",
+    },
+    es: {
+      title: "Partidos políticos españoles",
+      subtitle: "Posicionamiento en los ejes izquierda/derecha y unionista/independentista.<br>Pasa el cursor sobre un partido para ver los detalles.",
+      axLeft: "◀ Izquierda", axRight: "Derecha ▶",
+      axUp: "▲ Unionista / Centralista", axDown: "▼ Independentista / Regionalista",
+      note: "Posiciones indicativas basadas en programas electorales y votaciones parlamentarias.",
+    }
+  };
+
+  function showMatDataError(msg) {
+    var b = document.getElementById('mat-data-banner');
+    if (b) {
+      b.textContent = msg;
+      b.style.display = 'block';
+    }
+  }
+
+  function init() {
+    const navEl = document.getElementById('mat-nav');
+    const mainEl = document.getElementById('mat-main');
+    var regions = typeof window.CCAA !== 'undefined' ? window.CCAA : (typeof CCAA !== 'undefined' ? CCAA : null);
+    if (!navEl || !mainEl || !regions || !Array.isArray(regions) || regions.length === 0) return;
+
+    regions.forEach(function(region, i) {
+      var btn = document.createElement('button');
+      btn.className = i === 0 ? 'active' : '';
+      btn.setAttribute('data-i', i);
+      btn.onclick = function() { matSwitchTo(i); };
+      navEl.appendChild(btn);
+
+      var panel = document.createElement('div');
+      panel.className = 'mat-panel' + (i === 0 ? ' active' : '');
+      panel.id = 'mat-panel-' + i;
+      panel.setAttribute('data-i', i);
+      mainEl.appendChild(panel);
+    });
+
+    matRebuildAll();
+    matSwitchTo(0);
+    matBuildSwipePanel(0);
+  }
+
+  function matBuildPanel(i) {
+    var regions = typeof window.CCAA !== 'undefined' ? window.CCAA : (typeof CCAA !== 'undefined' ? CCAA : null);
+    if (!regions) return;
+    var region = regions[i];
+    var panel = document.getElementById('mat-panel-' + i);
+    if (!panel) return;
+    var leg = region.legend[MAT.lang].map(function(l) {
+      return '<div class="mat-legend-item"><div class="mat-legend-dot" style="background:' + l.color + '"></div><span>' + l.label + '</span></div>';
+    }).join('');
+    panel.innerHTML =
+      '<div class="matrix-wrap">' +
+      '<div class="matrix-header"><div class="matrix-title">' + region.name[MAT.lang] + '</div>' +
+      '<div class="matrix-subtitle">' + region.subtitle[MAT.lang] + '</div></div>' +
+      matBuildElectionsPanel(region) +
+      matBuildSVG(region.parties) +
+      '<div class="mat-legend">' + leg + '</div>' +
+      '<p class="mat-note">' + T[MAT.lang].note + '</p></div>';
+  }
+
+  function matRebuildAll() {
+    var regions = typeof window.CCAA !== 'undefined' ? window.CCAA : (typeof CCAA !== 'undefined' ? CCAA : null);
+    if (!regions) return;
+    document.querySelectorAll('#mat-nav button').forEach(function(b, i) {
+      b.textContent = regions[i].name[MAT.lang];
+    });
+    regions.forEach(function(_, i) { matBuildPanel(i); });
+  }
+
+  function matSwitchTo(i) {
+    document.querySelectorAll('#mat-nav button').forEach(function(b, j) { b.className = j === i ? 'active' : ''; });
+    document.querySelectorAll('.mat-panel').forEach(function(p, j) { p.className = 'mat-panel' + (j === i ? ' active' : ''); });
+  }
+
+  window.matSetLang = function(l) {
+    var regions = typeof window.CCAA !== 'undefined' ? window.CCAA : (typeof CCAA !== 'undefined' ? CCAA : null);
+    if (!regions || !regions.length) return;
+    MAT.lang = l;
+    document.querySelectorAll('.mat-lang-btn').forEach(function(b) {
+      b.classList.toggle('active', b.textContent === l.toUpperCase());
+    });
+    var activePanel = document.querySelector('.mat-panel.active');
+    var activeIndex = activePanel ? parseInt(activePanel.getAttribute('data-i')) : 0;
+    matRebuildAll();
+    matSwitchTo(activeIndex);
+    matBuildSwipePanel(MAT.currentRegion);
+  };
+
+  function matBuildSVG(parties) {
+    var t = T[MAT.lang];
+    var dots = parties.map(function(p) {
+      var lx = p.cx < 326 ? p.cx + p.r + 5 : p.cx - p.r - 5;
+      var anchor = p.cx < 326 ? 'start' : 'end';
+      var ly = p.cy < 60 ? p.cy + p.r + 14 : p.cy - p.r - 6;
+      var dEsc = p.desc[MAT.lang].replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+      var nEsc = p.name.replace(/'/g,"\\'");
+      var lEsc = (p.leader||'').replace(/'/g,"\\'");
+      var ph = (p.photo||'').replace(/'/g,"\\'");
+      var s = p.seats||0;
+      return '<g style="cursor:pointer" onmouseenter="matShowTip(event,\'' + nEsc + '\',\'' + lEsc + '\',' + s + ',\'' + ph + '\',\'' + p.color + '\',\'' + dEsc + '\')" onmouseleave="matHideTip()">' +
+        '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + p.r + '" fill="' + p.color + '" opacity="0.92"/>' +
+        '<text x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '" font-size="11" font-weight="500" fill="' + p.color + '" font-family="DM Sans,sans-serif">' + p.name + '</text>' +
+        '</g>';
+    }).join('');
+
+    return '<svg class="matrix" viewBox="45 12 590 460" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">' +
+      '<defs><marker id="aw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
+      '<rect x="70" y="40" width="256" height="215" fill="#3B8BD4" opacity="0.04" rx="4"/>' +
+      '<rect x="326" y="40" width="274" height="215" fill="#C8392B" opacity="0.04" rx="4"/>' +
+      '<rect x="70" y="255" width="256" height="190" fill="#3B8BD4" opacity="0.08" rx="4"/>' +
+      '<rect x="326" y="255" width="274" height="190" fill="#C8392B" opacity="0.02" rx="4"/>' +
+      '<line x1="70" y1="255" x2="600" y2="255" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>' +
+      '<line x1="326" y1="40" x2="326" y2="455" stroke="#aaa" stroke-width="1" marker-end="url(#aw)" marker-start="url(#aw)"/>' +
+      '<text x="78" y="249" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axLeft + '</text>' +
+      '<text x="592" y="249" text-anchor="end" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axRight + '</text>' +
+      '<text x="326" y="32" text-anchor="middle" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axUp + '</text>' +
+      '<text x="326" y="468" text-anchor="middle" font-size="11" fill="#888" font-family="DM Sans,sans-serif">' + t.axDown + '</text>' +
+      dots + '</svg>';
+  }
+
+  function matAvatarHtml(photo, color, name, size) {
+    var initials = name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+    var fs = size === 52 ? '15px' : '12px';
+    var fallback = '<div style="display:flex;width:'+size+'px;height:'+size+'px;border-radius:50%;background:'+color+'22;align-items:center;justify-content:center;font-size:'+fs+';font-weight:500;color:'+color+';flex-shrink:0;">'+initials+'</div>';
+    if (!photo) return fallback;
+    return '<img src="'+photo+'" style="width:'+size+'px;height:'+size+'px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.style.display=\'none\'">' + fallback;
+  }
+
+  window.matShowTip = function(e, name, leader, seats, photo, color, desc) {
+    var t = document.getElementById('mat-tip');
+    var seatsHtml = seats > 0 ? '<span style="font-size:0.68rem;opacity:0.6;margin-left:6px;">' + seats + ' siège' + (seats>1?'s':'') + '</span>' : '';
+    t.innerHTML =
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">' +
+      matAvatarHtml(photo, color, name, 40) +
+      '<div><strong style="font-size:0.85rem;">' + name + '</strong>' + seatsHtml +
+      (leader ? '<div style="font-size:0.7rem;opacity:0.65;margin-top:1px;">' + leader + '</div>' : '') +
+      '</div></div>' +
+      '<div style="font-size:0.73rem;line-height:1.55;opacity:0.85;">' + desc + '</div>';
+    t.style.display = 'block';
     t.style.left = (e.clientX + 14) + 'px';
     t.style.top = (e.clientY - 10) + 'px';
-  }
-});
+  };
 
-// ── MOBILE SWIPE & DRAWER ─────────────────────────────────────────────────────
+  window.matHideTip = function() { document.getElementById('mat-tip').style.display = 'none'; };
 
-var currentRegion = 0;
+  document.addEventListener('mousemove', function(e) {
+    var t = document.getElementById('mat-tip');
+    if (t && t.style.display === 'block') {
+      t.style.left = (e.clientX + 14) + 'px';
+      t.style.top = (e.clientY - 10) + 'px';
+    }
+  });
 
-function buildSwipeDots() {
-  var el = document.getElementById('swipe-dots');
-  if (!el) return;
-  el.innerHTML = CCAA.map(function(_, i) {
-    return '<div class="swipe-dot' + (i === currentRegion ? ' active' : '') + '"></div>';
-  }).join('');
-}
-
-function buildSwipePanel(i) {
-  var region = CCAA[i];
-  var nameEl = document.getElementById('swipe-region-name');
-  var panel = document.getElementById('swipe-panel');
-  if (!nameEl || !panel) return;
-  nameEl.textContent = region.name[lang];
-  buildSwipeDots();
-  var leg = region.legend[lang].map(function(l) {
-    return '<div class="legend-item"><div class="legend-dot" style="background:' + l.color + '"></div><span>' + l.label + '</span></div>';
-  }).join('');
-  panel.innerHTML =
-    '<div class="matrix-wrap" style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;">' +
-    '<div class="matrix-subtitle" style="flex-shrink:0;margin-bottom:0.1rem;">' + region.subtitle[lang] + '</div>' +
-    buildElectionsPanel(region) +
-    buildMobileSVG(region.parties) +
-    '<div class="legend" style="flex-shrink:0;">' + leg + '</div>' +
-    '</div>';
-}
-
-function buildMobileSVG(parties) {
-  var t = T[lang];
-  var dots = parties.map(function(p) {
-    var lx = p.cx < 326 ? p.cx + p.r + 4 : p.cx - p.r - 4;
-    var anchor = p.cx < 326 ? 'start' : 'end';
-    var ly = p.cy < 60 ? p.cy + p.r + 14 : p.cy - p.r - 5;
-    return '<g style="cursor:pointer" onclick="mobilePartyTap(this)"' +
-      ' data-name="' + p.name.replace(/"/g,'&quot;') + '"' +
-      ' data-leader="' + (p.leader||'').replace(/"/g,'&quot;') + '"' +
-      ' data-desc="' + p.desc[lang].replace(/"/g,'&quot;') + '"' +
-      ' data-color="' + p.color + '"' +
-      ' data-cx="' + p.cx + '" data-cy="' + p.cy + '"' +
-      ' data-seats="' + (p.seats||0) + '"' +
-      ' data-photo="' + (p.photo||'').replace(/"/g,'&quot;') + '">' +
-      '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + (p.r+5) + '" fill="transparent"/>' +
-      '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + p.r + '" fill="' + p.color + '" opacity="0.92"/>' +
-      '<text x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '" font-size="11" font-weight="500" fill="' + p.color + '" font-family="DM Sans,sans-serif">' + p.name + '</text>' +
-      '</g>';
-  }).join('');
-  return '<svg style="width:100%;flex:1;min-height:0;display:block;" viewBox="45 12 590 460" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">' +
-    '<defs><marker id="awm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
-    '<rect x="70" y="40" width="256" height="215" fill="#3B8BD4" opacity="0.04" rx="4"/>' +
-    '<rect x="326" y="40" width="274" height="215" fill="#C8392B" opacity="0.04" rx="4"/>' +
-    '<rect x="70" y="255" width="256" height="190" fill="#3B8BD4" opacity="0.08" rx="4"/>' +
-    '<rect x="326" y="255" width="274" height="190" fill="#C8392B" opacity="0.02" rx="4"/>' +
-    '<line x1="70" y1="255" x2="600" y2="255" stroke="#bbb" stroke-width="1" marker-end="url(#awm)" marker-start="url(#awm)"/>' +
-    '<line x1="326" y1="40" x2="326" y2="455" stroke="#bbb" stroke-width="1" marker-end="url(#awm)" marker-start="url(#awm)"/>' +
-    '<text x="82" y="249" font-size="11" fill="#bbb" font-family="DM Sans,sans-serif">' + t.axLeft + '</text>' +
-    '<text x="590" y="249" text-anchor="end" font-size="11" fill="#bbb" font-family="DM Sans,sans-serif">' + t.axRight + '</text>' +
-    '<text x="326" y="32" text-anchor="middle" font-size="10" fill="#bbb" font-family="DM Sans,sans-serif">' + t.axUp + '</text>' +
-    '<text x="326" y="470" text-anchor="middle" font-size="10" fill="#bbb" font-family="DM Sans,sans-serif">' + t.axDown + '</text>' +
-    dots + '</svg>';
-}
-
-function mobilePartyTap(el) {
-  openDrawer(
-    el.getAttribute('data-name'),
-    el.getAttribute('data-leader'),
-    parseInt(el.getAttribute('data-seats')||'0'),
-    el.getAttribute('data-photo'),
-    el.getAttribute('data-desc'),
-    el.getAttribute('data-color'),
-    parseInt(el.getAttribute('data-cx')),
-    parseInt(el.getAttribute('data-cy'))
-  );
-}
-
-function swipeNav(dir) {
-  currentRegion = (currentRegion + dir + CCAA.length) % CCAA.length;
-  buildSwipePanel(currentRegion);
-}
-
-var sc = document.getElementById('swipe-container');
-var touchStartX = 0;
-if (sc) {
-  sc.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, {passive:true});
-  sc.addEventListener('touchend', function(e) {
-    var dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 40) swipeNav(dx < 0 ? 1 : -1);
-  }, {passive:true});
-}
-
-function openDrawer(name, leader, seats, photo, desc, color, cx, cy) {
-  var ov = document.getElementById('drawer-overlay');
-  var dr = document.getElementById('drawer');
-  if (!ov || !dr) return;
-  var seatsStr = seats > 0 ? seats + ' siège' + (seats > 1 ? 's' : '') : '';
-  var axH = cx < 326 ? (lang==='fr'?'Gauche':'Izquierda') : (lang==='fr'?'Droite':'Derecha');
-  var axV = cy < 255 ? (lang==='fr'?'Unioniste':'Unionista') : (lang==='fr'?'Indépendantiste':'Independentista');
-  dr.innerHTML =
-    '<div style="width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 14px;"></div>' +
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:0.5rem;">' +
-    avatarHtml(photo, color, name, 52) +
-    '<div>' +
-    '<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;font-weight:600;">' + name + '</div>' +
-    (leader ? '<div style="font-size:0.82rem;color:var(--muted);font-style:italic;">' + leader + '</div>' : '') +
-    (seatsStr ? '<div style="font-size:0.75rem;color:var(--muted);margin-top:2px;">' + seatsStr + '</div>' : '') +
-    '</div></div>' +
-    '<div style="font-size:0.85rem;line-height:1.7;color:var(--text);">' + desc + '</div>' +
-    '<div style="margin-top:0.9rem;display:flex;gap:0.4rem;">' +
-    '<span class="dtag">' + axH + '</span><span class="dtag">' + axV + '</span></div>';
-  ov.style.display = 'block';
-  requestAnimationFrame(function() { ov.classList.add('open'); dr.classList.add('open'); });
-}
-
-function closeDrawer() {
-  var ov = document.getElementById('drawer-overlay');
-  var dr = document.getElementById('drawer');
-  if (!ov || !dr) return;
-  ov.classList.remove('open');
-  dr.classList.remove('open');
-  setTimeout(function() { ov.style.display = 'none'; }, 300);
-}
-
-function buildElectionsPanel(region) {
-  if (!region.nextElection) return '';
-  var el = region.nextElection[lang];
-  var isPast = el.date.indexOf('passées') !== -1 || el.date.indexOf('celebradas') !== -1;
-  var labelFr = isPast ? 'Dernières élections' : 'Prochaines élections';
-  var labelEs = isPast ? 'Últimas elecciones' : 'Próximas elecciones';
-  var label = lang === 'fr' ? labelFr : labelEs;
-  return '<div class="elections-inline">' +
-    '<span class="elections-inline-label">' + label + '</span>' +
-    '<span class="elections-inline-sep">·</span>' +
-    '<span class="elections-inline-date">' + el.date + '</span>' +
-    '<span class="elections-inline-sep">–</span>' +
-    '<span class="elections-inline-note">' + el.note + '</span>' +
-    '</div>';
-}
-
-buildSwipePanel(0);
-
-// ── REGION DROPDOWN ───────────────────────────────────────────────────────────
-
-function openDropdown() {
-  var menu = document.getElementById('region-dropdown-menu');
-  var dd = document.getElementById('region-dropdown');
-
-  menu.innerHTML = CCAA.map(function(region, i) {
-    var isActive = i === currentRegion;
-    var partyCount = region.parties.length;
-    return '<div class="dropdown-item' + (isActive ? ' active' : '') + '" onclick="selectRegion(' + i + ')">' +
-      '<span>' + region.name[lang] + '</span>' +
-      '<span class="item-count">' + partyCount + ' partis</span>' +
-      '</div>';
-  }).join('');
-
-  dd.style.display = 'block';
-}
-
-function closeDropdown() {
-  document.getElementById('region-dropdown').style.display = 'none';
-}
-
-function selectRegion(i) {
-  closeDropdown();
   // Mobile
-  currentRegion = i;
-  buildSwipePanel(i);
-  // Desktop
-  switchTo(i);
+  function matBuildSwipeDots() {
+    var el = document.getElementById('mat-swipe-dots');
+    if (!el) return;
+    var regions = typeof window.CCAA !== 'undefined' ? window.CCAA : (typeof CCAA !== 'undefined' ? CCAA : null);
+    if (!regions) return;
+    el.innerHTML = regions.map(function(_, i) {
+      return '<div class="mat-swipe-dot' + (i === MAT.currentRegion ? ' active' : '') + '"></div>';
+    }).join('');
+  }
+
+  function matBuildSwipePanel(i) {
+    var regions = typeof window.CCAA !== 'undefined' ? window.CCAA : (typeof CCAA !== 'undefined' ? CCAA : null);
+    if (!regions) return;
+    var region = regions[i];
+    var nameEl = document.getElementById('mat-swipe-region-name');
+    var panel = document.getElementById('mat-swipe-panel');
+    if (!nameEl || !panel) return;
+    nameEl.textContent = region.name[MAT.lang];
+    matBuildSwipeDots();
+    var leg = region.legend[MAT.lang].map(function(l) {
+      return '<div class="mat-legend-item"><div class="mat-legend-dot" style="background:' + l.color + '"></div><span>' + l.label + '</span></div>';
+    }).join('');
+    panel.innerHTML =
+      '<div class="matrix-wrap" style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;margin:0.3rem;">' +
+      '<div class="matrix-subtitle" style="flex-shrink:0;margin-bottom:0.1rem;">' + region.subtitle[MAT.lang] + '</div>' +
+      matBuildElectionsPanel(region) +
+      matBuildMobileSVG(region.parties) +
+      '<div class="mat-legend" style="flex-shrink:0;">' + leg + '</div>' +
+      '</div>';
+  }
+
+  window.matSwipeNav = function(dir) {
+    var regions = typeof window.CCAA !== 'undefined' ? window.CCAA : (typeof CCAA !== 'undefined' ? CCAA : null);
+    if (!regions || !regions.length) return;
+    MAT.currentRegion = (MAT.currentRegion + dir + regions.length) % regions.length;
+    matBuildSwipePanel(MAT.currentRegion);
+  };
+
+  var sc = document.getElementById('mat-swipe-container');
+  var touchStartX = 0;
+  if (sc) {
+    sc.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, {passive:true});
+    sc.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) window.matSwipeNav(dx < 0 ? 1 : -1);
+    }, {passive:true});
+  }
+
+  function matBuildMobileSVG(parties) {
+    var t = T[MAT.lang];
+    var dots = parties.map(function(p) {
+      var lx = p.cx < 326 ? p.cx + p.r + 4 : p.cx - p.r - 4;
+      var anchor = p.cx < 326 ? 'start' : 'end';
+      var ly = p.cy < 60 ? p.cy + p.r + 14 : p.cy - p.r - 5;
+      return '<g style="cursor:pointer" onclick="matMobileTap(this)"' +
+        ' data-name="' + p.name.replace(/"/g,'&quot;') + '"' +
+        ' data-leader="' + (p.leader||'').replace(/"/g,'&quot;') + '"' +
+        ' data-desc="' + p.desc[MAT.lang].replace(/"/g,'&quot;') + '"' +
+        ' data-color="' + p.color + '"' +
+        ' data-seats="' + (p.seats||0) + '"' +
+        ' data-photo="' + (p.photo||'').replace(/"/g,'&quot;') + '">' +
+        '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + (p.r+5) + '" fill="transparent"/>' +
+        '<circle cx="' + p.cx + '" cy="' + p.cy + '" r="' + p.r + '" fill="' + p.color + '" opacity="0.92"/>' +
+        '<text x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '" font-size="11" font-weight="500" fill="' + p.color + '" font-family="DM Sans,sans-serif">' + p.name + '</text>' +
+        '</g>';
+    }).join('');
+    return '<svg style="width:100%;flex:1;min-height:0;display:block;" viewBox="45 12 590 460" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">' +
+      '<line x1="70" y1="255" x2="600" y2="255" stroke="#bbb" stroke-width="1"/>' +
+      '<line x1="326" y1="40" x2="326" y2="455" stroke="#bbb" stroke-width="1"/>' +
+      '<text x="82" y="249" font-size="11" fill="#bbb" font-family="DM Sans,sans-serif">' + t.axLeft + '</text>' +
+      '<text x="590" y="249" text-anchor="end" font-size="11" fill="#bbb" font-family="DM Sans,sans-serif">' + t.axRight + '</text>' +
+      dots + '</svg>';
+  }
+
+  window.matMobileTap = function(el) {
+    matOpenMobileDrawer(
+      el.getAttribute('data-name'),
+      el.getAttribute('data-leader'),
+      parseInt(el.getAttribute('data-seats')||'0'),
+      el.getAttribute('data-photo'),
+      el.getAttribute('data-desc'),
+      el.getAttribute('data-color')
+    );
+  };
+
+  function matOpenMobileDrawer(name, leader, seats, photo, desc, color) {
+    var ov = document.getElementById('mat-drawer-overlay');
+    var dr = document.getElementById('mat-drawer');
+    if (!ov || !dr) return;
+    var seatsStr = seats > 0 ? seats + ' siège' + (seats > 1 ? 's' : '') : '';
+    dr.innerHTML =
+      '<div style="width:36px;height:4px;background:#E0DDD5;border-radius:2px;margin:10px auto 14px;"></div>' +
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:0.5rem;">' +
+      matAvatarHtml(photo, color, name, 52) +
+      '<div>' +
+      '<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;font-weight:600;">' + name + '</div>' +
+      (leader ? '<div style="font-size:0.82rem;color:#7A7870;font-style:italic;">' + leader + '</div>' : '') +
+      (seatsStr ? '<div style="font-size:0.75rem;color:#7A7870;margin-top:2px;">' + seatsStr + '</div>' : '') +
+      '</div></div>' +
+      '<div style="font-size:0.85rem;line-height:1.7;">' + desc + '</div>';
+    ov.style.display = 'block';
+    requestAnimationFrame(function() { ov.classList.add('open'); dr.classList.add('open'); });
+  }
+
+  window.matCloseDrawer = function() {
+    var ov = document.getElementById('mat-drawer-overlay');
+    var dr = document.getElementById('mat-drawer');
+    if (!ov || !dr) return;
+    ov.classList.remove('open');
+    dr.classList.remove('open');
+    setTimeout(function() { ov.style.display = 'none'; }, 300);
+  };
+
+  function matBuildElectionsPanel(region) {
+    if (!region.nextElection) return '';
+    var el = region.nextElection[MAT.lang];
+    var isPast = el.date.indexOf('passées') !== -1 || el.date.indexOf('celebradas') !== -1;
+    var label = MAT.lang === 'fr' ? (isPast ? 'Dernières élections' : 'Prochaines élections') : (isPast ? 'Últimas elecciones' : 'Próximas elecciones');
+    return '<div class="elections-inline">' +
+      '<span class="elections-inline-label">' + label + '</span>' +
+      '<span class="elections-inline-sep">·</span>' +
+      '<span class="elections-inline-date">' + el.date + '</span>' +
+      '<span class="elections-inline-sep">–</span>' +
+      '<span class="elections-inline-note">' + el.note + '</span>' +
+      '</div>';
+  }
+
+  window.matOpenDropdown = function() {
+    var menu = document.getElementById('mat-region-dropdown-menu');
+    var dd = document.getElementById('mat-region-dropdown');
+    var regions = typeof window.CCAA !== 'undefined' ? window.CCAA : (typeof CCAA !== 'undefined' ? CCAA : null);
+    if (!menu || !dd || !regions) return;
+    menu.innerHTML = regions.map(function(region, i) {
+      return '<div class="mat-dropdown-item' + (i === MAT.currentRegion ? ' active' : '') + '" onclick="matSelectRegion(' + i + ')">' +
+        '<span>' + region.name[MAT.lang] + '</span>' +
+        '<span class="item-count">' + region.parties.length + ' partis</span>' +
+        '</div>';
+    }).join('');
+    dd.style.display = 'block';
+  };
+
+  window.matCloseDropdown = function() {
+    document.getElementById('mat-region-dropdown').style.display = 'none';
+  };
+
+  window.matSelectRegion = function(i) {
+    matCloseDropdown();
+    MAT.currentRegion = i;
+    matBuildSwipePanel(i);
+    matSwitchTo(i);
+  };
+
+  function tryInitMatrix() {
+    if (window.__POLITICALMA_DATA_JS_FAILED) {
+      showMatDataError('No se pudo cargar data.js (red o archivo ausente). Colócalo junto a index.html y recarga la página.');
+      return;
+    }
+    var regions = typeof window.CCAA !== 'undefined' ? window.CCAA : (typeof CCAA !== 'undefined' ? CCAA : null);
+    if (!regions || !Array.isArray(regions) || regions.length === 0) {
+      showMatDataError('Datos de partidos no disponibles (CCAA). Revisa la consola: error de sintaxis en data.js o carga incompleta.');
+      return;
+    }
+    init();
+  }
+
+  tryInitMatrix();
+})();
+
+// ════════════════════════════════════════
+// TAB 3 — HEMICICLO
+// ════════════════════════════════════════
+const PARTIES = [
+  { id: 'psoe',  name: 'PSOE',          seats: 120, color: '#d93a3a' },
+  { id: 'pp',    name: 'PP',            seats: 137, color: '#00a0e4' },
+  { id: 'vox',   name: 'VOX',           seats: 33,  color: '#63be21' },
+  { id: 'sumar', name: 'Sumar',         seats: 31,  color: '#ca3191' },
+  { id: 'junts', name: 'Junts',         seats: 7,   color: '#4c3f8c' },
+  { id: 'erc',   name: 'ERC',           seats: 7,   color: '#f4a12e' },
+  { id: 'bildu', name: 'EH Bildu',      seats: 6,   color: '#00b09b' },
+  { id: 'pnv',   name: 'PNV',           seats: 5,   color: '#2d6b38' },
+  { id: 'bng',   name: 'BNG',           seats: 1,   color: '#6db3e2' },
+  { id: 'cc',    name: 'Coalición Can.', seats: 1,  color: '#ff9f1c' },
+  { id: 'upn',   name: 'UPN',           seats: 1,   color: '#1b4fa0' },
+  { id: 'otros', name: 'Mixto/Otros',   seats: 1,   color: '#888888' },
+];
+
+const votes = {};
+
+function buildHemiciclo() {
+  const g = document.getElementById('seats-g');
+  const cx = 340;
+  const cy = 358;
+  const rows = [
+    { r: 258, count: 80 },
+    { r: 224, count: 95 },
+    { r: 190, count: 100 },
+    { r: 156, count: 75 },
+  ];
+
+  let seatDefs = [];
+  PARTIES.forEach(p => { for (let i = 0; i < p.seats; i++) seatDefs.push(p); });
+
+  let idx = 0;
+  rows.forEach(({ r, count }) => {
+    const step = Math.PI / (count - 1);
+    for (let i = 0; i < count; i++) {
+      if (idx >= seatDefs.length) break;
+      const angle = Math.PI - i * step;
+      const x = cx + r * Math.cos(angle);
+      const y = cy - r * Math.sin(angle);
+      const p = seatDefs[idx];
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      el.setAttribute('cx', x.toFixed(1));
+      el.setAttribute('cy', y.toFixed(1));
+      el.setAttribute('r', '4.8');
+      el.setAttribute('fill', p.color);
+      el.setAttribute('opacity', '0.8');
+      el.dataset.party = p.id;
+      el.dataset.name = p.name;
+      el.addEventListener('mouseenter', e => showTip(e, p.name));
+      el.addEventListener('mousemove', moveTip);
+      el.addEventListener('mouseleave', hideTip);
+      g.appendChild(el);
+      idx++;
+    }
+  });
 }
+
+function buildLegend() {
+  const leg = document.getElementById('parties-legend');
+  PARTIES.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'party-chip';
+    chip.innerHTML = `<div class="party-dot" style="background:${p.color}"></div><span class="party-name">${p.name}</span><span class="party-seats-n">${p.seats}</span>`;
+    chip.addEventListener('mouseenter', () => highlightP(p.id));
+    chip.addEventListener('mouseleave', resetColors);
+    leg.appendChild(chip);
+  });
+}
+
+function buildSim() {
+  const grid = document.getElementById('sim-grid');
+  PARTIES.forEach(p => {
+    votes[p.id] = null;
+    const row = document.createElement('div');
+    row.className = 'sim-row';
+    row.innerHTML = `
+      <div class="sim-dot" style="background:${p.color}"></div>
+      <span class="sim-party-name">${p.name}</span>
+      <span class="sim-seats-n">${p.seats}</span>
+      <div class="vote-btns">
+        <button class="vbtn" data-p="${p.id}" data-v="F" onclick="setVote('${p.id}','F')">F</button>
+        <button class="vbtn" data-p="${p.id}" data-v="C" onclick="setVote('${p.id}','C')">C</button>
+        <button class="vbtn" data-p="${p.id}" data-v="A" onclick="setVote('${p.id}','A')">A</button>
+      </div>`;
+    grid.appendChild(row);
+  });
+}
+
+function setVote(pid, v) {
+  votes[pid] = votes[pid] === v ? null : v;
+  document.querySelectorAll(`.vbtn[data-p="${pid}"]`).forEach(b => {
+    b.classList.remove('active-F','active-C','active-A');
+    if (votes[pid] && b.dataset.v === votes[pid]) b.classList.add('active-'+votes[pid]);
+  });
+  updateCounts();
+  resetColors();
+}
+
+function updateCounts() {
+  let f=0, c=0, a=0;
+  PARTIES.forEach(p => {
+    if (votes[p.id]==='F') f+=p.seats;
+    else if (votes[p.id]==='C') c+=p.seats;
+    else if (votes[p.id]==='A') a+=p.seats;
+  });
+  document.getElementById('cnt-F').textContent = f;
+  document.getElementById('cnt-C').textContent = c;
+  document.getElementById('cnt-A').textContent = a;
+  document.getElementById('bar-F').style.flex = f;
+  document.getElementById('bar-C').style.flex = c;
+  document.getElementById('bar-A').style.flex = a;
+  document.getElementById('bar-empty').style.flex = Math.max(0, 350-f-c-a);
+
+  const tS = document.getElementById('thr-simple');
+  const tA = document.getElementById('thr-abs');
+  const vd = document.getElementById('verdict');
+  tS.className = 'threshold'; tA.className = 'threshold';
+  vd.className = 'verdict'; vd.textContent = '';
+
+  const emitidos = f + c;
+  if (emitidos > 0) {
+    if (f > c) {
+      tS.classList.add('reached-favor');
+      if (f >= 176) tA.classList.add('reached-favor');
+      vd.classList.add('aprobado');
+      vd.textContent = f >= 176
+        ? `✓ Aprobado — mayoría absoluta (${f})`
+        : `✓ Aprobado — mayoría simple (${f} > ${c})`;
+    } else {
+      tS.classList.add('reached-contra');
+      vd.classList.add('rechazado');
+      vd.textContent = `✗ Rechazado — ${c} en contra vs ${f} a favor`;
+    }
+  }
+  resetColors();
+}
+
+function resetColors() {
+  document.querySelectorAll('#seats-g circle').forEach(el => {
+    const pid = el.dataset.party;
+    const v = votes[pid];
+    if (v === 'F') { el.setAttribute('fill','#2e9e52'); el.setAttribute('opacity','0.9'); }
+    else if (v === 'C') { el.setAttribute('fill','#c73b3b'); el.setAttribute('opacity','0.9'); }
+    else if (v === 'A') { el.setAttribute('fill','#8a8796'); el.setAttribute('opacity','0.7'); }
+    else {
+      const p = PARTIES.find(x=>x.id===pid);
+      el.setAttribute('fill', p ? p.color : '#888');
+      el.setAttribute('opacity', '0.8');
+    }
+  });
+}
+
+function highlightP(id) {
+  document.querySelectorAll('#seats-g circle').forEach(el => {
+    el.setAttribute('opacity', el.dataset.party === id ? '1' : '0.1');
+  });
+}
+
+const PRESETS = {
+  reset: {},
+  investidura: { psoe:'F', sumar:'F', junts:'F', erc:'F', bildu:'F', pnv:'F', bng:'F', cc:'F', pp:'C', vox:'C', upn:'C', otros:'A' },
+  'mocion-vox': { vox:'F', pp:'F', psoe:'C', sumar:'C', junts:'C', erc:'C', bildu:'C', pnv:'C', bng:'C', cc:'C', upn:'A', otros:'A' },
+  'pp-vox': { pp:'F', vox:'F', upn:'F', psoe:'C', sumar:'C', bildu:'C', bng:'C', junts:'A', erc:'A', pnv:'A', cc:'A', otros:'A' },
+};
+
+function applyPreset(name) {
+  const pre = PRESETS[name];
+  PARTIES.forEach(p => { votes[p.id] = pre[p.id] || null; });
+  document.querySelectorAll('.vbtn').forEach(b => b.classList.remove('active-F','active-C','active-A'));
+  PARTIES.forEach(p => {
+    if (votes[p.id]) {
+      const btn = document.querySelector(`.vbtn[data-p="${p.id}"][data-v="${votes[p.id]}"]`);
+      if (btn) btn.classList.add('active-'+votes[p.id]);
+    }
+  });
+  updateCounts();
+}
+
+// Tooltip hemiciclo
+const tip = document.getElementById('tooltip');
+function showTip(e, text) { tip.textContent = text; tip.classList.add('visible'); moveTip(e); }
+function moveTip(e) { tip.style.left=(e.clientX+12)+'px'; tip.style.top=(e.clientY-30)+'px'; }
+function hideTip() { tip.classList.remove('visible'); }
+
+// Init
+buildHemiciclo();
+buildLegend();
+buildSim();
 </script>
 </body>
 </html>
