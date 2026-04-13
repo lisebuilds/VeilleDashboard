@@ -36,24 +36,35 @@
 
 html { scroll-behavior: smooth; }
 
+html {
+  height: 100%;
+  height: 100dvh;
+}
+
 body {
   background: var(--white);
   color: var(--black);
   font-family: 'Barlow', sans-serif;
-  font-size: 15px;
-  min-height: 100vh;
+  font-size: clamp(13px, 1.6vw, 15px);
+  margin: 0;
+  min-height: 100%;
+  min-height: 100dvh;
+  height: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* ── HEADER ── */
 .site-header {
   background: var(--purple);
-  padding: 0 1.2rem;
+  padding: 0 clamp(0.75rem, 3vw, 1.2rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 56px;
-  position: sticky;
-  top: 0;
+  flex: 0 0 auto;
+  min-height: 3.25rem;
   z-index: 100;
   border-bottom: 3px solid var(--yellow);
 }
@@ -105,8 +116,7 @@ body {
   overflow-x: auto;
   scrollbar-width: none;
   border-bottom: 3px solid var(--purple);
-  position: sticky;
-  top: 56px;
+  flex: 0 0 auto;
   z-index: 99;
 }
 
@@ -133,20 +143,28 @@ body {
 .tab-btn.active { background: var(--purple); color: var(--yellow); }
 
 /* ── PANELS ── */
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
+.tab-panel {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.tab-panel.active { display: flex; }
 
 /* ──────────────────────────────────────────
    TAB 1 — VEILLE
 ────────────────────────────────────────── */
 .veille-header {
   background: var(--purple);
-  padding: 1.2rem;
+  padding: clamp(0.65rem, 2vw, 1.2rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .veille-title {
@@ -233,9 +251,20 @@ body {
 }
 
 .veille-block-body {
-  padding: 1rem;
-  min-height: 120px;
+  padding: clamp(0.5rem, 2vw, 1rem);
   background: var(--white);
+}
+
+#panel-veille {
+  flex-direction: column;
+}
+
+#panel-veille .veille-grid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .veille-item {
@@ -327,7 +356,8 @@ body {
    TAB 2 — MATRICE
 ────────────────────────────────────────── */
 .matrice-panel {
-  height: calc(100vh - 112px);
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   background: #F7F5F0;
@@ -436,12 +466,13 @@ body {
 }
 
 .matrix-legend-col {
-  width: 11.25rem;
-  flex-shrink: 0;
+  flex: 0 1 32%;
+  min-width: 0;
+  max-width: min(38%, 14em);
   display: flex;
   flex-direction: column;
   border-left: 1px solid #E0DDD5;
-  padding-left: 0.65rem;
+  padding-left: clamp(0.35rem, 1.5vw, 0.65rem);
   min-height: 0;
   max-height: 100%;
   overflow: hidden;
@@ -497,7 +528,24 @@ body {
   color: #7A7870;
 }
 
-svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
+.matrix-svg-host {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+svg.matrix {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: block;
+  flex: 1;
+  min-height: 0;
+}
 
 .mat-tooltip {
   position: fixed;
@@ -629,9 +677,9 @@ svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
 }
 
 #mat-swipe-panel .matrix-legend-col {
-  width: 6.75rem;
-  min-width: 6.2rem;
-  padding-left: 0.45rem;
+  flex: 0 1 36%;
+  max-width: min(42%, 11em);
+  padding-left: 0.35rem;
 }
 
 #mat-swipe-panel .matrix-legend-title {
@@ -668,40 +716,72 @@ svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
    TAB 3 — HEMICICLO
 ────────────────────────────────────────── */
 .hemiciclo-panel {
-  padding: 1rem;
-  max-width: 1100px;
-  margin: 0 auto;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(0.35rem, 1.2vw, 0.75rem) clamp(0.5rem, 2vw, 1rem);
+  overflow: hidden;
 }
 
 .hemiciclo-visual-row {
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  gap: 0.85rem 1rem;
-  margin: 1rem 0;
+  gap: clamp(0.4rem, 1.5vw, 0.85rem);
+  flex: 1;
+  min-height: 0;
   min-width: 0;
 }
 
-.hemiciclo-visual-row .hemiciclo-svg-wrap {
+.hemiciclo-chart-col {
   flex: 1;
   min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hemiciclo-svg-wrap {
   margin: 0;
+  background: var(--purple);
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 100 / 54;
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#hemiciclo-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  flex: 1;
+  min-height: 0;
 }
 
 .hemiciclo-legend-side {
-  width: 11rem;
-  flex-shrink: 0;
+  flex: 0 1 30%;
+  min-width: 0;
+  max-width: min(36%, 13em);
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  gap: 0.35rem;
+  gap: 0.25rem;
   align-content: flex-start;
-  max-height: min(72vh, 520px);
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0.35rem 0.15rem 0.35rem 0.5rem;
+  padding: 0.15rem 0 0.15rem clamp(0.3rem, 1.2vw, 0.5rem);
   border-left: 1px solid rgba(245,194,0,0.25);
   align-self: stretch;
+  -webkit-overflow-scrolling: touch;
 }
 
 .hemiciclo-legend-side .party-chip {
@@ -715,49 +795,58 @@ svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
   }
 }
 
+.hemi-slice {
+  stroke: rgba(14, 12, 20, 0.12);
+  stroke-width: 0.15;
+  vector-effect: non-scaling-stroke;
+  cursor: default;
+  transition: opacity 0.12s ease;
+}
+
 @media (max-width: 720px) {
   .hemiciclo-visual-row {
     flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  .hemiciclo-chart-col {
+    flex: 0 1 auto;
+    max-height: 55%;
+  }
+  .hemiciclo-svg-wrap {
+    max-height: min(42vh, 100%);
   }
   .hemiciclo-legend-side {
+    flex: 1 1 auto;
+    max-width: none;
     width: 100%;
-    max-height: none;
     border-left: none;
     border-top: 1px solid rgba(245,194,0,0.25);
-    padding: 0.6rem 0 0;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.35rem 0.5rem;
+    padding: 0.45rem 0 0;
+    min-height: 0;
   }
 }
 
 .section-title {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 2.8vw, 1.25rem);
   color: var(--purple);
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin-bottom: 0.2rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.15rem;
+  padding-bottom: 0.35rem;
   border-bottom: 3px solid var(--yellow);
   display: inline-block;
+  flex-shrink: 0;
 }
-
-.hemiciclo-svg-wrap {
-  margin: 0;
-  background: var(--purple);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-#hemiciclo-svg { width: 100%; height: auto; display: block; }
 
 .vote-summary {
   background: var(--surface);
   border: 1px solid var(--border);
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: clamp(0.5rem, 2vw, 0.85rem);
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
 }
 
 .vote-bars { display: flex; height: 10px; gap: 2px; margin-bottom: 1rem; border-radius: 2px; overflow: hidden; }
@@ -846,22 +935,40 @@ svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
 
 .party-seats-n { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--gray); }
 
+.hemiciclo-sim-block {
+  flex: 0 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .sim-title {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 800;
-  font-size: 1rem;
+  font-size: clamp(0.82rem, 2.2vw, 1rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--purple);
-  margin: 1.2rem 0 0.8rem;
+  margin: 0.35rem 0 0.45rem;
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  flex-shrink: 0;
 }
 
 .sim-title::after { content: ''; flex: 1; height: 2px; background: var(--yellow); }
 
-.sim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.4rem; }
+.sim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+  gap: 0.35rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  align-content: start;
+}
+
 
 .sim-row {
   background: var(--surface);
@@ -909,7 +1016,7 @@ svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
 .vbtn.active-C { background: rgba(199,59,59,0.12); border-color: #c73b3b; color: #c73b3b; }
 .vbtn.active-A { background: rgba(138,135,150,0.15); border-color: #8a8796; color: #8a8796; }
 
-.presets { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.8rem; }
+.presets { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.45rem; flex-shrink: 0; }
 
 .preset-btn {
   font-family: 'Barlow Condensed', sans-serif;
@@ -944,6 +1051,7 @@ svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
 }
 
 #tooltip.visible { opacity: 1; }
+#tooltip.hemi-tip { white-space: normal; max-width: min(16rem, 90vw); line-height: 1.35; }
 
 /* ── ANIMATIONS ── */
 @keyframes fadeUp {
@@ -1101,21 +1209,21 @@ svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
     <div class="section-title">Hemiciclo · Simulador</div>
 
     <div class="hemiciclo-visual-row">
-      <div class="hemiciclo-svg-wrap">
-        <svg id="hemiciclo-svg" viewBox="0 0 680 400" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="bgHem" cx="50%" cy="100%" r="75%">
-              <stop offset="0%" stop-color="#3d2a80"/>
-              <stop offset="100%" stop-color="#1a1040"/>
-            </radialGradient>
-          </defs>
-          <rect width="680" height="400" fill="url(#bgHem)"/>
-          <line x1="40" y1="358" x2="640" y2="358" stroke="rgba(245,194,0,0.2)" stroke-width="1"/>
-          <rect x="300" y="351" width="80" height="14" rx="1" fill="rgba(45,27,107,0.8)" stroke="rgba(245,194,0,0.3)"/>
-          <text x="340" y="361.5" text-anchor="middle" fill="rgba(245,194,0,0.5)" font-family="IBM Plex Mono,monospace" font-size="6.5" letter-spacing="0.06em">PRESIDENCIA</text>
-          <g id="seats-g"></g>
-          <text x="340" y="388" text-anchor="middle" fill="rgba(245,194,0,0.35)" font-family="IBM Plex Mono,monospace" font-size="7" letter-spacing="0.1em">176 · MAYORÍA SIMPLE · 350 ESCAÑOS</text>
-        </svg>
+      <div class="hemiciclo-chart-col">
+        <div class="hemiciclo-svg-wrap">
+          <svg id="hemiciclo-svg" viewBox="0 4 100 54" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bgHemLin" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#4a3a78"/>
+                <stop offset="100%" stop-color="#12081f"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="4" width="100" height="54" fill="url(#bgHemLin)"/>
+            <g id="seats-g"></g>
+            <line x1="8" y1="52.4" x2="92" y2="52.4" stroke="rgba(245,194,0,0.22)" stroke-width="0.2" vector-effect="non-scaling-stroke"/>
+            <text x="50" y="55.6" text-anchor="middle" fill="rgba(245,194,0,0.42)" font-family="IBM Plex Mono,monospace" font-size="1.65" letter-spacing="0.04em">176 · mayoría simple · 350</text>
+          </svg>
+        </div>
       </div>
       <aside class="hemiciclo-legend-side parties-legend" id="parties-legend" aria-label="Grupo parlamentario"></aside>
     </div>
@@ -1139,13 +1247,15 @@ svg.matrix { width: 100%; flex: 1; min-height: 0; display: block; }
       <div class="verdict" id="verdict"></div>
     </div>
 
-    <div class="sim-title">Simular votación</div>
-    <div class="sim-grid" id="sim-grid"></div>
-    <div class="presets">
-      <button class="preset-btn" onclick="applyPreset('reset')">Limpiar</button>
-      <button class="preset-btn" onclick="applyPreset('investidura')">Investidura Sánchez</button>
-      <button class="preset-btn" onclick="applyPreset('mocion-vox')">Moción VOX</button>
-      <button class="preset-btn" onclick="applyPreset('pp-vox')">Bloqueo PP+VOX</button>
+    <div class="hemiciclo-sim-block">
+      <div class="sim-title">Simular votación</div>
+      <div class="sim-grid" id="sim-grid"></div>
+      <div class="presets">
+        <button class="preset-btn" onclick="applyPreset('reset')">Limpiar</button>
+        <button class="preset-btn" onclick="applyPreset('investidura')">Investidura Sánchez</button>
+        <button class="preset-btn" onclick="applyPreset('mocion-vox')">Moción VOX</button>
+        <button class="preset-btn" onclick="applyPreset('pp-vox')">Bloqueo PP+VOX</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1408,7 +1518,7 @@ function renderPortadas(el, items) {
       '<div class="matrix-header"><div class="matrix-title">' + region.name[MAT.lang] + '</div>' +
       '<div class="matrix-subtitle">' + region.subtitle[MAT.lang] + '</div></div>' +
       matBuildElectionsPanel(region) +
-      matBuildSVG(region.parties) +
+      '<div class="matrix-svg-host">' + matBuildSVG(region.parties) + '</div>' +
       '<p class="mat-note">' + T[MAT.lang].note + '</p>' +
       '</div>' +
       '<aside class="matrix-legend-col" aria-label="' + T[MAT.lang].legendTitle + '">' +
@@ -1462,7 +1572,7 @@ function renderPortadas(el, items) {
         '</g>';
     }).join('');
 
-    return '<svg class="matrix" viewBox="45 12 590 460" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">' +
+    return '<svg class="matrix" viewBox="45 12 590 460" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">' +
       '<defs><marker id="aw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
       '<rect x="70" y="40" width="256" height="215" fill="#3B8BD4" opacity="0.04" rx="4"/>' +
       '<rect x="326" y="40" width="274" height="215" fill="#C8392B" opacity="0.04" rx="4"/>' +
@@ -1538,7 +1648,7 @@ function renderPortadas(el, items) {
       '<div class="matrix-main-col" style="min-height:0;">' +
       '<div class="matrix-subtitle" style="flex-shrink:0;margin-bottom:0.1rem;">' + region.subtitle[MAT.lang] + '</div>' +
       matBuildElectionsPanel(region) +
-      matBuildMobileSVG(region.parties) +
+      '<div class="matrix-svg-host">' + matBuildMobileSVG(region.parties) + '</div>' +
       '</div>' +
       '<aside class="matrix-legend-col" aria-label="' + T[MAT.lang].legendTitle + '">' +
       '<div class="matrix-legend-title">' + T[MAT.lang].legendTitle + '</div>' +
@@ -1581,7 +1691,7 @@ function renderPortadas(el, items) {
         '<text x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '" font-size="11" font-weight="500" fill="' + p.color + '" font-family="DM Sans,sans-serif">' + p.name + '</text>' +
         '</g>';
     }).join('');
-    return '<svg style="width:100%;flex:1;min-height:0;display:block;" viewBox="45 12 590 460" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">' +
+    return '<svg class="matrix matrix--mobile" viewBox="45 12 590 460" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">' +
       '<line x1="70" y1="255" x2="600" y2="255" stroke="#bbb" stroke-width="1"/>' +
       '<line x1="326" y1="40" x2="326" y2="455" stroke="#bbb" stroke-width="1"/>' +
       '<text x="82" y="249" font-size="11" fill="#bbb" font-family="DM Sans,sans-serif">' + t.axLeft + '</text>' +
@@ -1703,59 +1813,55 @@ const PARTIES = [
 
 const votes = {};
 
+function hemAnnularSector(cx, cy, ri, ro, t0, t1) {
+  function fmt(n) { return (Math.round(n * 10000) / 10000).toString(); }
+  const xis = cx + ri * Math.cos(t0), yis = cy - ri * Math.sin(t0);
+  const xos = cx + ro * Math.cos(t0), yos = cy - ro * Math.sin(t0);
+  const xoe = cx + ro * Math.cos(t1), yoe = cy - ro * Math.sin(t1);
+  const xie = cx + ri * Math.cos(t1), yie = cy - ri * Math.sin(t1);
+  const dTheta = t0 - t1;
+  const large = Math.abs(dTheta) > Math.PI ? 1 : 0;
+  const sweepO = dTheta > 0 ? 1 : 0;
+  const sweepI = dTheta > 0 ? 0 : 1;
+  return 'M' + fmt(xis) + ' ' + fmt(yis) +
+    'L' + fmt(xos) + ' ' + fmt(yos) +
+    'A' + fmt(ro) + ' ' + fmt(ro) + ' 0 ' + large + ' ' + sweepO + ' ' + fmt(xoe) + ' ' + fmt(yoe) +
+    'L' + fmt(xie) + ' ' + fmt(yie) +
+    'A' + fmt(ri) + ' ' + fmt(ri) + ' 0 ' + large + ' ' + sweepI + ' ' + fmt(xis) + ' ' + fmt(yis) + 'Z';
+}
+
 function buildHemiciclo() {
   const g = document.getElementById('seats-g');
   if (!g) return;
   while (g.firstChild) g.removeChild(g.firstChild);
 
-  const cx = 340;
-  const cy = 358;
+  const cx = 50;
+  const cy = 52;
+  const ri = 17;
+  const ro = 44;
   const total = PARTIES.reduce(function(s, p) { return s + p.seats; }, 0);
   if (!total) return;
-
-  const nRings = 5;
-  const rMin = 86;
-  const rMax = 252;
-  const radii = [];
-  for (let ri = 0; ri < nRings; ri++) {
-    radii.push(rMin + (rMax - rMin) * (ri / Math.max(1, nRings - 1)));
-  }
 
   let cum = 0;
   PARTIES.forEach(function(p) {
     const s = p.seats;
     if (s <= 0) return;
-    const a0 = Math.PI * (1 - cum / total);
-    const a1 = Math.PI * (1 - (cum + s) / total);
-    let placed = 0;
-    for (let ring = 0; ring < nRings && placed < s; ring++) {
-      const ringsLeft = nRings - ring;
-      const inRing = Math.min(Math.ceil((s - placed) / ringsLeft), s - placed);
-      const r = radii[ring];
-      for (let k = 0; k < inRing; k++) {
-        let theta;
-        if (inRing <= 1) {
-          theta = (a0 + a1) / 2;
-        } else {
-          theta = a1 + ((k + 0.5) / inRing) * (a0 - a1);
-        }
-        const x = cx + r * Math.cos(theta);
-        const y = cy - r * Math.sin(theta);
-        const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        el.setAttribute('cx', x.toFixed(1));
-        el.setAttribute('cy', y.toFixed(1));
-        el.setAttribute('r', '4.6');
-        el.setAttribute('fill', p.color);
-        el.setAttribute('opacity', '0.82');
-        el.dataset.party = p.id;
-        el.dataset.name = p.name;
-        el.addEventListener('mouseenter', function(e) { showTip(e, p.name); });
-        el.addEventListener('mousemove', moveTip);
-        el.addEventListener('mouseleave', hideTip);
-        g.appendChild(el);
-        placed++;
-      }
-    }
+    const t0 = Math.PI * (1 - cum / total);
+    const t1 = Math.PI * (1 - (cum + s) / total);
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', hemAnnularSector(cx, cy, ri, ro, t0, t1));
+    path.setAttribute('fill', p.color);
+    path.setAttribute('opacity', '0.92');
+    path.setAttribute('class', 'hemi-slice');
+    path.dataset.party = p.id;
+    path.dataset.name = p.name;
+    path.dataset.seats = String(s);
+    path.addEventListener('mouseenter', function(e) {
+      showTip(e, p.name + ' — ' + p.seats + ' escaños');
+    });
+    path.addEventListener('mousemove', moveTip);
+    path.addEventListener('mouseleave', hideTip);
+    g.appendChild(path);
     cum += s;
   });
 }
@@ -1841,23 +1947,23 @@ function updateCounts() {
 }
 
 function resetColors() {
-  document.querySelectorAll('#seats-g circle').forEach(el => {
+  document.querySelectorAll('#seats-g path.hemi-slice').forEach(function(el) {
     const pid = el.dataset.party;
     const v = votes[pid];
-    if (v === 'F') { el.setAttribute('fill','#2e9e52'); el.setAttribute('opacity','0.9'); }
-    else if (v === 'C') { el.setAttribute('fill','#c73b3b'); el.setAttribute('opacity','0.9'); }
-    else if (v === 'A') { el.setAttribute('fill','#8a8796'); el.setAttribute('opacity','0.7'); }
+    if (v === 'F') { el.setAttribute('fill', '#2e9e52'); el.setAttribute('opacity', '0.95'); }
+    else if (v === 'C') { el.setAttribute('fill', '#c73b3b'); el.setAttribute('opacity', '0.95'); }
+    else if (v === 'A') { el.setAttribute('fill', '#8a8796'); el.setAttribute('opacity', '0.85'); }
     else {
-      const p = PARTIES.find(x=>x.id===pid);
+      const p = PARTIES.find(function(x) { return x.id === pid; });
       el.setAttribute('fill', p ? p.color : '#888');
-      el.setAttribute('opacity', '0.8');
+      el.setAttribute('opacity', '0.92');
     }
   });
 }
 
 function highlightP(id) {
-  document.querySelectorAll('#seats-g circle').forEach(el => {
-    el.setAttribute('opacity', el.dataset.party === id ? '1' : '0.1');
+  document.querySelectorAll('#seats-g path.hemi-slice').forEach(function(el) {
+    el.setAttribute('opacity', el.dataset.party === id ? '1' : '0.18');
   });
 }
 
@@ -1883,9 +1989,14 @@ function applyPreset(name) {
 
 // Tooltip hemiciclo
 const tip = document.getElementById('tooltip');
-function showTip(e, text) { tip.textContent = text; tip.classList.add('visible'); moveTip(e); }
+function showTip(e, text) {
+  tip.textContent = text;
+  tip.classList.toggle('hemi-tip', text.indexOf('escaños') !== -1);
+  tip.classList.add('visible');
+  moveTip(e);
+}
 function moveTip(e) { tip.style.left=(e.clientX+12)+'px'; tip.style.top=(e.clientY-30)+'px'; }
-function hideTip() { tip.classList.remove('visible'); }
+function hideTip() { tip.classList.remove('visible', 'hemi-tip'); }
 
 // Init
 buildHemiciclo();
