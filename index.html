@@ -1059,708 +1059,124 @@ svg.matrix {
 #tooltip.visible { opacity: 1; }
 #tooltip.hemi-tip { white-space: normal; max-width: min(16rem, 90vw); line-height: 1.35; }
 
-
-/* ── PORTADAS V2 — 8 médias avec brand colors ── */
-.portadas-grid-8 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.4rem;
-}
-@media (max-width: 600px) {
-  .portadas-grid-8 { grid-template-columns: repeat(2, 1fr); }
-}
-.portada-card-v2 {
-  display: flex;
-  flex-direction: column;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-  text-decoration: none;
-  transition: box-shadow 0.15s, transform 0.1s;
-}
-.portada-card-v2:hover {
-  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-  transform: translateY(-1px);
-}
-.portada-stripe-v2 {
-  height: 4px;
-  background: var(--brand, #2D1B6B);
-  flex-shrink: 0;
-}
-.portada-inner-v2 { padding: 0.4rem 0.5rem; }
-.portada-nombre-v2 {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--brand, #2D1B6B);
-  margin-bottom: 0.2rem;
-}
-.portada-titular-v2 {
-  font-size: 0.7rem;
-  line-height: 1.35;
-  color: var(--black);
-}
-
-/* ── VEILLE ITEMS — liens cliquables ── */
-.veille-item a {
-  color: inherit;
-  text-decoration: none;
-}
-.veille-item a:hover .veille-item-text {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-/* ──────────────────────────────────────────
-   TAB 4 — GLOSARIO
-────────────────────────────────────────── */
-.glosario-panel {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: clamp(0.75rem, 2vw, 1.2rem);
-  gap: 1.5rem;
-}
-
-.glos-section-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900;
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--purple);
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.75rem;
-}
-.glos-section-title::after {
-  content: '';
-  flex: 1;
-  height: 2px;
-  background: var(--yellow);
-}
-
-/* Org chart */
-.orgchart-wrap {
-  background: var(--white);
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  padding: 1rem;
-  overflow-x: auto;
-}
-.orgchart-wrap svg { display: block; min-width: 640px; }
-
-.node-detail {
-  background: var(--purple);
-  border-radius: 8px;
-  padding: 0.85rem 1rem;
-  display: none;
-  margin-top: 1rem;
-}
-.node-detail.visible { display: block; }
-.nd-name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--yellow);
-}
-.nd-type {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.62rem;
-  color: rgba(245,194,0,0.55);
-  margin-top: 0.1rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.nd-desc {
-  font-size: 0.8rem;
-  color: #E8E5F5;
-  line-height: 1.6;
-  margin-top: 0.6rem;
-}
-.nd-powers {
-  margin-top: 0.6rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-}
-.nd-power-tag {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 3px;
-  background: rgba(245,194,0,0.15);
-  color: var(--yellow);
-  letter-spacing: 0.04em;
-}
-
-.org-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-  margin-top: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--border);
-}
-.leg-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  color: var(--gray);
-}
-.leg-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-
-/* Glossaire */
-.gloss-search-wrap { position: relative; }
-.gloss-search {
-  width: 100%;
-  padding: 0.6rem 0.85rem 0.6rem 2.2rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--white);
-  font-family: 'Barlow', sans-serif;
-  font-size: 0.85rem;
-  color: var(--black);
-  outline: none;
-  transition: border-color 0.15s;
-}
-.gloss-search:focus { border-color: var(--purple-light); }
-.search-icon {
-  position: absolute;
-  left: 0.7rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.85rem;
-  color: var(--gray);
-  pointer-events: none;
-}
-
-.gloss-themes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: 0.6rem;
-}
-.theme-btn {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.65rem;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--white);
-  color: var(--gray);
-  cursor: pointer;
-  transition: all 0.12s;
-}
-.theme-btn:hover { border-color: var(--purple-light); color: var(--purple); }
-.theme-btn.active { background: var(--purple); color: var(--yellow); border-color: var(--purple); }
-
-.gloss-count {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  color: var(--gray);
-  margin-top: 0.4rem;
-}
-
-.gloss-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-top: 0.6rem;
-}
-.gloss-item {
-  background: var(--white);
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-.gloss-item-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.6rem 0.85rem;
-  cursor: pointer;
-  gap: 0.6rem;
-  transition: background 0.12s;
-}
-.gloss-item-header:hover { background: var(--surface); }
-.gloss-term {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--purple);
-  letter-spacing: 0.02em;
-  flex: 1;
-}
-.gloss-theme-pill {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
-  padding: 0.15rem 0.45rem;
-  border-radius: 10px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.pill-parl    { background: #E0EEF8; color: #003070; }
-.pill-exec    { background: #E8E4F5; color: #2D1B6B; }
-.pill-budget  { background: #FCF0E0; color: #7A3A00; }
-.pill-coal    { background: #E8F5E8; color: #1A4A1A; }
-.pill-elec    { background: #FFF8E0; color: #7A5C00; }
-.pill-const   { background: #F5E8F0; color: #5A1A4A; }
-.gloss-chevron {
-  font-size: 0.6rem;
-  color: var(--gray);
-  transition: transform 0.15s;
-  flex-shrink: 0;
-}
-.gloss-item.open .gloss-chevron { transform: rotate(180deg); }
-.gloss-def {
-  display: none;
-  padding: 0.6rem 0.85rem 0.85rem;
-  font-size: 0.8rem;
-  line-height: 1.65;
-  color: #3D3A50;
-  border-top: 1px solid var(--border);
-}
-.gloss-item.open .gloss-def { display: block; }
-.gloss-empty {
-  font-size: 0.75rem;
-  color: var(--gray);
-  text-align: center;
-  padding: 1.5rem;
-  font-family: 'IBM Plex Mono', monospace;
-}
-
 /* ── ANIMATIONS ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-</style>
 
 /* ──────────────────────────────────────────
    VEILLE v4 — cartes avec souffle
 ────────────────────────────────────────── */
 .veille-body {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; padding: 12px;
+  display: flex; flex-direction: column; gap: 10px;
 }
-
-.veille-row-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-@media (max-width: 600px) {
-  .veille-row-2 { grid-template-columns: 1fr; }
-}
-
+.veille-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 600px) { .veille-row-2 { grid-template-columns: 1fr; } }
 .v-card {
-  background: var(--white);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  overflow: hidden;
-  box-shadow: 0 1px 4px rgba(45,27,107,0.06);
-  animation: fadeUp 0.3s ease both;
+  background: var(--white); border-radius: 10px; border: 1px solid var(--border);
+  overflow: hidden; box-shadow: 0 1px 4px rgba(45,27,107,0.06); animation: fadeUp 0.3s ease both;
 }
-
 .v-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  background: #F0EDE0;
-  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; background: #F0EDE0; border-bottom: 1px solid var(--border);
 }
-
 .v-card-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--purple);
-  display: flex;
-  align-items: center;
-  gap: 7px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--purple);
+  display: flex; align-items: center; gap: 7px;
 }
-
-.v-card-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--yellow);
-  flex-shrink: 0;
-}
-
+.v-card-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--yellow); flex-shrink: 0; }
 .v-card-dot.purple { background: var(--purple-light); }
-
-.v-card-date {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.56rem;
-  color: var(--gray);
-}
-
-.v-card-body {
-  padding: 8px 12px;
-}
-
-.v-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 7px 0;
-  border-bottom: 1px solid #EDEAE0;
-}
-
+.v-card-date { font-family: 'IBM Plex Mono', monospace; font-size: 0.56rem; color: var(--gray); }
+.v-card-body { padding: 8px 12px; }
+.v-item { display: flex; align-items: flex-start; gap: 8px; padding: 7px 0; border-bottom: 1px solid #EDEAE0; }
 .v-item:last-child { border-bottom: none; }
-
 .v-item-badge {
-  flex-shrink: 0;
-  width: 18px; height: 18px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  font-weight: 700;
-  margin-top: 1px;
+  flex-shrink: 0; width: 18px; height: 18px; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; margin-top: 1px;
 }
-
 .badge-star { background: var(--yellow); color: var(--purple); }
 .badge-arrow { background: #EAE7F5; color: var(--purple); }
-
-.v-item-link {
-  font-size: 0.76rem;
-  line-height: 1.45;
-  color: var(--black);
-  text-decoration: none;
-  flex: 1;
-}
-
+.v-item-link { font-size: 0.76rem; line-height: 1.45; color: var(--black); text-decoration: none; flex: 1; }
 .v-item-link:hover { color: var(--purple); text-decoration: underline; }
-
-/* Portadas v4 */
-.portadas-v4-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding: 10px 12px 12px;
-}
-
-@media (max-width: 600px) {
-  .portadas-v4-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
+.portadas-v4-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 10px 12px 12px; }
+@media (max-width: 600px) { .portadas-v4-grid { grid-template-columns: repeat(2, 1fr); } }
 .portada-v4 {
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  transition: box-shadow 0.15s;
+  background: #fff; border-radius: 8px; border: 1px solid var(--border);
+  overflow: hidden; display: flex; flex-direction: column;
+  text-decoration: none; transition: box-shadow 0.15s;
 }
-
-.portada-v4:hover {
-  box-shadow: 0 3px 10px rgba(45,27,107,0.12);
-}
-
+.portada-v4:hover { box-shadow: 0 3px 10px rgba(45,27,107,0.12); }
 .portada-v4-stripe { height: 4px; width: 100%; flex-shrink: 0; }
-
 .portada-v4-inner { padding: 7px 8px; flex: 1; }
-
 .portada-v4-nombre {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 4px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;
 }
-
-.portada-v4-titular {
-  font-size: 0.7rem;
-  line-height: 1.4;
-  color: var(--black);
-}
-
-/* RTVE + BOE accent violet */
+.portada-v4-titular { font-size: 0.7rem; line-height: 1.4; color: var(--black); }
 .v-card.purple-accent { border-left: 4px solid var(--purple-light); }
 .v-card.purple-accent .v-card-header { background: #EAE7F5; border-bottom-color: #D5CFEE; }
 
 /* ──────────────────────────────────────────
    TAB 4 — GLOSARIO
 ────────────────────────────────────────── */
-#panel-glosario {
-  flex-direction: column;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.glosario-body {
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
+#panel-glosario { flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.glosario-body { padding: 14px; display: flex; flex-direction: column; gap: 18px; }
 .glos-section-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--purple);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 0.95rem;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--purple);
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
 }
-
-.glos-section-title::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-/* Orgchart */
-.orgchart-wrap {
-  background: var(--white);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  padding: 14px;
-  overflow-x: auto;
-}
-
-.org-node-detail {
-  background: var(--purple);
-  border-radius: 8px;
-  padding: 11px 13px;
-  display: none;
-  margin-top: 12px;
-}
-
+.glos-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.orgchart-wrap { background: var(--white); border-radius: 10px; border: 1px solid var(--border); padding: 14px; overflow-x: auto; }
+.org-node-detail { background: var(--purple); border-radius: 8px; padding: 11px 13px; display: none; margin-top: 12px; }
 .org-node-detail.visible { display: block; }
-
-.ond-name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--yellow);
-}
-
-.ond-type {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  color: rgba(245,194,0,0.55);
-  margin-top: 2px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.ond-desc {
-  font-size: 0.75rem;
-  color: #E8E5F5;
-  line-height: 1.6;
-  margin-top: 7px;
-}
-
-.ond-powers {
-  margin-top: 7px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.ond-tag {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  padding: 2px 6px;
-  border-radius: 3px;
-  background: rgba(245,194,0,0.15);
-  color: var(--yellow);
-}
-
-.org-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
-}
-
-.org-leg-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  color: var(--gray);
-}
-
-.org-leg-dot {
-  width: 8px; height: 8px;
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-
-/* Glossaire */
+.ond-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--yellow); }
+.ond-type { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: rgba(245,194,0,0.55); margin-top: 2px; letter-spacing: 0.08em; text-transform: uppercase; }
+.ond-desc { font-size: 0.75rem; color: #E8E5F5; line-height: 1.6; margin-top: 7px; }
+.ond-powers { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 4px; }
+.ond-tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; padding: 2px 6px; border-radius: 3px; background: rgba(245,194,0,0.15); color: var(--yellow); }
+.org-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+.org-leg-item { display: flex; align-items: center; gap: 5px; font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: var(--gray); }
+.org-leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 .gloss-search-wrap { position: relative; }
-
 .gloss-search {
-  width: 100%;
-  padding: 9px 13px 9px 34px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--white);
-  font-family: 'Barlow', sans-serif;
-  font-size: 0.82rem;
-  color: var(--black);
-  outline: none;
+  width: 100%; padding: 9px 13px 9px 34px; border: 1px solid var(--border);
+  border-radius: 7px; background: var(--white); font-family: 'Barlow', sans-serif;
+  font-size: 0.82rem; color: var(--black); outline: none;
 }
-
 .gloss-search:focus { border-color: var(--purple-light); }
-
-.gloss-search-icon {
-  position: absolute;
-  left: 11px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.82rem;
-  color: var(--gray);
-  pointer-events: none;
-}
-
-.gloss-themes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 8px;
-}
-
+.gloss-search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 0.82rem; color: var(--gray); pointer-events: none; }
+.gloss-themes { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
 .gloss-theme-btn {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 3px 9px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--white);
-  color: var(--gray);
-  cursor: pointer;
-  transition: all 0.12s;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+  border: 1px solid var(--border); background: var(--white); color: var(--gray); cursor: pointer; transition: all 0.12s;
 }
-
 .gloss-theme-btn:hover { border-color: var(--purple-light); color: var(--purple); }
 .gloss-theme-btn.active { background: var(--purple); color: var(--yellow); border-color: var(--purple); }
-
-.gloss-count {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  color: var(--gray);
-  margin-top: 5px;
-}
-
-.gloss-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-top: 8px;
-}
-
-.gloss-item {
-  background: var(--white);
-  border-radius: 7px;
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-
-.gloss-item-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px 12px;
-  cursor: pointer;
-  gap: 8px;
-}
-
+.gloss-count { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: var(--gray); margin-top: 5px; }
+.gloss-list { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; }
+.gloss-item { background: var(--white); border-radius: 7px; border: 1px solid var(--border); overflow: hidden; }
+.gloss-item-head { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; cursor: pointer; gap: 8px; }
 .gloss-item-head:hover { background: #F0EDE0; }
-
-.gloss-term {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--purple);
-}
-
-.gloss-pill {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.56rem;
-  padding: 2px 6px;
-  border-radius: 10px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.pill-parl   { background: #E0EEF8; color: #003070; }
-.pill-exec   { background: #EAE7F5; color: #2D1B6B; }
+.gloss-term { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--purple); }
+.gloss-pill { font-family: 'IBM Plex Mono', monospace; font-size: 0.56rem; padding: 2px 6px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+.pill-parl { background: #E0EEF8; color: #003070; }
+.pill-exec { background: #EAE7F5; color: #2D1B6B; }
 .pill-budget { background: #FCF0E0; color: #7A3A00; }
-.pill-coal   { background: #E8F5E8; color: #1A4A1A; }
-.pill-elec   { background: #FFF8E0; color: #7A5C00; }
-.pill-const  { background: #F5E8F0; color: #5A1A4A; }
-
-.gloss-chevron {
-  font-size: 0.6rem;
-  color: var(--gray);
-  transition: transform 0.15s;
-  flex-shrink: 0;
-}
-
+.pill-coal { background: #E8F5E8; color: #1A4A1A; }
+.pill-elec { background: #FFF8E0; color: #7A5C00; }
+.pill-const { background: #F5E8F0; color: #5A1A4A; }
+.gloss-chevron { font-size: 0.6rem; color: var(--gray); transition: transform 0.15s; flex-shrink: 0; }
 .gloss-item.open .gloss-chevron { transform: rotate(180deg); }
-
-.gloss-def {
-  display: none;
-  padding: 8px 12px 11px;
-  font-size: 0.75rem;
-  line-height: 1.65;
-  color: #3D3A50;
-  border-top: 1px solid #EDEAE0;
-}
-
+.gloss-def { display: none; padding: 8px 12px 11px; font-size: 0.75rem; line-height: 1.65; color: #3D3A50; border-top: 1px solid #EDEAE0; }
 .gloss-item.open .gloss-def { display: block; }
 .gloss-empty { font-size: 0.72rem; color: var(--gray); text-align: center; padding: 16px; font-family: 'IBM Plex Mono', monospace; }
-
 </style>
 </head>
 <body>
@@ -1796,28 +1212,21 @@ svg.matrix {
   <button class="tab-btn" onclick="switchTab('glosario', this)">📖 Glosario</button>
 </nav>
 
-
 <!-- ═══════════════════════════════════════
      TAB 1 — VEILLE v4
 ════════════════════════════════════════ -->
 <div class="tab-panel active" id="panel-veille">
-
   <div class="veille-header">
     <div>
       <div class="veille-title">Veille semanal</div>
       <div class="veille-subtitle" id="veille-date">— sin actualizar —</div>
     </div>
     <button class="btn-actualizar" id="btn-actualizar" onclick="actualizarVeille()">
-      <span>⟳</span>
-      Actualizar veille
+      <span>⟳</span> Actualizar veille
     </button>
   </div>
-
   <div class="veille-body">
-
-    <!-- Fila 1: Congreso + Agenda -->
     <div class="veille-row-2">
-
       <div class="v-card">
         <div class="v-card-header">
           <div class="v-card-label"><div class="v-card-dot"></div>Congreso</div>
@@ -1827,7 +1236,6 @@ svg.matrix {
           <div class="loading-text">Pulsa «Actualizar veille» para cargar</div>
         </div>
       </div>
-
       <div class="v-card">
         <div class="v-card-header">
           <div class="v-card-label"><div class="v-card-dot"></div>Agenda Gobierno</div>
@@ -1837,10 +1245,7 @@ svg.matrix {
           <div class="loading-text">Pulsa «Actualizar veille» para cargar</div>
         </div>
       </div>
-
     </div>
-
-    <!-- Fila 2: Portadas pleine largeur -->
     <div class="v-card">
       <div class="v-card-header">
         <div class="v-card-label"><div class="v-card-dot"></div>Portadas de hoy</div>
@@ -1852,10 +1257,7 @@ svg.matrix {
         </div>
       </div>
     </div>
-
-    <!-- Fila 3: RTVE + BOE côte à côte -->
     <div class="veille-row-2">
-
       <div class="v-card purple-accent">
         <div class="v-card-header">
           <div class="v-card-label"><div class="v-card-dot purple"></div>RTVE · gran público</div>
@@ -1865,7 +1267,6 @@ svg.matrix {
           <div class="loading-text">Pulsa «Actualizar veille» para cargar</div>
         </div>
       </div>
-
       <div class="v-card purple-accent">
         <div class="v-card-header">
           <div class="v-card-label"><div class="v-card-dot purple"></div>BOE · legislación</div>
@@ -1875,9 +1276,7 @@ svg.matrix {
           <div class="loading-text">Pulsa «Actualizar veille» para cargar</div>
         </div>
       </div>
-
     </div>
-
   </div>
 </div>
 
@@ -1978,206 +1377,8 @@ svg.matrix {
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════
-     TAB 4 — GLOSARIO
-════════════════════════════════════════ -->
-<div class="tab-panel" id="panel-glosario">
-  <div class="glosario-body">
-
-    <!-- ORGCHART -->
-    <div>
-      <div class="glos-section-title">Instituciones y contrapoderes</div>
-      <div class="orgchart-wrap">
-
-        <svg width="100%" viewBox="0 0 740 500" xmlns="http://www.w3.org/2000/svg">
-
-          <!-- NIVEL 1 : CORONA -->
-          <g onclick="orgShowNode('rey')" style="cursor:pointer;">
-            <rect x="290" y="10" width="160" height="46" rx="8" fill="#FFF8E0" stroke="#F5C200" stroke-width="1.5"/>
-            <text x="370" y="31" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="13" fill="#7A5C00">CORONA</text>
-            <text x="370" y="47" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#9A7A20">Rey Felipe VI</text>
-          </g>
-
-          <!-- L1→L2 -->
-          <line x1="370" y1="56" x2="370" y2="70" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="120" y1="70" x2="620" y2="70" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="120" y1="70" x2="120" y2="84" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="370" y1="70" x2="370" y2="84" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="620" y1="70" x2="620" y2="84" stroke="#C8C3B8" stroke-width="1"/>
-
-          <!-- LEGISLATIVO -->
-          <g onclick="orgShowNode('cortes')" style="cursor:pointer;">
-            <rect x="20" y="84" width="200" height="46" rx="8" fill="#E0EEF8" stroke="#004C9E" stroke-width="1.5"/>
-            <text x="120" y="105" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="12" fill="#003070">CORTES GENERALES</text>
-            <text x="120" y="121" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#1A5FA0">Poder legislativo</text>
-          </g>
-          <line x1="120" y1="130" x2="120" y2="144" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="60" y1="144" x2="180" y2="144" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="60" y1="144" x2="60" y2="158" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="180" y1="144" x2="180" y2="158" stroke="#C8C3B8" stroke-width="1"/>
-          <g onclick="orgShowNode('congreso')" style="cursor:pointer;">
-            <rect x="20" y="158" width="78" height="42" rx="6" fill="#E0EEF8" stroke="#004C9E" stroke-width="1.5"/>
-            <text x="59" y="177" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="10" fill="#003070">CONGRESO</text>
-            <text x="59" y="191" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#1A5FA0">350 diputados</text>
-          </g>
-          <g onclick="orgShowNode('senado')" style="cursor:pointer;">
-            <rect x="142" y="158" width="78" height="42" rx="6" fill="#E0EEF8" stroke="#004C9E" stroke-width="1.5"/>
-            <text x="181" y="177" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="10" fill="#003070">SENADO</text>
-            <text x="181" y="191" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#1A5FA0">265 senadores</text>
-          </g>
-          <!-- leg → contrôle (pointillés) -->
-          <line x1="120" y1="200" x2="120" y2="280" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
-          <line x1="46" y1="280" x2="194" y2="280" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
-          <line x1="46" y1="280" x2="46" y2="294" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
-          <line x1="194" y1="280" x2="194" y2="294" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
-          <text x="120" y="272" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B0AB9E">comisionados</text>
-
-          <!-- EJECUTIVO -->
-          <g onclick="orgShowNode('gobierno')" style="cursor:pointer;">
-            <rect x="270" y="84" width="200" height="46" rx="8" fill="#E8E4F5" stroke="#6B47C4" stroke-width="1.5"/>
-            <text x="370" y="105" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="12" fill="#2D1B6B">GOBIERNO</text>
-            <text x="370" y="121" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#5A3FAA">Poder ejecutivo</text>
-          </g>
-          <line x1="370" y1="130" x2="370" y2="144" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="310" y1="144" x2="430" y2="144" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="310" y1="144" x2="310" y2="158" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="430" y1="144" x2="430" y2="158" stroke="#C8C3B8" stroke-width="1"/>
-          <g onclick="orgShowNode('presidente')" style="cursor:pointer;">
-            <rect x="270" y="158" width="78" height="42" rx="6" fill="#E8E4F5" stroke="#6B47C4" stroke-width="1.5"/>
-            <text x="309" y="177" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="10" fill="#2D1B6B">PRESIDENTE</text>
-            <text x="309" y="191" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#5A3FAA">P. Sánchez</text>
-          </g>
-          <g onclick="orgShowNode('ministros')" style="cursor:pointer;">
-            <rect x="392" y="158" width="78" height="42" rx="6" fill="#E8E4F5" stroke="#6B47C4" stroke-width="1.5"/>
-            <text x="431" y="174" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="10" fill="#2D1B6B">CONSEJO</text>
-            <text x="431" y="186" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="10" fill="#2D1B6B">MINISTROS</text>
-            <text x="431" y="196" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#5A3FAA">22 ministerios</text>
-          </g>
-          <!-- exec → hacienda + ccaa (pointillés) -->
-          <line x1="370" y1="200" x2="370" y2="280" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
-          <line x1="296" y1="280" x2="444" y2="280" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
-          <line x1="296" y1="280" x2="296" y2="294" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
-          <line x1="444" y1="280" x2="444" y2="294" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
-          <text x="370" y="272" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B0AB9E">bajo tutela ejecutiva</text>
-
-          <!-- JUDICIAL -->
-          <g onclick="orgShowNode('cgpj')" style="cursor:pointer;">
-            <rect x="520" y="84" width="200" height="46" rx="8" fill="#FCF0E0" stroke="#CC6600" stroke-width="1.5"/>
-            <text x="620" y="105" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="12" fill="#7A3A00">PODER JUDICIAL</text>
-            <text x="620" y="121" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#AA5500">CGPJ</text>
-          </g>
-          <line x1="620" y1="130" x2="620" y2="144" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="560" y1="144" x2="680" y2="144" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="560" y1="144" x2="560" y2="158" stroke="#C8C3B8" stroke-width="1"/>
-          <line x1="680" y1="144" x2="680" y2="158" stroke="#C8C3B8" stroke-width="1"/>
-          <g onclick="orgShowNode('ts')" style="cursor:pointer;">
-            <rect x="520" y="158" width="78" height="42" rx="6" fill="#FCF0E0" stroke="#CC6600" stroke-width="1.5"/>
-            <text x="559" y="175" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="10" fill="#7A3A00">TRIBUNAL</text>
-            <text x="559" y="187" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="10" fill="#7A3A00">SUPREMO</text>
-            <text x="559" y="197" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#AA5500">Casación</text>
-          </g>
-          <g onclick="orgShowNode('tc')" style="cursor:pointer;">
-            <rect x="642" y="158" width="78" height="42" rx="6" fill="#FCF0E0" stroke="#CC6600" stroke-width="1.5"/>
-            <text x="681" y="175" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="10" fill="#7A3A00">TRIBUNAL</text>
-            <text x="681" y="187" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="10" fill="#7A3A00">CONST.</text>
-            <text x="681" y="197" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#AA5500">Control const.</text>
-          </g>
-
-          <!-- NIVEL 3 -->
-          <!-- Sous législatif -->
-          <g onclick="orgShowNode('defensorp')" style="cursor:pointer;">
-            <rect x="6" y="294" width="80" height="46" rx="6" fill="#E8F5E8" stroke="#2A7A2A" stroke-width="1.5"/>
-            <text x="46" y="311" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="9" fill="#1A4A1A">DEFENSOR</text>
-            <text x="46" y="322" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="9" fill="#1A4A1A">DEL PUEBLO</text>
-            <text x="46" y="333" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#2A6A2A">Control adm.</text>
-          </g>
-          <g onclick="orgShowNode('tce')" style="cursor:pointer;">
-            <rect x="114" y="294" width="80" height="46" rx="6" fill="#E8F5E8" stroke="#2A7A2A" stroke-width="1.5"/>
-            <text x="154" y="311" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="9" fill="#1A4A1A">TRIBUNAL</text>
-            <text x="154" y="322" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="9" fill="#1A4A1A">DE CUENTAS</text>
-            <text x="154" y="333" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#2A6A2A">Control fiscal</text>
-          </g>
-          <!-- Sous exécutif -->
-          <g onclick="orgShowNode('hacienda')" style="cursor:pointer;">
-            <rect x="256" y="294" width="80" height="46" rx="6" fill="#E8E4F5" stroke="#6B47C4" stroke-width="1.5"/>
-            <text x="296" y="311" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="9" fill="#2D1B6B">MINISTERIO</text>
-            <text x="296" y="322" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="9" fill="#2D1B6B">HACIENDA</text>
-            <text x="296" y="333" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#5A3FAA">Control presup.</text>
-          </g>
-          <g onclick="orgShowNode('ccaa')" style="cursor:pointer;">
-            <rect x="364" y="294" width="80" height="46" rx="6" fill="#F5E8F0" stroke="#8B3A7A" stroke-width="1.5"/>
-            <text x="404" y="311" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="9" fill="#5A1A4A">CC.AA.</text>
-            <text x="404" y="325" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#7A2A6A">17 comunidades</text>
-          </g>
-
-          <!-- FISCALÍA — bloc flottant controvertido -->
-          <line x1="470" y1="107" x2="510" y2="390" stroke="#E05500" stroke-width="1.2" stroke-dasharray="5,3"/>
-          <polygon points="510,390 504,378 516,378" fill="#E05500" opacity="0.7"/>
-          <text x="506" y="270" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#E05500" transform="rotate(-80, 506, 270)">nombramiento político</text>
-          <g onclick="orgShowNode('fiscalia')" style="cursor:pointer;">
-            <rect x="460" y="390" width="130" height="56" rx="8" fill="#FFF3E0" stroke="#E05500" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <rect x="478" y="384" width="94" height="14" rx="4" fill="#E05500"/>
-            <text x="525" y="394" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#fff">dependencia controvertida</text>
-            <text x="525" y="413" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="12" fill="#7A3A00">FISCALÍA GENERAL</text>
-            <text x="525" y="427" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="12" fill="#7A3A00">DEL ESTADO</text>
-            <text x="525" y="440" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#AA5500">independencia formal</text>
-          </g>
-
-        </svg>
-
-        <div class="org-node-detail" id="orgNodeDetail">
-          <div class="ond-name" id="ondName">—</div>
-          <div class="ond-type" id="ondType">—</div>
-          <div class="ond-desc" id="ondDesc">—</div>
-          <div class="ond-powers" id="ondPowers"></div>
-        </div>
-
-        <div class="org-legend">
-          <div class="org-leg-item"><div class="org-leg-dot" style="background:#F5C200;"></div>Corona</div>
-          <div class="org-leg-item"><div class="org-leg-dot" style="background:#6B47C4;"></div>Ejecutivo</div>
-          <div class="org-leg-item"><div class="org-leg-dot" style="background:#004C9E;"></div>Legislativo</div>
-          <div class="org-leg-item"><div class="org-leg-dot" style="background:#CC6600;"></div>Judicial</div>
-          <div class="org-leg-item"><div class="org-leg-dot" style="background:#2A7A2A;"></div>Control</div>
-          <div class="org-leg-item"><div class="org-leg-dot" style="background:#8B3A7A;"></div>Territorial</div>
-          <div class="org-leg-item">
-            <svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/></svg>
-            dependencia funcional
-          </div>
-          <div class="org-leg-item">
-            <svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#E05500" stroke-width="1.2" stroke-dasharray="5,3"/></svg>
-            nombramiento controvertido
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- GLOSSAIRE -->
-    <div>
-      <div class="glos-section-title">Glosario político</div>
-      <div class="gloss-search-wrap">
-        <span class="gloss-search-icon">⌕</span>
-        <input class="gloss-search" type="text" placeholder="Buscar un término..." id="glossSearch" oninput="glossFilter()">
-      </div>
-      <div class="gloss-themes">
-        <button class="gloss-theme-btn active" onclick="glossSetTheme('all',this)">Todos</button>
-        <button class="gloss-theme-btn" onclick="glossSetTheme('parl',this)">Parlamento</button>
-        <button class="gloss-theme-btn" onclick="glossSetTheme('exec',this)">Ejecutivo</button>
-        <button class="gloss-theme-btn" onclick="glossSetTheme('budget',this)">Presupuestos</button>
-        <button class="gloss-theme-btn" onclick="glossSetTheme('coal',this)">Coaliciones</button>
-        <button class="gloss-theme-btn" onclick="glossSetTheme('elec',this)">Elecciones</button>
-        <button class="gloss-theme-btn" onclick="glossSetTheme('const',this)">Constitución</button>
-      </div>
-      <div class="gloss-count" id="glossCount"></div>
-      <div class="gloss-list" id="glossList"></div>
-    </div>
-
-  </div>
-</div>
-
 <script src="data.js" onerror="window.__POLITICALMA_DATA_JS_FAILED=true"></script>
 <script>
-
 // ════════════════════════════════════════
 // TABS
 // ════════════════════════════════════════
@@ -2191,19 +1392,6 @@ function switchTab(name, btn) {
 // ════════════════════════════════════════
 // TAB 1 — VEILLE
 // ════════════════════════════════════════
-
-// Couleurs brand des médias
-const MEDIA_BRANDS = {
-  'El País':         { color: '#004C9E', url: 'https://elpais.com' },
-  'elDiario.es':     { color: '#E63524', url: 'https://eldiario.es' },
-  'Público':         { color: '#E4022E', url: 'https://publico.es' },
-  'El Confidencial': { color: '#FF6600', url: 'https://elconfidencial.com' },
-  'La Vanguardia':   { color: '#CC0000', url: 'https://lavanguardia.com' },
-  'El Mundo':        { color: '#E6001A', url: 'https://elmundo.es' },
-  'ABC':             { color: '#003082', url: 'https://abc.es' },
-  'La Razón':        { color: '#1A1A1A', url: 'https://larazon.es' },
-};
-
 async function actualizarVeille() {
   const btn = document.getElementById('btn-actualizar');
   btn.classList.add('loading');
@@ -2213,11 +1401,11 @@ async function actualizarVeille() {
   document.getElementById('veille-date').textContent = 'Última actualización: ' + hoy;
 
   const bloques = [
-    { id: 'congreso', dateId: 'congreso-date', prompt: `Fecha: ${hoy}. Busca los 3-4 asuntos parlamentarios más relevantes de esta semana en el Congreso de los Diputados español: debates, votaciones, interpelaciones, alianzas de voto. Para cada item incluye una URL de fuente si la tienes. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve","url":"https://... o null"}]. Sin preamble ni backticks.` },
-    { id: 'agenda',   dateId: 'agenda-date',   prompt: `Fecha: ${hoy}. Busca 3-4 eventos relevantes de la agenda del Gobierno de España esta semana: comparecencias, reuniones, declaraciones de ministros. Para cada item incluye una URL de fuente si la tienes. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve","url":"https://... o null"}]. Sin preamble ni backticks.` },
-    { id: 'prensa',   dateId: 'prensa-date',   prompt: `Fecha: ${hoy}. Indica el titular principal de hoy de estos 8 medios españoles: El País, elDiario.es, Público, El Confidencial, La Vanguardia, El Mundo, ABC, La Razón. Incluye la URL del artículo si la tienes. Responde SOLO con JSON array: [{"medio":"El País","titular":"…","url":"https://... o null"},…] con los 8 medios en ese orden exacto. Sin preamble ni backticks.` },
-    { id: 'rtve',     dateId: 'rtve-date',     prompt: `Fecha: ${hoy}. ¿Cuáles fueron las 3-4 noticias políticas que lideraron el Telediario de RTVE esta semana? Para cada item incluye una URL de rtve.es si la tienes. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve","url":"https://... o null"}]. Sin preamble ni backticks.` },
-    { id: 'boe',      dateId: 'boe-date',      prompt: `Fecha: ${hoy}. Busca las 3-4 novedades legislativas más relevantes publicadas esta semana en el BOE. Para cada item incluye la URL del BOE si la tienes. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve","url":"https://boe.es/... o null"}]. Sin preamble ni backticks.` },
+    { id: 'boe', dateId: 'boe-date', prompt: `Fecha: ${hoy}. Busca las 3-4 novedades legislativas más relevantes publicadas esta semana en el BOE (Boletín Oficial del Estado de España). Para cada una indica: tipo de norma, tema, y si es urgente o destacable. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve"}]. Sin preamble ni backticks.` },
+    { id: 'congreso', dateId: 'congreso-date', prompt: `Fecha: ${hoy}. Busca los 3-4 asuntos parlamentarios más relevantes de esta semana en el Congreso de los Diputados español: debates, votaciones, interpelaciones, alianzas de voto. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve"}]. Sin preamble ni backticks.` },
+    { id: 'agenda', dateId: 'agenda-date', prompt: `Fecha: ${hoy}. Busca 3-4 eventos relevantes de la agenda del Gobierno de España esta semana: comparecencias, reuniones, declaraciones de ministros. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve"}]. Sin preamble ni backticks.` },
+    { id: 'prensa', dateId: 'prensa-date', prompt: `Fecha: ${hoy}. Indica el titular principal de hoy de estos 4 medios españoles: El País, El Mundo, elDiario.es, ABC. Responde SOLO con JSON array: [{"medio":"El País","titular":"…"},{"medio":"El Mundo","titular":"…"},{"medio":"elDiario.es","titular":"…"},{"medio":"ABC","titular":"…"}]. Sin preamble ni backticks.` },
+    { id: 'rtve', dateId: 'rtve-date', prompt: `Fecha: ${hoy}. ¿Cuáles fueron las 3-4 noticias políticas que lideraron el Telediario de RTVE esta semana? Son las noticias que llegan al gran público generalista. Responde SOLO con JSON array: [{"tag":"★ o →","texto":"descripción breve"}]. Sin preamble ni backticks.` },
   ];
 
   for (let i = 0; i < bloques.length; i++) {
@@ -2235,6 +1423,8 @@ function extractJSON(text) {
   if (fenced) { try { return JSON.parse(fenced[1].trim()); } catch {} }
   const arrMatch = text.match(/\[[\s\S]*\]/);
   if (arrMatch) { try { return JSON.parse(arrMatch[0]); } catch {} }
+  const objMatch = text.match(/\{[\s\S]*\}/);
+  if (objMatch) { try { return JSON.parse(objMatch[0]); } catch {} }
   throw new Error('No JSON encontrado');
 }
 
@@ -2242,12 +1432,21 @@ const VEILLE_FETCH_TIMEOUT_MS = 120000;
 const VEILLE_MAX_ATTEMPTS = 6;
 
 function veilleBackoffMs(attempt, retryAfterSec) {
-  if (retryAfterSec != null && retryAfterSec > 0) return Math.min(retryAfterSec * 1000 + Math.random() * 250, 120000);
-  return Math.min(700 * Math.pow(2, attempt) + Math.random() * 500, 45000);
+  if (retryAfterSec != null && retryAfterSec > 0) {
+    return Math.min(retryAfterSec * 1000 + Math.random() * 250, 120000);
+  }
+  const base = 700 * Math.pow(2, attempt);
+  const jitter = Math.random() * 500;
+  return Math.min(base + jitter, 45000);
 }
 
-function veilleIsRetryableHttp(status) { return status === 429 || status === 408 || (status >= 500 && status <= 599); }
-function veilleIsFatalHttp(status) { return status === 400 || status === 401 || status === 403 || status === 404; }
+function veilleIsRetryableHttp(status) {
+  return status === 429 || status === 408 || (status >= 500 && status <= 599);
+}
+
+function veilleIsFatalHttp(status) {
+  return status === 400 || status === 401 || status === 403 || status === 404;
+}
 
 function veilleParseRetryAfter(res) {
   const h = res.headers.get('Retry-After');
@@ -2262,8 +1461,9 @@ function veilleParseRetryAfter(res) {
 function veilleFormatError(err, httpStatus) {
   if (err && err.name === 'AbortError') return 'Tiempo de espera agotado';
   if (err && (err.message === 'Failed to fetch' || err.name === 'TypeError')) return 'Error de red (sin conexión o bloqueo CORS)';
-  if (httpStatus >= 500) return 'Error del servidor (' + httpStatus + ')';
+  if (httpStatus >= 500 && httpStatus <= 599) return 'Error del servidor (' + httpStatus + ')';
   if (httpStatus === 429) return 'Demasiadas peticiones (429), reintenta más tarde';
+  if (httpStatus === 408) return 'Tiempo de espera del servidor (408)';
   if (httpStatus) return 'HTTP ' + httpStatus;
   return (err && err.message) ? err.message : 'Error desconocido';
 }
@@ -2273,12 +1473,13 @@ async function fetchBloque({ id, prompt, dateId }) {
   const dateEl = document.getElementById(dateId);
   contentEl.innerHTML = '<div class="loading-text"><div class="dot-pulse" style="justify-content:center;margin:0 auto"><span></span><span></span><span></span></div></div>';
 
-  let lastErr = null, lastHttp = 0;
+  let lastErr = null;
+  let lastHttp = 0;
 
   for (let attempt = 0; attempt < VEILLE_MAX_ATTEMPTS; attempt++) {
     try {
       const ac = new AbortController();
-      const tmr = setTimeout(() => ac.abort(), VEILLE_FETCH_TIMEOUT_MS);
+      const tmr = setTimeout(function() { ac.abort(); }, VEILLE_FETCH_TIMEOUT_MS);
       let res;
       try {
         res = await fetch('https://veille-dashboard-five.vercel.app/api/proxy', {
@@ -2293,21 +1494,25 @@ async function fetchBloque({ id, prompt, dateId }) {
           }),
           signal: ac.signal
         });
-      } finally { clearTimeout(tmr); }
-
+      } finally {
+        clearTimeout(tmr);
+      }
       lastHttp = res.status;
+
       if (!res.ok) {
         const ra = veilleParseRetryAfter(res);
-        if (veilleIsFatalHttp(res.status)) throw new Error(veilleFormatError(null, res.status));
+        if (veilleIsFatalHttp(res.status)) {
+          throw new Error(veilleFormatError(null, res.status));
+        }
         if (veilleIsRetryableHttp(res.status) && attempt < VEILLE_MAX_ATTEMPTS - 1) {
-          await new Promise(r => setTimeout(r, veilleBackoffMs(attempt, ra)));
+          await new Promise(function(r) { setTimeout(r, veilleBackoffMs(attempt, ra)); });
           continue;
         }
         throw new Error(veilleFormatError(null, res.status));
       }
 
       const data = await res.json();
-      const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+      const text = data.content.filter(function(b) { return b.type === 'text'; }).map(function(b) { return b.text; }).join('');
       const items = extractJSON(text);
       dateEl.textContent = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 
@@ -2317,48 +1522,35 @@ async function fetchBloque({ id, prompt, dateId }) {
     } catch (err) {
       lastErr = err;
       if (err && err.name === 'AbortError') lastHttp = 0;
-      const canRetry = attempt < VEILLE_MAX_ATTEMPTS - 1 && (
-        err && (err.name === 'AbortError' || err.message === 'Failed to fetch' || err.name === 'TypeError') ||
-        lastHttp && veilleIsRetryableHttp(lastHttp)
-      );
-      if (canRetry) { await new Promise(r => setTimeout(r, veilleBackoffMs(attempt, null))); continue; }
+      const netOrTimeout = err && (err.name === 'AbortError' || err.message === 'Failed to fetch' || err.name === 'TypeError');
+      const jsonErr = err && err.message && err.message.indexOf('JSON') !== -1;
+      const parseErr = err && (err.name === 'SyntaxError' || (err.message && err.message.indexOf('Unexpected token') !== -1));
+      const retryableHttp = lastHttp && veilleIsRetryableHttp(lastHttp);
+      const canRetry = attempt < VEILLE_MAX_ATTEMPTS - 1 && (netOrTimeout || jsonErr || parseErr || retryableHttp);
+      if (canRetry) {
+        await new Promise(function(r) { setTimeout(r, veilleBackoffMs(attempt, null)); });
+        continue;
+      }
       const msg = veilleFormatError(lastErr, lastHttp);
       window.__veilleRetryPayloads = window.__veilleRetryPayloads || {};
-      window.__veilleRetryPayloads[id] = { id, prompt, dateId };
-      contentEl.innerHTML = '<div class="loading-text" style="color:#c73b3b">Error al cargar (' + msg + '). <span style="cursor:pointer;text-decoration:underline" onclick="fetchBloque(window.__veilleRetryPayloads[\'' + id + '\'])">Reintentar</span></div>';
+      window.__veilleRetryPayloads[id] = { id: id, prompt: prompt, dateId: dateId };
+      contentEl.innerHTML = '<div class="loading-text" style="color:#c73b3b">Error al cargar (' + msg + '). <span style="cursor:pointer;text-decoration:underline" onclick="fetchBloque(window.__veilleRetryPayloads[\'' + id.replace(/'/g, '') + '\'])">Reintentar</span></div>';
+      console.error(id, err);
       return;
     }
   }
 }
 
 function renderItems(el, items) {
-  el.innerHTML = items.map(item => {
-    const hasUrl = item.url && item.url !== 'null' && item.url.startsWith('http');
-    const text = hasUrl
-      ? `<a class="v-item-link" href="${item.url}" target="_blank" rel="noopener">${item.texto}</a>`
-      : `<span class="v-item-link">${item.texto}</span>`;
-    return `<div class="v-item">
-      <div class="v-item-badge ${item.tag && item.tag.includes('★') ? 'badge-star' : 'badge-arrow'}">${item.tag && item.tag.includes('★') ? '★' : '→'}</div>
-      ${text}
-    </div>`;
-  }).join('');
+  el.innerHTML = items.map(item => `
+    <div class="veille-item">
+      <span class="veille-tag ${item.tag && item.tag.includes('★') ? 'tag-star' : 'tag-arrow'}">${item.tag || '→'}</span>
+      <span class="veille-item-text">${item.texto}</span>
+    </div>
+  `).join('');
 }
 
-function renderPortadas(el, items) {
-  const cards = items.map(p => {
-    const brand = MEDIA_BRANDS[p.medio] || { color: '#2D1B6B', url: null };
-    const hasUrl = p.url && p.url !== 'null' && p.url.startsWith('http');
-    const href = hasUrl ? p.url : (brand.url || '#');
-    return `<a class="portada-v4" href="${href}" target="_blank" rel="noopener">
-      <div class="portada-v4-stripe" style="background:${brand.color};"></div>
-      <div class="portada-v4-inner">
-        <div class="portada-v4-nombre" style="color:${brand.color};">${p.medio}</div>
-        <div class="portada-v4-titular">${p.titular}</div>
-      </div>
-    </a>`;
-  }).join('');
-  el.innerHTML = `<div class="portadas-v4-grid">${cards}</div>`;
-}
+
 
 // ════════════════════════════════════════
 // TAB 2 — MATRICE (portée des variables isolée)
@@ -2917,99 +2109,152 @@ function moveTip(e) { tip.style.left=(e.clientX+12)+'px'; tip.style.top=(e.clien
 function hideTip() { tip.classList.remove('visible', 'hemi-tip'); }
 
 // Init
-buildHemiciclo();
-buildLegend();
-buildSim();
-</script>
 
+// ════════════════════════════════════════
+// VEILLE v4 — renderItems/renderPortadas avec liens + couleurs brand
+// ════════════════════════════════════════
+
+const MEDIA_BRANDS = {
+  'El Pais':         { color: '#004C9E', url: 'https://elpais.com' },
+  'El País':         { color: '#004C9E', url: 'https://elpais.com' },
+  'elDiario.es':     { color: '#E63524', url: 'https://eldiario.es' },
+  'Publico':         { color: '#E4022E', url: 'https://publico.es' },
+  'Público':         { color: '#E4022E', url: 'https://publico.es' },
+  'El Confidencial': { color: '#FF6600', url: 'https://elconfidencial.com' },
+  'La Vanguardia':   { color: '#CC0000', url: 'https://lavanguardia.com' },
+  'El Mundo':        { color: '#E6001A', url: 'https://elmundo.es' },
+  'ABC':             { color: '#003082', url: 'https://abc.es' },
+  'La Razon':        { color: '#1A1A1A', url: 'https://larazon.es' },
+  'La Razón':        { color: '#1A1A1A', url: 'https://larazon.es' },
+};
+
+function renderItems(el, items) {
+  el.innerHTML = items.map(function(item) {
+    var hasUrl = item.url && item.url !== 'null' && item.url.indexOf('http') === 0;
+    var badge = (item.tag && item.tag.indexOf('★') !== -1) ? 'badge-star' : 'badge-arrow';
+    var icon = (item.tag && item.tag.indexOf('★') !== -1) ? '★' : '→';
+    var text = hasUrl
+      ? '<a class="v-item-link" href="' + item.url + '" target="_blank" rel="noopener">' + item.texto + '</a>'
+      : '<span class="v-item-link">' + item.texto + '</span>';
+    return '<div class="v-item"><div class="v-item-badge ' + badge + '">' + icon + '</div>' + text + '</div>';
+  }).join('');
+}
+
+function renderPortadas(el, items) {
+  var cards = items.map(function(p) {
+    var brand = MEDIA_BRANDS[p.medio] || { color: '#2D1B6B', url: null };
+    var hasUrl = p.url && p.url !== 'null' && p.url.indexOf('http') === 0;
+    var href = hasUrl ? p.url : (brand.url || '#');
+    return '<a class="portada-v4" href="' + href + '" target="_blank" rel="noopener">' +
+      '<div class="portada-v4-stripe" style="background:' + brand.color + ';"></div>' +
+      '<div class="portada-v4-inner">' +
+      '<div class="portada-v4-nombre" style="color:' + brand.color + ';">' + p.medio + '</div>' +
+      '<div class="portada-v4-titular">' + p.titular + '</div>' +
+      '</div></a>';
+  }).join('');
+  el.innerHTML = '<div class="portadas-v4-grid">' + cards + '</div>';
+}
 
 // ════════════════════════════════════════
 // TAB 4 — GLOSARIO
 // ════════════════════════════════════════
 
-// Orgchart — données des noeuds
-const ORG_NODES = {
-  rey:       { name:"La Corona", type:"Jefatura del Estado · Hereditaria", desc:"El Rey es el Jefe del Estado, símbolo de su unidad y permanencia. Su función es fundamentalmente representativa y arbitral: sanciona y promulga las leyes, convoca y disuelve las Cortes, y propone al candidato a Presidente del Gobierno. Sus actos deben ser refrendados por el Gobierno.", powers:["Sancionar leyes","Disolver Cortes","Proponer Presidente","Mando FF.AA.","Representación exterior"] },
-  cortes:    { name:"Cortes Generales", type:"Poder Legislativo · Bicameral", desc:"El parlamento español es bicameral: el Congreso de los Diputados y el Senado. Las Cortes aprueban las leyes, los presupuestos y controlan la acción del Gobierno mediante preguntas, interpelaciones y comisiones de investigación.", powers:["Legislar","Aprobar presupuestos","Controlar al Gobierno","Reformar la Constitución"] },
-  congreso:  { name:"Congreso de los Diputados", type:"Cámara baja · 350 escaños", desc:"Es la cámara con mayor peso político. Otorga y retira la confianza al Presidente mediante la investidura y la moción de censura. Los diputados se eligen por circunscripciones provinciales por sistema D'Hondt.", powers:["Investidura del Presidente","Moción de censura","Ley de presupuestos","Preguntas al Gobierno"] },
-  senado:    { name:"Senado", type:"Cámara alta · 265 escaños", desc:"Cámara de representación territorial, con menor peso que el Congreso. El Congreso puede imponer su criterio en caso de conflicto. Tiene un papel especial en la autorización del artículo 155 (intervención de una CC.AA.).", powers:["Representación territorial","Enmiendas legislativas","Art. 155 CE","Veto suspensivo"] },
-  gobierno:  { name:"Gobierno de España", type:"Poder Ejecutivo", desc:"Dirige la política interior y exterior, la Administración civil y militar y la defensa del Estado. Necesita la confianza del Congreso para gobernar y puede ser derrocado por una moción de censura constructiva.", powers:["Iniciativa legislativa","Elaborar presupuestos","Decretos-ley","Política exterior"] },
-  presidente:{ name:"Presidente del Gobierno", type:"Jefe del Ejecutivo", desc:"Dirige la acción del Gobierno y coordina las funciones de los demás miembros. Es investido por el Congreso por mayoría absoluta en primera vuelta, o mayoría simple en segunda.", powers:["Dirigir el Gobierno","Nombrar ministros","Cuestión de confianza","Proponer disolución Cortes"] },
-  ministros: { name:"Consejo de Ministros", type:"Órgano colegiado del Ejecutivo", desc:"Órgano donde se toman las decisiones colegiadas del Gobierno: aprobación de proyectos de ley, decretos-ley y el proyecto de Presupuestos Generales. Se reúne semanalmente, generalmente los martes.", powers:["Aprobar decretos-ley","Proyecto de presupuestos","Iniciativa legislativa","Acuerdos ejecutivos"] },
-  hacienda:  { name:"Ministerio de Hacienda", type:"Ministerio clave del Ejecutivo", desc:"Responsable de la política presupuestaria, fiscal y financiera del Estado. Elabora y supervisa los Presupuestos Generales del Estado, recauda los impuestos a través de la Agencia Tributaria (AEAT) y controla el gasto de todas las administraciones públicas.", powers:["Presupuestos Generales","Agencia Tributaria","Control del gasto","Política fiscal"] },
-  cgpj:      { name:"Consejo General del Poder Judicial", type:"Órgano de gobierno de los jueces", desc:"El CGPJ no juzga casos — su función es nombrar a los magistrados del Tribunal Supremo e inspeccionar los tribunales. Sus 20 vocales son elegidos por las Cortes, lo que ha generado debate sobre su independencia real.", powers:["Nombrar magistrados","Inspección judicial","Régimen disciplinario","Memoria anual"] },
-  ts:        { name:"Tribunal Supremo", type:"Máximo órgano jurisdiccional ordinario", desc:"Órgano jurisdiccional superior en todos los órdenes salvo en materia constitucional. Conoce en casación los recursos contra sentencias de los tribunales inferiores. Juzga a aforados como diputados y ministros.", powers:["Casación","Aforados","Sala penal","Sala contencioso-administrativa"] },
-  tc:        { name:"Tribunal Constitucional", type:"Máximo intérprete de la Constitución", desc:"Controla que las leyes respeten la Constitución (recurso de inconstitucionalidad) y protege los derechos fundamentales (recurso de amparo). Sus 12 magistrados son elegidos por el Congreso, Senado, Gobierno y CGPJ.", powers:["Recurso de inconstitucionalidad","Recurso de amparo","Conflictos competenciales","Control de estatutos"] },
-  defensorp: { name:"Defensor del Pueblo", type:"Comisionado parlamentario · Contrapoder ciudadano", desc:"Alto comisionado de las Cortes Generales para la defensa de los derechos fundamentales. Supervisa la actividad de las Administraciones públicas. Cualquier ciudadano puede presentar una queja sin coste.", powers:["Supervisar Administración","Quejas ciudadanas","Recurso de amparo","Informe anual a Cortes"] },
-  tce:       { name:"Tribunal de Cuentas", type:"Control económico-financiero · dependiente de Cortes", desc:"Fiscaliza las cuentas y la gestión económica del Estado y del sector público. También controla la contabilidad y financiación de los partidos políticos. Depende orgánicamente de las Cortes Generales.", powers:["Fiscalización del gasto público","Control de partidos políticos","Responsabilidad contable","Informe al Parlamento"] },
-  ccaa:      { name:"Comunidades Autónomas", type:"Organización territorial · 17 CC.AA.", desc:"España se organiza en 17 comunidades autónomas y 2 ciudades autónomas (Ceuta y Melilla). Cada comunidad tiene su propio parlamento, gobierno y competencias definidas en su Estatuto de Autonomía. Los ayuntamientos dependen a su vez de las CC.AA.", powers:["Competencias propias","Parlamento autonómico","Hacienda propia","Tutela sobre ayuntamientos"] },
-  fiscalia:  { name:"Fiscalía General del Estado", type:"⚠ Dependencia orgánica controvertida", desc:"El Fiscal General es nombrado por el Gobierno (propuesto por el Ministerio de Justicia, nombrado por el Rey). En teoría ejerce sus funciones con independencia, pero su nombramiento político directo sin mecanismo de separación real genera una tensión constitucional permanente. El caso Delgado (2020) — ministra de Justicia convertida en Fiscal General — fue el ejemplo más visible de este problema de diseño institucional.", powers:["Ejercicio de la acción penal","Acusación pública","Independencia formal","Nombramiento político"] },
+var ORG_NODES = {
+  rey:       { name:'La Corona', type:'Jefatura del Estado - Hereditaria', desc:'El Rey es el Jefe del Estado, simbolo de su unidad y permanencia. Su funcion es fundamentalmente representativa y arbitral: sanciona y promulga las leyes, convoca y disuelve las Cortes, y propone al candidato a Presidente del Gobierno. Sus actos deben ser refrendados por el Gobierno.', powers:['Sancionar leyes','Disolver Cortes','Proponer Presidente','Mando FF.AA.','Representacion exterior'] },
+  cortes:    { name:'Cortes Generales', type:'Poder Legislativo - Bicameral', desc:'El parlamento espanol es bicameral: el Congreso de los Diputados y el Senado. Las Cortes aprueban las leyes, los presupuestos y controlan la accion del Gobierno mediante preguntas, interpelaciones y comisiones de investigacion.', powers:['Legislar','Aprobar presupuestos','Controlar al Gobierno','Reformar la Constitucion'] },
+  congreso:  { name:'Congreso de los Diputados', type:'Camara baja - 350 escanos', desc:'Es la camara con mayor peso politico. Otorga y retira la confianza al Presidente mediante la investidura y la mocion de censura. Los diputados se eligen por circunscripciones provinciales por sistema D\'Hondt.', powers:['Investidura del Presidente','Mocion de censura','Ley de presupuestos','Preguntas al Gobierno'] },
+  senado:    { name:'Senado', type:'Camara alta - 265 escanos', desc:'Camara de representacion territorial, con menor peso que el Congreso. Tiene un papel especial en la autorizacion del articulo 155 (intervencion de una CC.AA.).', powers:['Representacion territorial','Enmiendas legislativas','Art. 155 CE','Veto suspensivo'] },
+  gobierno:  { name:'Gobierno de Espana', type:'Poder Ejecutivo', desc:'Dirige la politica interior y exterior, la Administracion civil y militar y la defensa del Estado. Necesita la confianza del Congreso para gobernar y puede ser derrocado por una mocion de censura constructiva.', powers:['Iniciativa legislativa','Elaborar presupuestos','Decretos-ley','Politica exterior'] },
+  presidente:{ name:'Presidente del Gobierno', type:'Jefe del Ejecutivo', desc:'Dirige la accion del Gobierno y coordina las funciones de los demas miembros. Es investido por el Congreso por mayoria absoluta en primera vuelta, o mayoria simple en segunda.', powers:['Dirigir el Gobierno','Nombrar ministros','Cuestion de confianza','Proponer disolucion Cortes'] },
+  ministros: { name:'Consejo de Ministros', type:'Organo colegiado del Ejecutivo', desc:'Organo donde se toman las decisiones colegiadas del Gobierno: aprobacion de proyectos de ley, decretos-ley y el proyecto de Presupuestos Generales. Se reune semanalmente, generalmente los martes.', powers:['Aprobar decretos-ley','Proyecto de presupuestos','Iniciativa legislativa','Acuerdos ejecutivos'] },
+  hacienda:  { name:'Ministerio de Hacienda', type:'Ministerio clave del Ejecutivo', desc:'Responsable de la politica presupuestaria, fiscal y financiera del Estado. Elabora los Presupuestos Generales del Estado y recauda los impuestos a traves de la Agencia Tributaria (AEAT).', powers:['Presupuestos Generales','Agencia Tributaria','Control del gasto','Politica fiscal'] },
+  cgpj:      { name:'Consejo General del Poder Judicial', type:'Organo de gobierno de los jueces', desc:'El CGPJ no juzga casos: su funcion es nombrar a los magistrados del Tribunal Supremo e inspeccionar los tribunales. Sus 20 vocales son elegidos por las Cortes.', powers:['Nombrar magistrados','Inspeccion judicial','Regimen disciplinario','Memoria anual'] },
+  ts:        { name:'Tribunal Supremo', type:'Maximo organo jurisdiccional ordinario', desc:'Organo jurisdiccional superior en todos los ordenes salvo en materia constitucional. Conoce en casacion los recursos contra sentencias de los tribunales inferiores. Juzga a aforados como diputados y ministros.', powers:['Casacion','Aforados','Sala penal','Sala contencioso-administrativa'] },
+  tc:        { name:'Tribunal Constitucional', type:'Maximo interprete de la Constitucion', desc:'Controla que las leyes respeten la Constitucion (recurso de inconstitucionalidad) y protege los derechos fundamentales (recurso de amparo). Sus 12 magistrados son elegidos por el Congreso, Senado, Gobierno y CGPJ.', powers:['Recurso de inconstitucionalidad','Recurso de amparo','Conflictos competenciales','Control de estatutos'] },
+  defensorp: { name:'Defensor del Pueblo', type:'Comisionado parlamentario - Contrapoder ciudadano', desc:'Alto comisionado de las Cortes Generales para la defensa de los derechos fundamentales. Supervisa la actividad de las Administraciones publicas. Cualquier ciudadano puede presentar una queja sin coste.', powers:['Supervisar Administracion','Quejas ciudadanas','Recurso de amparo','Informe anual a Cortes'] },
+  tce:       { name:'Tribunal de Cuentas', type:'Control economico-financiero - dependiente de Cortes', desc:'Fiscaliza las cuentas y la gestion economica del Estado y del sector publico. Tambien controla la contabilidad y financiacion de los partidos politicos.', powers:['Fiscalizacion del gasto publico','Control de partidos politicos','Responsabilidad contable','Informe al Parlamento'] },
+  ccaa:      { name:'Comunidades Autonomas', type:'Organizacion territorial - 17 CC.AA.', desc:'Espana se organiza en 17 comunidades autonomas y 2 ciudades autonomas (Ceuta y Melilla). Cada comunidad tiene su propio parlamento, gobierno y competencias definidas en su Estatuto de Autonomia. Los ayuntamientos dependen a su vez de las CC.AA.', powers:['Competencias propias','Parlamento autonomico','Hacienda propia','Tutela sobre ayuntamientos'] },
+  fiscalia:  { name:'Fiscalia General del Estado', type:'Dependencia organica controvertida', desc:'El Fiscal General es nombrado por el Gobierno (propuesto por el Ministerio de Justicia, nombrado por el Rey). En teoria ejerce sus funciones con independencia, pero su nombramiento politico directo sin mecanismo de separacion real genera una tension constitucional permanente. El caso Delgado (2020) — ministra de Justicia convertida en Fiscal General — fue el ejemplo mas visible de este problema de diseno institucional.', powers:['Ejercicio de la accion penal','Acusacion publica','Independencia formal','Nombramiento politico'] },
 };
 
 function orgShowNode(id) {
-  const n = ORG_NODES[id];
+  var n = ORG_NODES[id];
   if (!n) return;
   document.getElementById('ondName').textContent = n.name;
   document.getElementById('ondType').textContent = n.type;
   document.getElementById('ondDesc').textContent = n.desc;
-  document.getElementById('ondPowers').innerHTML = n.powers.map(p => `<span class="ond-tag">${p}</span>`).join('');
-  const d = document.getElementById('orgNodeDetail');
+  document.getElementById('ondPowers').innerHTML = n.powers.map(function(p) {
+    return '<span class="ond-tag">' + p + '</span>';
+  }).join('');
+  var d = document.getElementById('orgNodeDetail');
   d.classList.add('visible');
-  setTimeout(() => d.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  setTimeout(function() { d.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
 }
 
-// Glossaire
-const GLOSS_ITEMS = [
-  {term:"Investidura",theme:"parl",def:"Proceso por el que el Congreso otorga su confianza al candidato a Presidente. Necesita mayoría absoluta en primera vuelta (176 votos) o mayoría simple en segunda. Si ningún candidato es investido en dos meses, se convocan nuevas elecciones."},
-  {term:"Moción de censura",theme:"parl",def:"Mecanismo para retirar la confianza al Gobierno. En España es 'constructiva': debe incluir un candidato alternativo. Si prospera, ese candidato se convierte automáticamente en Presidente. Ocurrió en 2018 con Pedro Sánchez."},
-  {term:"Decreto-ley",theme:"exec",def:"Norma con rango de ley que aprueba el Gobierno sin proceso legislativo ordinario, en casos de 'extraordinaria y urgente necesidad'. El Congreso debe validarlo o derogarlo en los 30 días siguientes."},
-  {term:"Presupuestos Generales del Estado",theme:"budget",def:"Ley aprobada anualmente por las Cortes que recoge todos los ingresos y gastos del Estado. Si no se aprueban antes del 31 de diciembre, se prorrogan los del año anterior."},
-  {term:"Enmienda a la totalidad",theme:"parl",def:"Enmienda contra la totalidad de un proyecto de ley. Si el Congreso la aprueba, el proyecto es devuelto al Gobierno. Es la forma más contundente de oposición parlamentaria."},
-  {term:"Coalición de gobierno",theme:"coal",def:"Acuerdo entre dos o más partidos para gobernar juntos cuando ninguno tiene mayoría absoluta. Implica reparto de carteras ministeriales y acuerdo programático. El Gobierno PSOE–Unidas Podemos (2020) fue el primero de la democracia española moderna."},
-  {term:"Pacto de investidura",theme:"coal",def:"Acuerdo para garantizar los votos de investidura sin entrar en el Gobierno. Los partidos de apoyo pueden exigir contrapartidas programáticas. Es distinto de una coalición de gobierno."},
-  {term:"Sistema D'Hondt",theme:"elec",def:"Método proporcional de reparto de escaños usado en las elecciones al Congreso. Los votos se dividen por 1, 2, 3... y se asignan escaños a los cocientes más altos. Favorece a los partidos grandes."},
-  {term:"Circunscripción electoral",theme:"elec",def:"Unidad territorial para la que se eligen representantes. En el Congreso es la provincia. El número de diputados varía de 2 a 36, lo que hace que un voto en Madrid valga proporcionalmente menos que en Soria."},
-  {term:"Artículo 155",theme:"const",def:"Permite al Gobierno central, con autorización del Senado, intervenir en una Comunidad Autónoma si incumple sus obligaciones constitucionales. Se aplicó por primera vez en octubre de 2017 durante la crisis del procés catalán."},
-  {term:"Aforamiento",theme:"const",def:"Privilegio procesal de ciertas personas por razón de su cargo. Los diputados y senadores solo pueden ser juzgados por el Tribunal Supremo. Es objeto de debate sobre su compatibilidad con la igualdad ante la ley."},
-  {term:"Cuestión de confianza",theme:"parl",def:"El Presidente somete voluntariamente su continuidad al voto del Congreso. Si pierde, debe dimitir. Es el mecanismo inverso a la moción de censura, iniciado por el propio Gobierno."},
-  {term:"Ley orgánica",theme:"const",def:"Ley que requiere mayoría absoluta del Congreso. Regula materias sensibles: derechos fundamentales, estatutos de autonomía, régimen electoral general o el Tribunal Constitucional."},
-  {term:"Déficit público",theme:"budget",def:"Diferencia negativa entre ingresos y gastos del Estado en un ejercicio, expresada como % del PIB. La UE exige mantenerlo por debajo del 3% del PIB."},
-  {term:"Interpelación parlamentaria",theme:"parl",def:"Pregunta de un grupo parlamentario al Gobierno sobre su política general en una materia. Puede dar lugar a una moción (votación). Es más solemne que una simple pregunta oral."},
-  {term:"Decreto legislativo",theme:"exec",def:"Norma con rango de ley elaborada por el Gobierno por delegación expresa de las Cortes. A diferencia del decreto-ley, requiere autorización previa del Parlamento."},
-  {term:"Estatuto de Autonomía",theme:"const",def:"Norma institucional básica de cada Comunidad Autónoma, aprobada por las Cortes como ley orgánica. Define el territorio, las instituciones, las competencias y los recursos de la comunidad."},
-  {term:"Mayoría absoluta",theme:"parl",def:"En el Congreso, 176 diputados (la mitad más uno de 350). Se requiere para la investidura en primera vuelta, para ciertas leyes orgánicas y para algunos supuestos de reforma constitucional."},
-  {term:"Fiscalía General del Estado",theme:"exec",def:"El Fiscal General es nombrado por el Gobierno y en teoría actúa con independencia. En la práctica, su nombramiento político directo —sin mecanismo de separación real— genera una tensión constitucional permanente. El caso Delgado (2020) es el ejemplo más citado."},
+var GLOSS_ITEMS = [
+  {term:'Investidura',theme:'parl',def:'Proceso por el que el Congreso otorga su confianza al candidato a Presidente. Necesita mayoria absoluta en primera vuelta (176 votos) o mayoria simple en segunda. Si ningun candidato es investido en dos meses, se convocan nuevas elecciones.'},
+  {term:'Mocion de censura',theme:'parl',def:'Mecanismo para retirar la confianza al Gobierno. En Espana es constructiva: debe incluir un candidato alternativo. Si prospera, ese candidato se convierte automaticamente en Presidente. Ocurrio en 2018 con Pedro Sanchez.'},
+  {term:'Decreto-ley',theme:'exec',def:'Norma con rango de ley que aprueba el Gobierno sin proceso legislativo ordinario, en casos de extraordinaria y urgente necesidad. El Congreso debe validarlo o derogarlo en los 30 dias siguientes.'},
+  {term:'Presupuestos Generales del Estado',theme:'budget',def:'Ley aprobada anualmente por las Cortes que recoge todos los ingresos y gastos del Estado. Si no se aprueban antes del 31 de diciembre, se prorrogan los del ano anterior.'},
+  {term:'Enmienda a la totalidad',theme:'parl',def:'Enmienda contra la totalidad de un proyecto de ley. Si el Congreso la aprueba, el proyecto es devuelto al Gobierno. Es la forma mas contundente de oposicion parlamentaria.'},
+  {term:'Coalicion de gobierno',theme:'coal',def:'Acuerdo entre dos o mas partidos para gobernar juntos cuando ninguno tiene mayoria absoluta. Implica reparto de carteras ministeriales y acuerdo programatico. El Gobierno PSOE-Unidas Podemos (2020) fue el primero de la democracia espanola moderna.'},
+  {term:'Pacto de investidura',theme:'coal',def:'Acuerdo para garantizar los votos de investidura sin entrar en el Gobierno. Los partidos de apoyo pueden exigir contrapartidas programaticas. Es distinto de una coalicion de gobierno.'},
+  {term:"Sistema D'Hondt",theme:'elec',def:'Metodo proporcional de reparto de escanos usado en las elecciones al Congreso. Los votos se dividen por 1, 2, 3... y se asignan escanos a los cocientes mas altos. Favorece a los partidos grandes.'},
+  {term:'Circunscripcion electoral',theme:'elec',def:'Unidad territorial para la que se eligen representantes. En el Congreso es la provincia. El numero de diputados varia de 2 a 36, lo que hace que un voto en Madrid valga proporcionalmente menos que en Soria.'},
+  {term:'Articulo 155',theme:'const',def:'Permite al Gobierno central, con autorizacion del Senado, intervenir en una Comunidad Autonoma si incumple sus obligaciones constitucionales. Se aplico por primera vez en octubre de 2017 durante la crisis del proces catalan.'},
+  {term:'Aforamiento',theme:'const',def:'Privilegio procesal de ciertas personas por razon de su cargo. Los diputados y senadores solo pueden ser juzgados por el Tribunal Supremo. Es objeto de debate sobre su compatibilidad con la igualdad ante la ley.'},
+  {term:'Cuestion de confianza',theme:'parl',def:'El Presidente somete voluntariamente su continuidad al voto del Congreso. Si pierde, debe dimitir. Es el mecanismo inverso a la mocion de censura, iniciado por el propio Gobierno.'},
+  {term:'Ley organica',theme:'const',def:'Ley que requiere mayoria absoluta del Congreso. Regula materias sensibles: derechos fundamentales, estatutos de autonomia, regimen electoral general o el Tribunal Constitucional.'},
+  {term:'Deficit publico',theme:'budget',def:'Diferencia negativa entre ingresos y gastos del Estado en un ejercicio, expresada como porcentaje del PIB. La UE exige mantenerlo por debajo del 3% del PIB.'},
+  {term:'Interpelacion parlamentaria',theme:'parl',def:'Pregunta de un grupo parlamentario al Gobierno sobre su politica general en una materia. Puede dar lugar a una mocion (votacion). Es mas solemne que una simple pregunta oral.'},
+  {term:'Decreto legislativo',theme:'exec',def:'Norma con rango de ley elaborada por el Gobierno por delegacion expresa de las Cortes. A diferencia del decreto-ley, requiere autorizacion previa del Parlamento.'},
+  {term:'Estatuto de Autonomia',theme:'const',def:'Norma institucional basica de cada Comunidad Autonoma, aprobada por las Cortes como ley organica. Define el territorio, las instituciones, las competencias y los recursos de la comunidad.'},
+  {term:'Mayoria absoluta',theme:'parl',def:'En el Congreso, 176 diputados (la mitad mas uno de 350). Se requiere para la investidura en primera vuelta, para ciertas leyes organicas y para algunos supuestos de reforma constitucional.'},
+  {term:'Fiscalia General del Estado',theme:'exec',def:'El Fiscal General es nombrado por el Gobierno y en teoria actua con independencia. En la practica, su nombramiento politico directo genera una tension constitucional permanente. El caso Delgado (2020) es el ejemplo mas citado.'},
 ];
 
-let glossTheme = 'all', glossSearch = '';
+var glossTheme = 'all';
+var glossSearch = '';
+
+function glossToggle(i) {
+  var el = document.getElementById('gi-' + i);
+  if (el) el.classList.toggle('open');
+}
 
 function glossRender() {
-  const q = glossSearch.toLowerCase();
-  const filtered = GLOSS_ITEMS
-    .filter(i => (glossTheme === 'all' || i.theme === glossTheme) && (!q || i.term.toLowerCase().includes(q) || i.def.toLowerCase().includes(q)))
-    .sort((a,b) => a.term.localeCompare(b.term));
+  var q = glossSearch.toLowerCase();
+  var filtered = GLOSS_ITEMS
+    .filter(function(i) {
+      return (glossTheme === 'all' || i.theme === glossTheme) &&
+             (!q || i.term.toLowerCase().indexOf(q) !== -1 || i.def.toLowerCase().indexOf(q) !== -1);
+    })
+    .sort(function(a, b) { return a.term.localeCompare(b.term); });
 
-  document.getElementById('glossCount').textContent = filtered.length + ' término' + (filtered.length !== 1 ? 's' : '');
+  document.getElementById('glossCount').textContent = filtered.length + ' termino' + (filtered.length !== 1 ? 's' : '');
 
-  const pillC = { parl:'pill-parl', exec:'pill-exec', budget:'pill-budget', coal:'pill-coal', elec:'pill-elec', const:'pill-const' };
-  const pillL = { parl:'Parlamento', exec:'Ejecutivo', budget:'Presupuestos', coal:'Coaliciones', elec:'Elecciones', const:'Constitución' };
+  var pillC = { parl:'pill-parl', exec:'pill-exec', budget:'pill-budget', coal:'pill-coal', elec:'pill-elec', const:'pill-const' };
+  var pillL = { parl:'Parlamento', exec:'Ejecutivo', budget:'Presupuestos', coal:'Coaliciones', elec:'Elecciones', const:'Constitucion' };
 
-  document.getElementById('glossList').innerHTML = filtered.length
-    ? filtered.map((item, i) => `
-        <div class="gloss-item" id="gi-${i}">
-          <div class="gloss-item-head" onclick="document.getElementById('gi-${i}').classList.toggle('open')">
-            <span class="gloss-term">${item.term}</span>
-            <span class="gloss-pill ${pillC[item.theme]}">${pillL[item.theme]}</span>
-            <span class="gloss-chevron">▼</span>
-          </div>
-          <div class="gloss-def">${item.def}</div>
-        </div>`).join('')
-    : '<div class="gloss-empty">Ningún término encontrado</div>';
+  if (!filtered.length) {
+    document.getElementById('glossList').innerHTML = '<div class="gloss-empty">Ningun termino encontrado</div>';
+    return;
+  }
+
+  document.getElementById('glossList').innerHTML = filtered.map(function(item, i) {
+    return '<div class="gloss-item" id="gi-' + i + '">' +
+      '<div class="gloss-item-head" onclick="glossToggle(' + i + ')">' +
+      '<span class="gloss-term">' + item.term + '</span>' +
+      '<span class="gloss-pill ' + pillC[item.theme] + '">' + pillL[item.theme] + '</span>' +
+      '<span class="gloss-chevron">&#9660;</span>' +
+      '</div>' +
+      '<div class="gloss-def">' + item.def + '</div>' +
+      '</div>';
+  }).join('');
 }
 
 function glossSetTheme(t, btn) {
   glossTheme = t;
-  document.querySelectorAll('.gloss-theme-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.gloss-theme-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
   glossRender();
 }
@@ -3021,6 +2266,180 @@ function glossFilter() {
 
 glossRender();
 
+
+buildHemiciclo();
+buildLegend();
+buildSim();
 </script>
+
+<!-- ═══════════════════════════════════════
+     TAB 4 — GLOSARIO
+════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-glosario">
+  <div class="glosario-body">
+    <div>
+      <div class="glos-section-title">Instituciones y contrapoderes</div>
+      <div class="orgchart-wrap">
+        <svg width="100%" viewBox="0 0 740 500" xmlns="http://www.w3.org/2000/svg">
+          <g onclick="orgShowNode('rey')" style="cursor:pointer;">
+            <rect x="290" y="10" width="160" height="46" rx="8" fill="#FFF8E0" stroke="#F5C200" stroke-width="1.5"/>
+            <text x="370" y="31" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="13" fill="#7A5C00">CORONA</text>
+            <text x="370" y="47" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9A7A20">Rey Felipe VI</text>
+          </g>
+          <line x1="370" y1="56" x2="370" y2="70" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="120" y1="70" x2="620" y2="70" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="120" y1="70" x2="120" y2="84" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="370" y1="70" x2="370" y2="84" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="620" y1="70" x2="620" y2="84" stroke="#C8C3B8" stroke-width="1"/>
+          <g onclick="orgShowNode('cortes')" style="cursor:pointer;">
+            <rect x="20" y="84" width="200" height="46" rx="8" fill="#E0EEF8" stroke="#004C9E" stroke-width="1.5"/>
+            <text x="120" y="105" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="12" fill="#003070">CORTES GENERALES</text>
+            <text x="120" y="121" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="#1A5FA0">Poder legislativo</text>
+          </g>
+          <line x1="120" y1="130" x2="120" y2="144" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="60" y1="144" x2="180" y2="144" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="60" y1="144" x2="60" y2="158" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="180" y1="144" x2="180" y2="158" stroke="#C8C3B8" stroke-width="1"/>
+          <g onclick="orgShowNode('congreso')" style="cursor:pointer;">
+            <rect x="20" y="158" width="78" height="42" rx="6" fill="#E0EEF8" stroke="#004C9E" stroke-width="1.5"/>
+            <text x="59" y="177" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="10" fill="#003070">CONGRESO</text>
+            <text x="59" y="191" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#1A5FA0">350 diputados</text>
+          </g>
+          <g onclick="orgShowNode('senado')" style="cursor:pointer;">
+            <rect x="142" y="158" width="78" height="42" rx="6" fill="#E0EEF8" stroke="#004C9E" stroke-width="1.5"/>
+            <text x="181" y="177" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="10" fill="#003070">SENADO</text>
+            <text x="181" y="191" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#1A5FA0">265 senadores</text>
+          </g>
+          <line x1="120" y1="200" x2="120" y2="280" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="46" y1="280" x2="194" y2="280" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="46" y1="280" x2="46" y2="294" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="194" y1="280" x2="194" y2="294" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="120" y="272" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#B0AB9E">comisionados</text>
+          <g onclick="orgShowNode('gobierno')" style="cursor:pointer;">
+            <rect x="270" y="84" width="200" height="46" rx="8" fill="#E8E4F5" stroke="#6B47C4" stroke-width="1.5"/>
+            <text x="370" y="105" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="12" fill="#2D1B6B">GOBIERNO</text>
+            <text x="370" y="121" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="#5A3FAA">Poder ejecutivo</text>
+          </g>
+          <line x1="370" y1="130" x2="370" y2="144" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="310" y1="144" x2="430" y2="144" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="310" y1="144" x2="310" y2="158" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="430" y1="144" x2="430" y2="158" stroke="#C8C3B8" stroke-width="1"/>
+          <g onclick="orgShowNode('presidente')" style="cursor:pointer;">
+            <rect x="270" y="158" width="78" height="42" rx="6" fill="#E8E4F5" stroke="#6B47C4" stroke-width="1.5"/>
+            <text x="309" y="177" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="10" fill="#2D1B6B">PRESIDENTE</text>
+            <text x="309" y="191" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#5A3FAA">P. Sanchez</text>
+          </g>
+          <g onclick="orgShowNode('ministros')" style="cursor:pointer;">
+            <rect x="392" y="158" width="78" height="42" rx="6" fill="#E8E4F5" stroke="#6B47C4" stroke-width="1.5"/>
+            <text x="431" y="174" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="10" fill="#2D1B6B">CONSEJO</text>
+            <text x="431" y="186" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="10" fill="#2D1B6B">MINISTROS</text>
+            <text x="431" y="196" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#5A3FAA">22 ministerios</text>
+          </g>
+          <line x1="370" y1="200" x2="370" y2="280" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="296" y1="280" x2="444" y2="280" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="296" y1="280" x2="296" y2="294" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="444" y1="280" x2="444" y2="294" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="370" y="272" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#B0AB9E">bajo tutela ejecutiva</text>
+          <g onclick="orgShowNode('cgpj')" style="cursor:pointer;">
+            <rect x="520" y="84" width="200" height="46" rx="8" fill="#FCF0E0" stroke="#CC6600" stroke-width="1.5"/>
+            <text x="620" y="105" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="12" fill="#7A3A00">PODER JUDICIAL</text>
+            <text x="620" y="121" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="#AA5500">CGPJ</text>
+          </g>
+          <line x1="620" y1="130" x2="620" y2="144" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="560" y1="144" x2="680" y2="144" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="560" y1="144" x2="560" y2="158" stroke="#C8C3B8" stroke-width="1"/>
+          <line x1="680" y1="144" x2="680" y2="158" stroke="#C8C3B8" stroke-width="1"/>
+          <g onclick="orgShowNode('ts')" style="cursor:pointer;">
+            <rect x="520" y="158" width="78" height="42" rx="6" fill="#FCF0E0" stroke="#CC6600" stroke-width="1.5"/>
+            <text x="559" y="175" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="10" fill="#7A3A00">TRIBUNAL</text>
+            <text x="559" y="187" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="10" fill="#7A3A00">SUPREMO</text>
+            <text x="559" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#AA5500">Casacion</text>
+          </g>
+          <g onclick="orgShowNode('tc')" style="cursor:pointer;">
+            <rect x="642" y="158" width="78" height="42" rx="6" fill="#FCF0E0" stroke="#CC6600" stroke-width="1.5"/>
+            <text x="681" y="175" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="10" fill="#7A3A00">TRIBUNAL</text>
+            <text x="681" y="187" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="10" fill="#7A3A00">CONST.</text>
+            <text x="681" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#AA5500">Control const.</text>
+          </g>
+          <g onclick="orgShowNode('defensorp')" style="cursor:pointer;">
+            <rect x="6" y="294" width="80" height="46" rx="6" fill="#E8F5E8" stroke="#2A7A2A" stroke-width="1.5"/>
+            <text x="46" y="311" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="9" fill="#1A4A1A">DEFENSOR</text>
+            <text x="46" y="322" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="9" fill="#1A4A1A">DEL PUEBLO</text>
+            <text x="46" y="333" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#2A6A2A">Control adm.</text>
+          </g>
+          <g onclick="orgShowNode('tce')" style="cursor:pointer;">
+            <rect x="114" y="294" width="80" height="46" rx="6" fill="#E8F5E8" stroke="#2A7A2A" stroke-width="1.5"/>
+            <text x="154" y="311" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="9" fill="#1A4A1A">TRIBUNAL</text>
+            <text x="154" y="322" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="9" fill="#1A4A1A">DE CUENTAS</text>
+            <text x="154" y="333" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#2A6A2A">Control fiscal</text>
+          </g>
+          <g onclick="orgShowNode('hacienda')" style="cursor:pointer;">
+            <rect x="256" y="294" width="80" height="46" rx="6" fill="#E8E4F5" stroke="#6B47C4" stroke-width="1.5"/>
+            <text x="296" y="311" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="9" fill="#2D1B6B">MINISTERIO</text>
+            <text x="296" y="322" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="9" fill="#2D1B6B">HACIENDA</text>
+            <text x="296" y="333" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#5A3FAA">Control presup.</text>
+          </g>
+          <g onclick="orgShowNode('ccaa')" style="cursor:pointer;">
+            <rect x="364" y="294" width="80" height="46" rx="6" fill="#F5E8F0" stroke="#8B3A7A" stroke-width="1.5"/>
+            <text x="404" y="311" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="9" fill="#5A1A4A">CC.AA.</text>
+            <text x="404" y="325" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#7A2A6A">17 comunidades</text>
+          </g>
+          <line x1="470" y1="107" x2="510" y2="390" stroke="#E05500" stroke-width="1.2" stroke-dasharray="5,3"/>
+          <polygon points="510,390 504,378 516,378" fill="#E05500" opacity="0.7"/>
+          <text x="506" y="270" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#E05500" transform="rotate(-80, 506, 270)">nombramiento politico</text>
+          <g onclick="orgShowNode('fiscalia')" style="cursor:pointer;">
+            <rect x="460" y="390" width="130" height="56" rx="8" fill="#FFF3E0" stroke="#E05500" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <rect x="478" y="384" width="94" height="14" rx="4" fill="#E05500"/>
+            <text x="525" y="394" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#fff">dependencia controvertida</text>
+            <text x="525" y="413" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="12" fill="#7A3A00">FISCALIA GENERAL</text>
+            <text x="525" y="427" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="12" fill="#7A3A00">DEL ESTADO</text>
+            <text x="525" y="440" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#AA5500">independencia formal</text>
+          </g>
+        </svg>
+        <div class="org-node-detail" id="orgNodeDetail">
+          <div class="ond-name" id="ondName">-</div>
+          <div class="ond-type" id="ondType">-</div>
+          <div class="ond-desc" id="ondDesc">-</div>
+          <div class="ond-powers" id="ondPowers"></div>
+        </div>
+        <div class="org-legend">
+          <div class="org-leg-item"><div class="org-leg-dot" style="background:#F5C200;"></div>Corona</div>
+          <div class="org-leg-item"><div class="org-leg-dot" style="background:#6B47C4;"></div>Ejecutivo</div>
+          <div class="org-leg-item"><div class="org-leg-dot" style="background:#004C9E;"></div>Legislativo</div>
+          <div class="org-leg-item"><div class="org-leg-dot" style="background:#CC6600;"></div>Judicial</div>
+          <div class="org-leg-item"><div class="org-leg-dot" style="background:#2A7A2A;"></div>Control</div>
+          <div class="org-leg-item"><div class="org-leg-dot" style="background:#8B3A7A;"></div>Territorial</div>
+          <div class="org-leg-item">
+            <svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#C8C3B8" stroke-width="1" stroke-dasharray="4,3"/></svg>
+            dependencia funcional
+          </div>
+          <div class="org-leg-item">
+            <svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#E05500" stroke-width="1.2" stroke-dasharray="5,3"/></svg>
+            nombramiento controvertido
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="glos-section-title">Glosario politico</div>
+      <div class="gloss-search-wrap">
+        <span class="gloss-search-icon">&#x2315;</span>
+        <input class="gloss-search" type="text" placeholder="Buscar un termino..." id="glossSearch" oninput="glossFilter()">
+      </div>
+      <div class="gloss-themes">
+        <button class="gloss-theme-btn active" onclick="glossSetTheme('all',this)">Todos</button>
+        <button class="gloss-theme-btn" onclick="glossSetTheme('parl',this)">Parlamento</button>
+        <button class="gloss-theme-btn" onclick="glossSetTheme('exec',this)">Ejecutivo</button>
+        <button class="gloss-theme-btn" onclick="glossSetTheme('budget',this)">Presupuestos</button>
+        <button class="gloss-theme-btn" onclick="glossSetTheme('coal',this)">Coaliciones</button>
+        <button class="gloss-theme-btn" onclick="glossSetTheme('elec',this)">Elecciones</button>
+        <button class="gloss-theme-btn" onclick="glossSetTheme('const',this)">Constitucion</button>
+      </div>
+      <div class="gloss-count" id="glossCount"></div>
+      <div class="gloss-list" id="glossList"></div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
